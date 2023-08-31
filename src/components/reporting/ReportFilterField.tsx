@@ -2,7 +2,7 @@ import React from "react";
 import { ReportInterface, ParameterInterface } from "../../interfaces";
 import { ApiHelper, ArrayHelper, DateHelper } from "../../helpers";
 import { FormControl, InputLabel, Select, SelectChangeEvent, TextField, MenuItem } from "@mui/material";
-import useMountedState from "../../hooks/useMountedState";
+import { useMountedState } from "../../hooks/useMountedState";
 
 interface Props {
   parameter: ParameterInterface,

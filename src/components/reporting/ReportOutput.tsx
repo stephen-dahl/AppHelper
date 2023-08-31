@@ -7,7 +7,7 @@ import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
 import { TreeReport } from "./TreeReport";
 import { Icon } from "@mui/material";
-import useMountedState from "../../hooks/useMountedState";
+import { useMountedState } from "../../hooks/useMountedState";
 
 interface Props { report: ReportInterface }
 

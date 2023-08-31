@@ -5,7 +5,7 @@ import { Loading } from "../Loading"
 import { Grid } from "@mui/material"
 import { ReportOutput } from "./ReportOutput"
 import { ReportFilter } from "./ReportFilter"
-import useMountedState from "../../hooks/useMountedState";
+import { useMountedState } from "../../hooks/useMountedState";
 
 interface Props { keyName: string, autoRun: boolean }
 

@@ -3,7 +3,7 @@ import { AppBar, Drawer, IconButton, styled, Toolbar, Icon, Typography, Box, Con
 import { UserHelper, AppearanceHelper, PersonHelper, AppearanceInterface, ApiHelper } from "../../helpers";
 import { UserMenu } from "./UserMenu";
 import { UserContextInterface } from "../../interfaces";
-import useMountedState from "../../hooks/useMountedState";
+import { useMountedState } from "../../hooks/useMountedState";
 import { SocketHelper } from "../../helpers/SocketHelper";
 
 

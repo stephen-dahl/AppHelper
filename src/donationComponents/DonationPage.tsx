@@ -6,7 +6,7 @@ import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper } from "../helper
 import { DonationInterface, PersonInterface, StripePaymentMethod } from "../interfaces";
 import { Link } from "react-router-dom"
 import { Table, TableBody, TableRow, TableCell, TableHead, Alert } from "@mui/material"
-import useMountedState from "../hooks/useMountedState";
+import { useMountedState } from "../hooks/useMountedState";
 
 interface Props { personId: string, appName?: string, churchName?: string }
 
