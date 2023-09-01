@@ -5,6 +5,7 @@ export { ArrayHelper } from "./ArrayHelper";
 export { CommonEnvironmentHelper } from "./CommonEnvironmentHelper";
 export { CurrencyHelper } from "./CurrencyHelper"
 export { DateHelper } from "./DateHelper";
+export { ErrorHelper } from "./ErrorHelper";
 export { FileHelper } from "./FileHelper";
 export { PersonHelper } from "./PersonHelper"
 export { Themes } from "./Themes"

@@ -16,3 +16,7 @@ export { MarkdownEditor } from "./markdownEditor/MarkdownEditor";
 export { MarkdownPreview } from "./markdownEditor/MarkdownPreview";
 
 export * from "./material";
+export * from "./gallery";
+export * from "./markdownEditor";
+export * from "./notes";
+export * from "./reporting";

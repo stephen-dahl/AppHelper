@@ -1,5 +1,6 @@
+export * from "./Error";
 export * from "./UserContextInterface";
-export * from "./Permissions";
+export * from "./Permissions"
 
 // API interfaces
 export * from "./Access";
