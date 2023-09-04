@@ -6,8 +6,10 @@ export { CommonEnvironmentHelper } from "./CommonEnvironmentHelper";
 export { CurrencyHelper } from "./CurrencyHelper"
 export { DateHelper } from "./DateHelper";
 export { ErrorHelper } from "./ErrorHelper";
+export { EventHelper } from "./EventHelper";
 export { FileHelper } from "./FileHelper";
 export { PersonHelper } from "./PersonHelper"
+export { SocketHelper } from "./SocketHelper";
 export { Themes } from "./Themes"
 export { UserHelper } from "./UserHelper";
 export { UniqueIdHelper } from "./UniqueIdHelper";

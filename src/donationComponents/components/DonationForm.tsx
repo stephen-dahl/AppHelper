@@ -5,11 +5,11 @@ import { InputBox, ErrorMessages } from "../../components";
 import { FundDonations } from ".";
 import { DonationPreviewModal } from "../modals/DonationPreviewModal";
 import { ApiHelper, CurrencyHelper, DateHelper } from "../../helpers";
-import { PersonInterface, StripePaymentMethod, StripeDonationInterface, FundDonationInterface, FundInterface } from "../../interfaces";
+import { PersonInterface, StripePaymentMethod, StripeDonationInterface, FundDonationInterface, FundInterface, ChurchInterface } from "../../interfaces";
 import { Grid, InputLabel, MenuItem, Select, TextField, FormControl, Button, SelectChangeEvent, FormControlLabel, Checkbox, FormGroup, Typography } from "@mui/material"
 import { DonationHelper } from "../../helpers";
 
-interface Props { person: PersonInterface, customerId: string, paymentMethods: StripePaymentMethod[], stripePromise: Promise<Stripe>, donationSuccess: (message: string) => void, churchName?: string }
+interface Props { person: PersonInterface, customerId: string, paymentMethods: StripePaymentMethod[], stripePromise: Promise<Stripe>, donationSuccess: (message: string) => void, church?: ChurchInterface }
 
 export const DonationForm: React.FC<Props> = (props) => {
   const [errorMessage, setErrorMessage] = React.useState<string>();
@@ -76,7 +76,6 @@ export const DonationForm: React.FC<Props> = (props) => {
     setErrorMessage(null);
     let d = { ...donation } as StripeDonationInterface;
     let value = e.target.value;
-    console.log(e.target.name, value)
     switch (e.target.name) {
       case "method":
         d.id = value;
@@ -113,8 +112,8 @@ export const DonationForm: React.FC<Props> = (props) => {
 
   const makeDonation = async (message: string) => {
     let results;
-    if (donationType === "once") results = await ApiHelper.post("/donate/charge/", donation, "GivingApi");
-    if (donationType === "recurring") results = await ApiHelper.post("/donate/subscribe/", {...donation, churchName: props?.churchName, churchURL: typeof window !== "undefined" && window.location.origin}, "GivingApi");
+    if (donationType === "once") results = await ApiHelper.post("/donate/charge/", {...donation, church: props?.church, churchURL: typeof window !== "undefined" && window.location.origin}, "GivingApi");
+    if (donationType === "recurring") results = await ApiHelper.post("/donate/subscribe/", {...donation, church: props?.church, churchURL: typeof window !== "undefined" && window.location.origin}, "GivingApi");
 
     if (results?.status === "succeeded" || results?.status === "pending" || results?.status === "active") {
       setShowDonationPreviewModal(false);

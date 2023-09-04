@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorMessages, InputBox } from "../../components";
 import { ApiHelper, DateHelper } from "../../helpers";
-import { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface } from "../../interfaces";
+import { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface, ChurchInterface } from "../../interfaces";
 import { FundDonations } from "./FundDonations";
 import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, PaperProps } from "@mui/material"
 import { DonationHelper } from "../../helpers/DonationHelper";
@@ -27,12 +27,16 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const [interval, setInterval] = useState("one_month");
   const [startDate, setStartDate] = useState(new Date().toDateString());
   const [captchaResponse, setCaptchaResponse] = useState("");
+  const [church, setChurch] = useState<ChurchInterface>();
   const captchaRef = useRef(null);
 
   const init = () => {
     ApiHelper.get("/funds/churchId/" + props.churchId, "GivingApi").then(data => {
       setFunds(data);
       if (data.length) setFundDonations([{ fundId: data[0].id }]);
+    });
+    ApiHelper.get("/churches/" + props.churchId, "MembershipApi").then(data => {
+      setChurch(data);
     });
   }
 
@@ -57,7 +61,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const saveCard = async (user: UserInterface, person: PersonInterface) => {
     const cardData = elements.getElement(CardElement);
     const stripePM = await stripe.createPaymentMethod({ type: "card", card: cardData });
-    if (stripePM.error) setErrors([stripePM.error.message]);
+    if (stripePM.error) { setErrors([stripePM.error.message]); setProcessing(false); }
     else {
       const pm = { id: stripePM.paymentMethod.id, personId: person.id, email: email, name: person.name.display, churchId: props.churchId }
       await ApiHelper.post("/paymentmethods/addcard", pm, "GivingApi").then(result => {
@@ -88,7 +92,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     }
 
     if (donationType === "recurring") {
-      donation.billing_cycle_anchor = + new Date();
+      donation.billing_cycle_anchor = + new Date(startDate);
       donation.interval = DonationHelper.getInterval(interval);
     }
 
@@ -97,7 +101,10 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       donation.funds.push({ id: fundDonation.fundId, amount: fundDonation.amount || 0, name: fund.name });
     }
 
-    const results = await ApiHelper.post("/donate/charge/", donation, "GivingApi");
+    let results;
+    if (donationType === "once") results = await ApiHelper.post("/donate/charge/", { ...donation, church: church, churchURL: typeof window !== "undefined" && window.location.origin }, "GivingApi");
+    if (donationType === "recurring") results = await ApiHelper.post("/donate/subscribe/", { ...donation, church: church, churchURL: typeof window !== "undefined" && window.location.origin }, "GivingApi");
+
     if (results?.status === "succeeded" || results?.status === "pending" || results?.status === "active") {
       setDonationComplete(true)
     }
@@ -205,4 +212,3 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     </InputBox>
   );
 }
-

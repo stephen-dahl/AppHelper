@@ -3,12 +3,12 @@ import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { DonationForm, RecurringDonations, PaymentMethods } from "./components";
 import { DisplayBox, Loading } from "../components";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper } from "../helpers";
-import { DonationInterface, PersonInterface, StripePaymentMethod } from "../interfaces";
+import { DonationInterface, PersonInterface, StripePaymentMethod, ChurchInterface } from "../interfaces";
 import { Link } from "react-router-dom"
 import { Table, TableBody, TableRow, TableCell, TableHead, Alert } from "@mui/material"
 import { useMountedState } from "../hooks/useMountedState";
 
-interface Props { personId: string, appName?: string, churchName?: string }
+interface Props { personId: string, appName?: string, church?: ChurchInterface }
 
 export const DonationPage: React.FC<Props> = (props) => {
   const [donations, setDonations] = React.useState<DonationInterface[]>(null);
@@ -117,7 +117,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     if (!paymentMethods) return <Loading />;
     else return (
       <>
-        <DonationForm person={person} customerId={customerId} paymentMethods={paymentMethods} stripePromise={stripePromise} donationSuccess={handleDataUpdate} churchName={props?.churchName} />
+        <DonationForm person={person} customerId={customerId} paymentMethods={paymentMethods} stripePromise={stripePromise} donationSuccess={handleDataUpdate} church={props?.church} />
         <DisplayBox headerIcon="payments" headerText="Donations">
           {getTable()}
         </DisplayBox>

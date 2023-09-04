@@ -105,7 +105,7 @@ type Props = {
 
 const defaultIcons = ["person", "group", "groups", "contact_mail", "mail", "church", "favorite", "volunteer_activism", "link", "home", "apps", "web", "public", "rss_feed", "videocam", "live_tv", "music_note", "menu_book", "star", "accessible", "woman", "man", "child_care", "handshake", "location_on", "restaurant", "local_cafe" ];
 
-export default function SearchIcons(props: Props) {
+export function IconPicker(props: Props) {
   const pageSize = 27;
   const [keys, setKeys] = React.useState<any[] | null>(null);
   const [query, setQuery] = React.useState("");
