@@ -12,6 +12,7 @@ export { Notes } from "./notes/Notes";
 export { PersonAdd } from "./PersonAdd";
 export { QuestionEdit } from "./QuestionEdit";
 export { SmallButton } from "./SmallButton";
+export { SupportModal } from "./SupportModal";
 export { MarkdownEditor } from "./markdownEditor/MarkdownEditor";
 export { MarkdownPreview } from "./markdownEditor/MarkdownPreview";
 
