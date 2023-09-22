@@ -2,10 +2,10 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorMessages, InputBox } from "../../components";
-import { ApiHelper, DateHelper } from "../../helpers";
+import { ApiHelper, DateHelper, CurrencyHelper } from "../../helpers";
 import { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface, ChurchInterface } from "../../interfaces";
 import { FundDonations } from "./FundDonations";
-import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, PaperProps } from "@mui/material"
+import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, PaperProps, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material"
 import { DonationHelper } from "../../helpers/DonationHelper";
 
 interface Props { churchId: string, mainContainerCssProps?: PaperProps, showHeader?: boolean, recaptchaSiteKey: string, churchLogo?: string }
@@ -17,7 +17,9 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [amount, setAmount] = React.useState(0);
+  const [fundsTotal, setFundsTotal] = React.useState<number>(0);
+  const [transactionFee, setTransactionFee] = React.useState<number>(0);
+  const [total, setTotal] = React.useState<number>(0);
   const [errors, setErrors] = React.useState([]);
   const [fundDonations, setFundDonations] = React.useState<FundDonationInterface[]>([]);
   const [funds, setFunds] = React.useState<FundInterface[]>([]);
@@ -28,6 +30,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const [startDate, setStartDate] = useState(new Date().toDateString());
   const [captchaResponse, setCaptchaResponse] = useState("");
   const [church, setChurch] = useState<ChurchInterface>();
+  const [gateway, setGateway] = React.useState(null);
   const captchaRef = useRef(null);
 
   const init = () => {
@@ -38,11 +41,24 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     ApiHelper.get("/churches/" + props.churchId, "MembershipApi").then(data => {
       setChurch(data);
     });
+    ApiHelper.get("/gateways/churchId/" + props.churchId, "GivingApi").then(data => {
+      if (data.length !== 0) setGateway(data[0]);
+    });
   }
 
   const handleCaptchaChange = (value: string) => {
     const captchaToken = captchaRef.current.getValue();
     ApiHelper.postAnonymous("/donate/captcha-verify", { token: captchaToken }, "GivingApi").then((data) => { setCaptchaResponse(data.response); })
+  }
+
+  const handleCheckChange = (e: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    let totalPayAmount = checked ? fundsTotal + transactionFee : fundsTotal;
+    setTotal(totalPayAmount);
+  }
+
+  const handleAutoPayFee = () => {
+    let totalPayAmount = fundsTotal + transactionFee;
+    setTotal(totalPayAmount);
   }
 
   const handleSave = async () => {
@@ -78,7 +94,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
 
   const saveDonation = async (paymentMethod: StripePaymentMethod, customerId: string, person?: PersonInterface) => {
     let donation: StripeDonationInterface = {
-      amount: amount,
+      amount: total,
       id: paymentMethod.id,
       customerId: customerId,
       type: paymentMethod.type,
@@ -127,7 +143,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     if (!firstName) result.push("Please enter your first name.");
     if (!lastName) result.push("Please enter your last name.");
     if (!email) result.push("Please enter your email address.");
-    if (amount === 0) result.push("Amount cannot be $0");
+    if (fundsTotal === 0) result.push("Amount cannot be $0");
     if (result.length === 0) {
       if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) result.push("Please enter a valid email address");  //eslint-disable-line
     }
@@ -156,7 +172,15 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       let fund = funds.find((fund: FundInterface) => fund.id === fundDonation.fundId);
       selectedFunds.push({ id: fundDonation.fundId, amount: fundDonation.amount || 0, name: fund.name });
     }
-    setAmount(totalAmount);
+    setFundsTotal(totalAmount);
+    setTotal(totalAmount);
+    setTransactionFee(getTransactionFee(totalAmount));
+  }
+
+  const getTransactionFee = (amount: number) => {
+    const fixedFee = 0.30;
+    const fixedPercent = 0.029;
+    return Math.round(((amount + fixedFee) / (1 - fixedPercent) - amount) * 100) / 100;
   }
 
   const getFundList = () => {
@@ -168,6 +192,8 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   }
 
   React.useEffect(init, []); //eslint-disable-line
+
+  React.useEffect(() => { gateway && gateway.payFees === true && handleAutoPayFee() }, [fundDonations]);
 
   if (donationComplete) return <Alert severity="success">Thank you for your donation.</Alert>
   else return (
@@ -216,6 +242,18 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
         </Grid>
       }
       {getFundList()}
+      <div>
+        {fundsTotal > 0 &&
+          <>
+            {(gateway && gateway.payFees === true) ? <Typography fontSize={14} fontStyle="italic">*Transaction fees of {CurrencyHelper.formatCurrency(transactionFee)} are applied.</Typography> : (
+              <FormGroup>
+                <FormControlLabel control={<Checkbox />} name="transaction-fee" label={`I'll generously add ${CurrencyHelper.formatCurrency(transactionFee)} to cover the transaction fees so you can keep 100% of my donation.`} onChange={handleCheckChange} />
+              </FormGroup>
+            )}
+            <p>Total Donation Amount: ${total}</p>
+          </>
+        }
+      </div>
     </InputBox>
   );
 }

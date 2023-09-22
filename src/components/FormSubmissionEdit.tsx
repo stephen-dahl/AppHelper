@@ -14,11 +14,10 @@ interface Props {
   showHeader?: boolean,
   noBackground?:boolean,
   updatedFunction: () => void,
-  cancelFunction?: () => void,
-  sendEmail?: boolean,
+  cancelFunction?: () => void
 }
 
-export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackground = false, sendEmail = false, ...props}) => {
+export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackground = false, ...props}) => {
   const [formSubmission, setFormSubmission] = React.useState(null);
   const [errors, setErrors] = React.useState([]);
 
@@ -70,7 +69,6 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
 
   const handleSave = () => {
     const fs = formSubmission;
-    fs.churchId = UserHelper.currentUserChurch.church.id;
     fs.submittedBy = props.personId || null;
     fs.submissionDate = new Date();
     fs.churchId = props.churchId || null;
