@@ -8,7 +8,7 @@ import { Link } from "react-router-dom"
 import { Table, TableBody, TableRow, TableCell, TableHead, Alert } from "@mui/material"
 import { useMountedState } from "../hooks/useMountedState";
 
-interface Props { personId: string, appName?: string, church?: ChurchInterface }
+interface Props { personId: string, appName?: string, church?: ChurchInterface, churchLogo?: string }
 
 export const DonationPage: React.FC<Props> = (props) => {
   const [donations, setDonations] = React.useState<DonationInterface[]>(null);
@@ -117,7 +117,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     if (!paymentMethods) return <Loading />;
     else return (
       <>
-        <DonationForm person={person} customerId={customerId} paymentMethods={paymentMethods} stripePromise={stripePromise} donationSuccess={handleDataUpdate} church={props?.church} />
+        <DonationForm person={person} customerId={customerId} paymentMethods={paymentMethods} stripePromise={stripePromise} donationSuccess={handleDataUpdate} church={props?.church} churchLogo={props?.churchLogo} />
         <DisplayBox headerIcon="payments" headerText="Donations">
           {getTable()}
         </DisplayBox>

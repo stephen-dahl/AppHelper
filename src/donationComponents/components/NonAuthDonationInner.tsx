@@ -8,7 +8,7 @@ import { FundDonations } from "./FundDonations";
 import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, PaperProps } from "@mui/material"
 import { DonationHelper } from "../../helpers/DonationHelper";
 
-interface Props { churchId: string, mainContainerCssProps?: PaperProps, showHeader?: boolean, recaptchaSiteKey: string }
+interface Props { churchId: string, mainContainerCssProps?: PaperProps, showHeader?: boolean, recaptchaSiteKey: string, churchLogo?: string }
 
 export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, showHeader = true, ...props }) => {
   const stripe = useStripe();
@@ -101,9 +101,16 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       donation.funds.push({ id: fundDonation.fundId, amount: fundDonation.amount || 0, name: fund.name });
     }
 
+    const churchObj = {
+      name: church.name,
+      subDomain: church.subDomain,
+      churchURL: typeof window !== "undefined" && window.location.origin,
+      logo: props?.churchLogo
+    }
+
     let results;
-    if (donationType === "once") results = await ApiHelper.post("/donate/charge/", { ...donation, church: church, churchURL: typeof window !== "undefined" && window.location.origin }, "GivingApi");
-    if (donationType === "recurring") results = await ApiHelper.post("/donate/subscribe/", { ...donation, church: church, churchURL: typeof window !== "undefined" && window.location.origin }, "GivingApi");
+    if (donationType === "once") results = await ApiHelper.post("/donate/charge/", { ...donation, church: churchObj }, "GivingApi");
+    if (donationType === "recurring") results = await ApiHelper.post("/donate/subscribe/", { ...donation, church: churchObj }, "GivingApi");
 
     if (results?.status === "succeeded" || results?.status === "pending" || results?.status === "active") {
       setDonationComplete(true)
