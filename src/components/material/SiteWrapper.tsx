@@ -100,8 +100,8 @@ export const SiteWrapper: React.FC<Props> = props => {
   }, [isMounted, props.appearance]);
 
   React.useEffect(() => {
-    if (!props.context.userChurch) SocketHelper.setUserChurch({userId:null, churchId:null});
-    else SocketHelper.setUserChurch({userId:props.context.user.id, churchId:props.context.userChurch?.church.id});
+    if (!props.context.userChurch) SocketHelper.setPersonChurch({personId:null, churchId:null});
+    else SocketHelper.setPersonChurch({personId:props.context.person.id, churchId:props.context.userChurch?.church.id});
   }, [props.context.userChurch]);
 
   React.useEffect(() => {

@@ -7,18 +7,18 @@ export class SocketHelper {
   static socket: WebSocket;
   static socketId: string;
   static actionHandlers: SocketActionHandlerInterface[] = [];
-  private static userIdChurchId: {userId:string, churchId:string} = {userId:"", churchId:""};
+  private static personIdChurchId: {personId:string, churchId:string} = {personId:"", churchId:""};
 
-  static setUserChurch = (uc: {userId:string, churchId:string}) => {
-    if (uc?.churchId && uc.userId && uc.churchId!==this.userIdChurchId.churchId && uc.userId!==this.userIdChurchId.userId) {
-      this.userIdChurchId = uc;
+  static setPersonChurch = (pc: {personId:string, churchId:string}) => {
+    if (pc?.personId && pc.personId && pc.churchId!==this.personIdChurchId.churchId && pc.personId!==this.personIdChurchId.personId) {
+      this.personIdChurchId = pc;
       this.createAlertConnection();
     }
   }
 
   static createAlertConnection = () => {
-    if (SocketHelper.userIdChurchId.userId) {
-      const connection: ConnectionInterface = { conversationId: "alerts", churchId: SocketHelper.userIdChurchId.churchId, displayName: "Test", socketId: SocketHelper.socketId, userId:SocketHelper.userIdChurchId.userId }
+    if (SocketHelper.personIdChurchId.personId) {
+      const connection: ConnectionInterface = { conversationId: "alerts", churchId: SocketHelper.personIdChurchId.churchId, displayName: "Test", socketId: SocketHelper.socketId, personId:SocketHelper.personIdChurchId.personId }
       ApiHelper.postAnonymous("/connections", [connection], "MessagingApi");
     }
   }
