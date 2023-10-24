@@ -87,6 +87,8 @@ export const SiteWrapper: React.FC<Props> = props => {
     alert("Notification received.  Make GET to fetch bell count and toast message.")
   }
 
+  /*
+
   React.useEffect(() => {
     const getChurchLogo = async () => {
       if (UserHelper.currentUserChurch) {
@@ -108,6 +110,8 @@ export const SiteWrapper: React.FC<Props> = props => {
     SocketHelper.addHandler("notification", "notificationBell", handleNotification);
     SocketHelper.init();
   }, []);
+
+  */
 
   return <>
     <CustomAppBar position="absolute">
