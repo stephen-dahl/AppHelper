@@ -11,6 +11,7 @@ interface Props {
   createConversation?: () => Promise<string>;
   noDisplayBox?: boolean;
   context: UserContextInterface;
+  maxHeight?: any;
 }
 
 export function Notes(props: Props) {
@@ -41,10 +42,25 @@ export function Notes(props: Props) {
     }
   }
 
+  const getNotesWrapper = () => {
+    const notes = getNotes();
+    if (props.maxHeight) return <div id="notesScroll" style={{maxHeight: props.maxHeight, overflowY: "scroll"}}>{notes}</div>
+    else return notes;
+  }
+
   React.useEffect(() => { loadNotes() }, [props.conversationId]); //eslint-disable-line
 
+  React.useEffect(() => {
+    if (props.maxHeight && messages?.length>0) {
+      setTimeout(() => {
+        const element = window?.document?.getElementById("notesScroll");
+        if (element) element.scrollTop = element.scrollHeight;
+      }, 100);
+    }
+  }, [messages, props.maxHeight]);
+
   let result = <>
-    {getNotes()}
+    {getNotesWrapper()}
     {messages && (<AddNote context={props.context} conversationId={props.conversationId} onUpdate={loadNotes} createConversation={props.createConversation} messageId={editMessageId} />)}
   </>
   if (props.noDisplayBox) return result;

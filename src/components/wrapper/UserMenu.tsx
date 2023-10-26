@@ -1,41 +1,15 @@
 import React from "react";
 import { ApiHelper } from "../../helpers/ApiHelper";
 import { UserHelper } from "../../helpers/UserHelper";
-import { Avatar, Menu, Typography, Icon, Button, Box, Tabs, Tab, styled } from "@mui/material";
-import { NavItem, AppList } from "./";
+import { Avatar, Menu, Typography, Icon, Button, Box, Tabs, Tab, Divider } from "@mui/material";
+import { NavItem, AppList } from ".";
 import { LoginUserChurchInterface, UserContextInterface } from "../../interfaces";
 import { ChurchList } from "./ChurchList";
 import { SupportModal } from "../SupportModal";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
-import { PrivateMessages } from "./PrivateMessages";
+import { TabPanel } from "../TabPanel";
+import { NavLink } from "react-router-dom";
 
-interface TabPanelProps { children?: React.ReactNode; index: number; value: number; }
-
-const StyledMenuBox = styled(Box)(
-  ({ theme }) => ({
-    paddingTop: 10,
-    "& .MuiListItemButton-root": { paddingLeft: 30 },
-    "& .MuiListItemIcon-root": {
-      color: theme.palette.primary.main
-    },
-    "& .MuiListItemText-root": { color: theme.palette.text.primary },
-    "& .selected .MuiListItemText-root span": { fontWeight: "bold" }
-  })
-);
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index } = props;
-
-  return (
-    <div role="tabpanel" hidden={value !== index} id={`userMenuPanel-${index}`}>
-      {value === index && (
-        <StyledMenuBox>
-          <Box>{children}</Box>
-        </StyledMenuBox>
-      )}
-    </div>
-  );
-}
 
 interface Props {
   userName: string;
@@ -59,6 +33,7 @@ export const UserMenu: React.FC<Props> = (props) => {
   };
 
   const handleClose = () => {
+    setTabIndex(0);
     setAnchorEl(null);
   };
 
@@ -70,6 +45,9 @@ export const UserMenu: React.FC<Props> = (props) => {
     else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label="Profile" icon="person" external={true} router={props.router} />);
     result.push(<NavItem url="/logout" label="Logout" icon="logout" key="/logout" router={props.router} />);
     result.push(<NavItem label="Support" key="Support" icon="help" onClick={() => { setShowSupport(true) }} />);
+    result.push(<div style={{borderTop:"1px solid #CCC", paddingTop:2, paddingBottom:2}}></div>)
+    result.push(<NavItem label="Switch App" key="Switch App" icon="apps" onClick={() => { setTabIndex(1); }} />);
+    if (props.userChurches.length > 1) result.push(<NavItem label="Switch Church" key="Switch Church" icon="church" onClick={() => { setTabIndex(2); }} />);
     return result;
   }
 
@@ -95,32 +73,20 @@ export const UserMenu: React.FC<Props> = (props) => {
 
   const [tabIndex, setTabIndex] = React.useState(0);
 
-  function handleChange(el: any, newValue: any) {
-    setTabIndex(newValue);
-  }
-
   const getTabs = () => (
     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-      <Tabs variant="fullWidth" value={tabIndex} onChange={handleChange}>
-        <Tab label="User" />
-        <Tab label="Messages" />
-        {props.userChurches.length > 1 && <Tab label="Church" />}
-        <Tab label="App" />
-      </Tabs>
-
       <TabPanel value={tabIndex} index={0}>
         {getMainLinks()}
       </TabPanel>
       <TabPanel value={tabIndex} index={1}>
-        <PrivateMessages context={props.context} />
-      </TabPanel>
-
-      {props.userChurches.length > 1 && <TabPanel value={tabIndex} index={2}>
-        <ChurchList userChurches={props.userChurches} currentUserChurch={props.currentUserChurch} context={props.context} />
-      </TabPanel>}
-      <TabPanel value={tabIndex} index={(props.userChurches.length > 1) ? 3 : 2}>
+        <NavItem label="Back" key="AppBack" icon="arrow_back" onClick={() => { setTabIndex(0); }} />
         <AppList currentUserChurch={props.currentUserChurch} appName={props.appName} />
       </TabPanel>
+      {props.userChurches.length > 1 && <TabPanel value={tabIndex} index={2}>
+        <NavItem label="Back" key="ChurchBack" icon="arrow_back" onClick={() => { setTabIndex(0); }} />
+        <ChurchList userChurches={props.userChurches} currentUserChurch={props.currentUserChurch} context={props.context} />
+      </TabPanel>}
+
     </Box>
   );
 
@@ -134,7 +100,6 @@ export const UserMenu: React.FC<Props> = (props) => {
 
       <Menu anchorEl={anchorEl} id="account-menu" open={open} onClose={handleClose} onClick={(e) => { handleItemClick(e) }} PaperProps={paperProps} transformOrigin={{ horizontal: "right", vertical: "top" }} anchorOrigin={{ horizontal: "right", vertical: "bottom" }} sx={{ "& .MuiBox-root": { borderBottom: 0 } }}>
         {getTabs()}
-
       </Menu>
     </>
   );

@@ -1,11 +1,12 @@
 import React from "react";
-import { AppBar, Drawer, IconButton, styled, Toolbar, Icon, Typography, Box, Container, Link } from "@mui/material";
+import { IconButton, Toolbar, Icon, Typography, Box, Container, Link } from "@mui/material";
 import { UserHelper, AppearanceHelper, PersonHelper, AppearanceInterface, ApiHelper } from "../../helpers";
 import { UserMenu } from "./UserMenu";
 import { UserContextInterface } from "../../interfaces";
 import { useMountedState } from "../../hooks/useMountedState";
 import { SocketHelper } from "../../helpers/SocketHelper";
-
+import { NotificationMenu } from "./NotificationMenu";
+import { ClosedDrawer, ClosedDrawerAppBar, OpenDrawer, OpenDrawerAppBar } from "./Drawers";
 
 interface Props {
   navContent: JSX.Element,
@@ -16,75 +17,23 @@ interface Props {
   appearance?: AppearanceInterface
 }
 
-const OpenDrawer = styled(Drawer)(
-  ({ theme }) => ({
-    "& .MuiDrawer-paper": {
-      position: "relative",
-      backgroundColor: theme.palette.primary.main,
-      color: "#FFFFFF",
-      whiteSpace: "nowrap",
-      width: "100vw",
-      zIndex: 9999,
-      [theme.breakpoints.up("md")]: { width: 220 },
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen
-      }),
-      boxSizing: "border-box"
-    },
-    "& .MuiListItemButton-root, & .MuiListItemIcon-root": { color: "#FFFFFF" }
-  })
-);
-
-const ClosedDrawer = styled(OpenDrawer)(
-  ({ theme }) => ({
-    overflowX: "hidden",
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    zIndex: 1,
-    width: theme.spacing(7),
-    [theme.breakpoints.up("sm")]: { width: theme.spacing(7) },
-    "& .MuiListSubheader-root": {
-      opacity: 0
-    }
-  })
-);
-
-const ClosedDrawerAppBar = styled(AppBar)(
-  ({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    "& .MuiIcon-root": { color: "#FFFFFF" }
-  })
-);
-
-const OpenDrawerAppBar = styled(ClosedDrawerAppBar)(
-  ({ theme }) => ({
-    marginLeft: 220,
-    width: `calc(100% - ${220}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  })
-);
-
 export const SiteWrapper: React.FC<Props> = props => {
   const [churchLogo, setChurchLogo] = React.useState<string>();
   const [open, setOpen] = React.useState(false);
+  const [notificationCounts, setNotificationCounts] = React.useState({notificationCount:0, pmCount:0});
   const toggleDrawer = () => { setOpen(!open); };
   const isMounted = useMountedState();
 
   const CustomDrawer = (open) ? OpenDrawer : ClosedDrawer;
   const CustomAppBar = (open) ? OpenDrawerAppBar : ClosedDrawerAppBar;
 
+  const loadCounts = () => {
+    ApiHelper.get("/notifications/unreadCount", "MessagingApi").then(data => { setNotificationCounts(data); });
+  }
   const handleNotification = () => {
-    alert("Notification received.  Make GET to fetch bell count and toast message.")
+    //alert("Notification received.  Make GET to fetch bell count and toast message.")
+    console.log("Notification received.  Make GET to fetch bell count and toast message.");
+    loadCounts();
   }
 
 
@@ -110,6 +59,7 @@ export const SiteWrapper: React.FC<Props> = props => {
   React.useEffect(() => {
     SocketHelper.addHandler("notification", "notificationBell", handleNotification);
     SocketHelper.init();
+    loadCounts();
   }, []);
 
 
@@ -122,6 +72,7 @@ export const SiteWrapper: React.FC<Props> = props => {
         </IconButton>
         <Typography variant="h6" noWrap>{UserHelper.currentUserChurch?.church?.name || ""}</Typography>
         <div style={{ flex: 1 }}></div>
+        {UserHelper.user && <NotificationMenu onUpdate={loadCounts} counts={notificationCounts} context={props.context} router={props.router} />}
         {UserHelper.user && <UserMenu profilePicture={PersonHelper.getPhotoUrl(props.context?.person)} userName={`${UserHelper.user?.firstName} ${UserHelper.user?.lastName}`} userChurches={UserHelper.userChurches} currentUserChurch={UserHelper.currentUserChurch} context={props.context} appName={props.appName} router={props.router} />}
         {!UserHelper.user && <Link href="/login" color="inherit" style={{ textDecoration: "none" }}>Login</Link>}
       </Toolbar>

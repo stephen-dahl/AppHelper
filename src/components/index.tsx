@@ -6,6 +6,7 @@ export { FloatingSupport } from "./FloatingSupport";
 export { FormSubmissionEdit } from "./FormSubmissionEdit";
 export { HelpIcon } from "./HelpIcon";
 export { ImageEditor } from "./ImageEditor";
+export { IconPicker } from "./iconPicker/IconPicker";
 export { InputBox } from "./InputBox";
 export { Loading } from "./Loading";
 export { Notes } from "./notes/Notes";
@@ -16,7 +17,7 @@ export { SupportModal } from "./SupportModal";
 export { MarkdownEditor } from "./markdownEditor/MarkdownEditor";
 export { MarkdownPreview } from "./markdownEditor/MarkdownPreview";
 
-export * from "./material";
+export * from "./wrapper";
 export * from "./gallery";
 export * from "./markdownEditor";
 export * from "./notes";

@@ -78,7 +78,7 @@ export const PrivateMessages: React.FC<Props> = (props) => {
   else return (
     <>
       <span style={{ float: "right" }}>
-        <SmallButton icon="add" onClick={() => { setInAddMode(true) }} />
+        <SmallButton icon="edit_square" onClick={() => { setInAddMode(true) }} />
       </span>
 
       {getMainLinks()}

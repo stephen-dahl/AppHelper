@@ -1,5 +1,5 @@
 import { EmojiNode, $isEmojiNode, $createEmojiNode, $toggleEmojiNode } from './EmojiNode';
-import  materialIcons from '../../../material/iconPicker/IconNamesList';
+import  materialIcons from '../../../iconPicker/IconNamesList';
 
 import type { TextMatchTransformer } from "@lexical/markdown";
 import { TextNode, $isTextNode } from "lexical";

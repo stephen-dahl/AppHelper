@@ -9,6 +9,7 @@ export interface MessageInterface {
   id?: string, churchId?: string, conversationId?: string, personId?: string, displayName?: string, timeSent?: Date, timeUpdated?: Date, messageType?: string, content?: string,
   person?: PersonInterface
 }
+export interface NotificationInterface  { id?: string, churchId?: string, personId?: string, contentType?: string, contentId:string, timeSent?: Date, read:boolean, message?:string }
 export interface PrivateMessageInterface {
   id?: string, churchId?: string, fromPersonId?: string, toPersonId?: string, conversationId?: string, notifyPersonId?: string
   conversation?: ConversationInterface;
