@@ -74,21 +74,12 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
     fs.churchId = props.churchId || null;
     let e: any = [];
     fs.answers.forEach((a: AnswerInterface) => {
-      const q: QuestionInterface = fs.questions.find((q: QuestionInterface) => q.id === a.questionId);
-
+    
       if (a.required && a.value === "") {
+        const q: QuestionInterface = fs.questions.find((q: QuestionInterface) => q.id === a.questionId);
         e.push(q.title + " is required");
+        setErrors(e);
       }
-
-      if (q.fieldType === "Phone Number" && a.value !== "") {
-        const regex = /^\D*(\d\D*){10}$/;
-        const result = a.value.match(regex);
-        if (!result) {
-          e.push(q.title + " must contain 10 digits.")
-        }
-      }
-
-      setErrors(e);
     });
     if (!e.length) ApiHelper.post("/formsubmissions/", [fs], "MembershipApi").then((res) => {
       if (res?.[0]?.error) {

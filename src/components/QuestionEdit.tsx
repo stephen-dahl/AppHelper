@@ -1,5 +1,5 @@
 import React from "react";
-import { PatternFormat } from "react-number-format";
+import { MuiTelInput } from "mui-tel-input";
 import { AnswerInterface, QuestionInterface } from "../interfaces";
 import { Select, MenuItem, SelectChangeEvent, FormControl, InputLabel, TextField } from "@mui/material";
 
@@ -51,7 +51,7 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
         input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="number" InputLabelProps={{shrink: true}} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />;
         break;
       case "Date": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="date" InputLabelProps={{shrink: true}} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
-      case "Phone Number": input = <PatternFormat format="###-###-####" patternChar="#" customInput={TextField} fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} label={q.title} placeholder="555-555-5555" value={answerValue} onChange={handleChange} />; break;
+      case "Phone Number": input = <MuiTelInput fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} label={q.title} placeholder="" value={answerValue} onChange={(value) => { props.changeFunction(props.question.id, value); }} defaultCountry="US" focusOnSelectCountry />; break;
       case "Email": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="email" label={q.title} placeholder="john@doe.com" value={answerValue} onChange={handleChange} />; break;
       case "Text Area": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} multiline rows={4} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
       default: return null;
