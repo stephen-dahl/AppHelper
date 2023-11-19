@@ -24,7 +24,7 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const c = { ...church }
     switch (e.target.name) {
-      case "name": c.name = e.target.value; break;
+      case "churchName": c.name = e.target.value; break;
       case "subDomain": c.subDomain = e.target.value; break;
       case "address1": c.address1 = e.target.value; break;
       case "address2": c.address2 = e.target.value; break;
@@ -38,7 +38,7 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
 
   const validate = () => {
     let errors = [];
-    if (!church.name?.trim()) errors.push("name cannot be blank.");
+    if (!church.name?.trim()) errors.push("Church name cannot be blank.");
     if (!church.subDomain?.trim()) errors.push("Subdomain cannot be blank.");
     if (!church.address1?.trim()) errors.push("Address cannot be blank.");
     if (!church.city?.trim()) errors.push("City cannot be blank.");
@@ -70,7 +70,7 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
   return (
     <InputBox id="churchBox" saveFunction={handleSave} headerText="Register a New Church" headerIcon="church" isSubmitting={isSubmitting}>
       <ErrorMessages errors={errors} />
-      <TextField required fullWidth name="name" label="Church Name" value={church.name} onChange={handleChange} />
+      <TextField required fullWidth name="churchName" label="Church Name" value={church.name} onChange={handleChange} />
 
       <TextField required fullWidth name="address1" label="Address Line 1" value={church.address1} onChange={handleChange} />
       <Grid container spacing={3}>
