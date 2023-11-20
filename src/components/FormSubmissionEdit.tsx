@@ -111,7 +111,7 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
   }
 
   return (
-    <InputBox id="formSubmissionBox" headerText={showHeader ? (formSubmission?.form?.name || "Edit Form") : ""} headerIcon={showHeader ? "person" : ""} mainContainerCssProps={noBackground ? { sx: {backgroundColor: "transparent", boxShadow: 0}}: {}} saveFunction={handleSave} cancelFunction={props.cancelFunction} deleteFunction={getDeleteFunction()}>
+    <InputBox id="formSubmissionBox" headerText={showHeader ? (formSubmission?.form?.name || "Edit Form") : ""} headerIcon={showHeader ? "person" : ""} mainContainerCssProps={noBackground ? { sx: {backgroundColor: "transparent", boxShadow: 0}}: {}} saveFunction={handleSave} saveText={props.contentType === "form" ? "Submit" : ""} cancelFunction={props.cancelFunction} deleteFunction={getDeleteFunction()}>
       <ErrorMessages errors={errors} />
       {questionList}
     </InputBox>
