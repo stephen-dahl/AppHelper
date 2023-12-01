@@ -12,7 +12,8 @@
     "copy-assets": "npm-run-all copy-css copy-icons copy-emojis",
     "link": "link",
     "tsc": "tsc",
-    "build": "npm-run-all clean tsc copy-assets"
+    "build": "npm-run-all clean tsc copy-assets",
+    "updateLink": "npm-run-all clean tsc && npm rm @churchapps/apphelper -g && npm link"
   },
   "repository": {
     "type": "git",

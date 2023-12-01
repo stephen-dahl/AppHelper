@@ -11,13 +11,14 @@ export class SocketHelper {
 
   static setPersonChurch = (pc: {personId:string, churchId:string}) => {
     if (pc?.personId && pc.personId && pc.churchId!==this.personIdChurchId.churchId && pc.personId!==this.personIdChurchId.personId) {
+    //if (pc?.personId && pc.personId!==this.personIdChurchId.personId && this.socketId!==undefined && this.socketId) {
       this.personIdChurchId = pc;
       this.createAlertConnection();
     }
   }
 
   static createAlertConnection = () => {
-    if (SocketHelper.personIdChurchId.personId) {
+    if (SocketHelper.personIdChurchId.personId && SocketHelper.socketId) {
       const connection: ConnectionInterface = { conversationId: "alerts", churchId: SocketHelper.personIdChurchId.churchId, displayName: "Test", socketId: SocketHelper.socketId, personId:SocketHelper.personIdChurchId.personId }
       ApiHelper.postAnonymous("/connections", [connection], "MessagingApi");
     }
@@ -44,7 +45,7 @@ export class SocketHelper {
           //Silently reconnect
           if (SocketHelper.socket.readyState === SocketHelper.socket.CLOSED) {
             SocketHelper.init().then(() => {
-              SocketHelper.createAlertConnection();
+              //SocketHelper.createAlertConnection();
               SocketHelper.handleMessage({ action: "reconnect", data: null })
             });
           }
@@ -65,6 +66,7 @@ export class SocketHelper {
     //console.log("MESSAGE", payload)
     if (payload.action==="socketId") {
       SocketHelper.socketId = payload.data;
+      SocketHelper.createAlertConnection();
     }
     else {
       ArrayHelper.getAll(SocketHelper.actionHandlers, "action", payload.action).forEach((handler) => {
