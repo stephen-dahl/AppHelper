@@ -1,7 +1,7 @@
 import { FileHelper, ApiHelper } from "../../helpers";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 import { } from "../../helpers";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Tab, Tabs, Tooltip, Icon } from "@mui/material";
 import React, { useState } from "react";
 import { ImageEditor } from "../ImageEditor";
 import { TabPanel } from "../TabPanel";
@@ -37,16 +37,33 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
     loadData();
   };
 
+  const handleDelete = (folder: string, image: string) => {
+    if (window.confirm("Are you sure you wish to delete this image from gallery?")){
+      ApiHelper.delete("/gallery/" + folder + "/" + image, "ContentApi").then(() => { loadData(); });
+    }
+  }
+
   React.useEffect(() => { if (aspectRatio !== props.aspectRatio) setAspectRatio(Math.round(props.aspectRatio * 100) / 100) }, [props.aspectRatio]); //eslint-disable-line
   React.useEffect(loadData, [aspectRatio]); //eslint-disable-line
 
   const getImages = () => {
     let result: JSX.Element[] = [];
     images.forEach(img => {
+      const parts = img.split("/");
+
       result.push(<Grid item md={4} xs={12}>
-        <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onSelect(CommonEnvironmentHelper.ContentRoot + "/" + img) }}>
-          <img src={CommonEnvironmentHelper.ContentRoot + "/" + img} className="img-fluid" alt="custom" />
-        </a>
+        <Box sx={{ position: "relative", ":hover #deleteIcon": { visibility: "visible" } }}>
+          <a href="about:blank" onClick={(e) => { e.preventDefault(); props.onSelect(CommonEnvironmentHelper.ContentRoot + "/" + img) }}>
+            <Box component="img" src={CommonEnvironmentHelper.ContentRoot + "/" + img} className="img-fluid" alt="custom" />
+          </a>
+          <Box id="deleteIcon" sx={{ position: "absolute", top: 3, right: 3, visibility: "hidden", backgroundColor: "whitesmoke", borderRadius: 5 }}>
+            <Tooltip title="Delete">
+              <IconButton size="small" color="error" onClick={() => handleDelete(parts[2], parts[3])}>
+                <Icon sx={{ fontSize: "17px !important" }}>delete_outline</Icon>
+              </IconButton>
+          </Tooltip>
+          </Box>
+        </Box>
       </Grid>);
     })
     return result;
