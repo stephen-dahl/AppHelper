@@ -6,6 +6,7 @@ import { ArrayHelper, DateHelper, PersonHelper } from "../../helpers";
 
 interface Props {
   context: UserContextInterface;
+  onUpdate: () => void;
 }
 
 export const Notifications: React.FC<Props> = (props) => {
@@ -15,6 +16,7 @@ export const Notifications: React.FC<Props> = (props) => {
   const loadData = async () => {
     const n: NotificationInterface[] = await ApiHelper.get("/notifications/my", "MessagingApi");
     setNotifications(n);
+    props.onUpdate();
   }
 
   React.useEffect(() => { loadData(); }, []); //eslint-disable-line
@@ -41,6 +43,7 @@ export const Notifications: React.FC<Props> = (props) => {
     return result;
   }
 
+  React.useEffect(() => { console.log("RELOADED NOTIFICATIONS") }, []);
 
   return (
     <>

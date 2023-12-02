@@ -12,6 +12,7 @@ interface Props {
   noDisplayBox?: boolean;
   context: UserContextInterface;
   maxHeight?: any;
+  refreshKey?: number;
 }
 
 export function Notes(props: Props) {
@@ -48,7 +49,7 @@ export function Notes(props: Props) {
     else return notes;
   }
 
-  React.useEffect(() => { loadNotes() }, [props.conversationId]); //eslint-disable-line
+  React.useEffect(() => { loadNotes() }, [props.conversationId, props.refreshKey]); //eslint-disable-line
 
   React.useEffect(() => {
     if (props.maxHeight && messages?.length>0) {

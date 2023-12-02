@@ -87,6 +87,7 @@ export class DateHelper {
       let minutes = Math.floor(seconds / 60);
       return (minutes === 1) ? "1m" : minutes.toString() + "m";
     }
+    else if (seconds < 1) return "now";
     else return (seconds === 1) ? "1s" : Math.floor(seconds).toString() + "s";
   }
 

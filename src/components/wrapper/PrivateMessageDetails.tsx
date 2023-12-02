@@ -7,6 +7,7 @@ interface Props {
   context: UserContextInterface;
   privateMessage: PrivateMessageInterface;
   onBack: () => void
+  refreshKey: number;
 }
 
 export const PrivateMessageDetails: React.FC<Props> = (props) => (
@@ -17,7 +18,7 @@ export const PrivateMessageDetails: React.FC<Props> = (props) => (
       </span>
       Chat with {props.privateMessage.person.name.display}
     </div>
-    <Notes maxHeight={"50vh"} context={props.context} conversationId={props.privateMessage.conversationId} noDisplayBox={true} />
+    <Notes maxHeight={"50vh"} context={props.context} conversationId={props.privateMessage.conversationId} noDisplayBox={true} refreshKey={props.refreshKey} />
   </>
 );
 
