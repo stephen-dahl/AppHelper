@@ -28,7 +28,9 @@ export const SiteWrapper: React.FC<Props> = props => {
   const CustomAppBar = (open) ? OpenDrawerAppBar : ClosedDrawerAppBar;
 
   const loadCounts = () => {
-    ApiHelper.get("/notifications/unreadCount", "MessagingApi").then(data => { setNotificationCounts(data); });
+    ApiHelper.get("/notifications/unreadCount", "MessagingApi").then(data => {
+      if (!notificationCounts || JSON.stringify(notificationCounts) !== JSON.stringify(data)) setNotificationCounts(data);
+    });
   }
 
   const handleNotification = () => {
@@ -61,7 +63,7 @@ export const SiteWrapper: React.FC<Props> = props => {
     SocketHelper.addHandler("notification", "notificationBell", handleNotification);
     SocketHelper.init();
     loadCounts();
-    console.log("RELOADED SiteWrapper");
+    console.log("RELOADED SiteWrapper2");
   }, []);
 
 
