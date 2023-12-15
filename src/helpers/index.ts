@@ -16,3 +16,4 @@ export { UniqueIdHelper } from "./UniqueIdHelper";
 export { createEmotionCache } from "./createEmotionCache";
 export { DonationHelper } from "./DonationHelper";
 export { AppearanceInterface, AppearanceHelper } from "./AppearanceHelper";
+export { SlugHelper } from "./SlugHelper";
