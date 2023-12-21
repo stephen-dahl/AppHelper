@@ -6,7 +6,7 @@ import { $getSelection, SELECTION_CHANGE_COMMAND, $isRangeSelection, $getNodeByK
 import { TOGGLE_CUSTOM_LINK_NODE_COMMAND } from "./CustomLinkNode";
 import { FloatingLinkEditorProps } from "./FloatingLinkEditor.types";
 import { getSelectedNode } from "../ToolbarPlugin";
-import { FormControl, InputLabel, Select, MenuItem, TextField, Button } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, TextField, Button, SelectChangeEvent } from "@mui/material";
 
 const positionEditorElement = (editor: HTMLElement, rect: DOMRect | null) => {
   if (rect === null) {
@@ -143,7 +143,7 @@ const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({
     });
   }, []); //eslint-disable-line
 
-  const variants = ["Primary", "Secondary", "Success", "Danger", "Warning", "Info", "Light", "Dark"];
+  const variants = ["Light", "Light Accent", "Accent", "Dark Accent", "Dark", "Transparent Light", "Transparent Light Accent", "Transparent Accent", "Transparent Dark Accent", "Transparent Dark", "Primary", "Secondary", "Success", "Danger", "Warning", "Info"];
   const sizes = ["Small", "Medium", "Large"];
   let appearance = "link";
   if (classNamesList[0].indexOf("btn")>-1) appearance="btn";
@@ -163,6 +163,35 @@ const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({
 
       selectedNode?.selectEnd();
     });
+  }
+
+  const getVariantKeyName = (variant: string) => {
+    const keyNameParts = variant.split(" ");
+    keyNameParts[0] = keyNameParts[0].toLowerCase();
+    return keyNameParts.join("");
+  }
+
+  const handleVariantChange = (e: SelectChangeEvent<string>) => {
+    const newArray = [...classNamesList];
+    let index = 0;
+    newArray.forEach((item, i) => {
+      variants.forEach((element) => {
+        if (item.includes(getVariantKeyName(element))) {
+          index = i;
+        };
+      })
+    })
+    newArray.splice(index, 1, e.target.value.toString());
+    setClassNamesList(newArray);
+  }
+
+  const getVariantItems = () => {
+    const result:JSX.Element[] = [];
+    variants.forEach((variant: string, idx:number) => {
+      result.push(<MenuItem key={appearance + " btn-" + getVariantKeyName(variant)} value={"btn-" + getVariantKeyName(variant)}>{variant}</MenuItem>);
+      if (idx===4 || idx===9) result.push(<MenuItem disabled>──────────</MenuItem>)
+    })
+    return result;
   }
 
   return (
@@ -187,22 +216,8 @@ const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({
       && <div>
         <FormControl fullWidth>
           <InputLabel>Variant</InputLabel>
-          <Select name="classNames" fullWidth label="Variant" size="small" value={ classNamesList[1] } onChange={(e) => {
-            const newArray = [...classNamesList];
-            let index = 0;
-            newArray.forEach((item, i) => {
-              variants.forEach((element) => {
-                if (item.includes(element.toLowerCase())) {
-                  index = i;
-                };
-              })
-            })
-            newArray.splice(index, 1, e.target.value.toString());
-            setClassNamesList(newArray);
-          }}>
-            {variants.map((optionValue: string) => (
-              <MenuItem key={appearance + " btn-" + optionValue.toLowerCase()} value={"btn-" + optionValue.toLowerCase()}>{optionValue}</MenuItem>
-            ))}
+          <Select name="classNames" fullWidth label="Variant" size="small" value={ classNamesList[1] } onChange={handleVariantChange}>
+            {getVariantItems()}
           </Select>
         </FormControl>
         <FormControl fullWidth>
