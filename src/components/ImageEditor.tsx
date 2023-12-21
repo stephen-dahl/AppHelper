@@ -82,7 +82,16 @@ export function ImageEditor(props: Props) {
         const imageElement: any = cropperRef?.current;
         const cropper: any = imageElement?.cropper;
 
-        const url = cropper.getCroppedCanvas({ width: props.outputWidth || 400, height: props.outputHeight || 300 }).toDataURL("image/png", 0.4);
+        //Do not enlarge if less
+        const imageData = cropper.getImageData();
+        let width = props.outputWidth || 400;
+        let height = props.outputHeight || 300;
+        if (imageData.naturalWidth < width && imageData.naturalHeight < height) {
+          width = imageData.naturalWidth;
+          height = imageData.naturalHeight;
+        }
+
+        const url = cropper.getCroppedCanvas({ width, height }).toDataURL("image/png", 0.4);
         setCroppedImageDataUrl(url);
       }
     }, 200);
