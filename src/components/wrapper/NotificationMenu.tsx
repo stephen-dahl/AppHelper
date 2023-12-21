@@ -52,11 +52,8 @@ export const NotificationMenu: React.FC<Props> = (props) => {
   }
 
   const totalCount = props.counts.notificationCount + props.counts.pmCount;
-  console.log("totalCount", totalCount, props.counts);
 
-  //const buttonStyle = (totalCount > 0) ? { color: "#FF3333" } : {  };
   let icon = <Icon>notifications</Icon>;
-  //if (totalCount>0) icon = <Badge style={{backgroundColor:"#FF0000", padding:"0px 5px 0px 5px", borderRadius:5}} badgeContent={totalCount} color="error">{icon}</Badge>
   if (totalCount>0) icon = <>{icon}<Badge style={{backgroundColor:"#FF0000", padding:"0px 5px 0px 5px", borderRadius:5}} badgeContent={totalCount} color="error" /></>
 
   React.useEffect(() => {
