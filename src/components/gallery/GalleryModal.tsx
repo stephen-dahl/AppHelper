@@ -61,7 +61,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
               <IconButton size="small" color="error" onClick={() => handleDelete(parts[2], parts[3])}>
                 <Icon sx={{ fontSize: "17px !important" }}>delete_outline</Icon>
               </IconButton>
-          </Tooltip>
+            </Tooltip>
           </Box>
         </Box>
       </Grid>);
@@ -72,6 +72,20 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   const handleStockSelect = (url: string) => {
     setEditorPhotoUrl(url);
     setTabIndex(1);
+  }
+
+  const getDisplayAspect = () => {
+    let result = aspectRatio.toString();
+    if (aspectRatio === 0) result = "Free Form";
+    else if (aspectRatio === 1) result = "1:1";
+    else if (aspectRatio === 2) result = "2:1";
+    else if (aspectRatio === 3) result = "3:1";
+    else if (aspectRatio === 4) result = "4:1";
+    else if (aspectRatio === 1.33) result = "4:3";
+    else if (aspectRatio === 1.78) result = "16:9";
+    else if (aspectRatio === 0.5) result = "1:2";
+    else if (aspectRatio === 0.5625) result = "9:16";
+    return result;
   }
 
   return (<>
@@ -92,6 +106,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
                 <MenuItem value="0">Free Form</MenuItem>
                 <MenuItem value="1">1:1</MenuItem>
                 <MenuItem value="2">2:1</MenuItem>
+                <MenuItem value="3">3:1</MenuItem>
                 <MenuItem value="4">4:1</MenuItem>
                 <MenuItem value="1.33">4:3</MenuItem>
                 <MenuItem value="1.78">16:9</MenuItem>
@@ -105,6 +120,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
           </Grid>
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
+          <div>Aspect Ratio: {getDisplayAspect()}</div>
           <ImageEditor onUpdate={handleImageUpdated} photoUrl={editorPhotoUrl} aspectRatio={aspectRatio} outputWidth={1280} outputHeight={768} hideDelete={true} />
         </TabPanel>
         <TabPanel value={tabIndex} index={2}>
