@@ -80,6 +80,7 @@ export const NewPrivateMessage: React.FC<Props> = (props) => {
       <div>Search for a person</div>
 
       <TextField fullWidth label="Name" id="searchText" data-cy="search-input" name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange}
+        onKeyDown={(e) => {e.stopPropagation()}}
         InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSubmit}>Search</Button> }}
       />
       <br />
