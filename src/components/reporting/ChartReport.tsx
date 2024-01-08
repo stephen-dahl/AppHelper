@@ -79,7 +79,7 @@ export const ChartReport = (props: Props) => {
   }
 
   const getField = (column: ColumnInterface, dataRow: any) => {
-    let result = dataRow[column.value].toString() || "";
+    let result = dataRow[column.value]?.toString() || "";
 
     switch (column.formatter) {
       case "date":
