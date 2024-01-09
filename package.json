@@ -1,6 +1,6 @@
 {
   "name": "@churchapps/apphelper",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "Library of helper functions for React and NextJS ChurchApps",
   "main": "dist/index.js",
   "scripts": {
@@ -54,7 +54,7 @@
     "axios": "^1.5.0",
     "cropperjs": "^1.6.0",
     "date-fns": "^2.30.0",
-    "flexsearch": "^0.7.31",
+    "flexsearch": "^0.7.41",
     "jwt-decode": "^3.1.2",
     "lexical": "^0.12.0",
     "material-symbols": "^0.11.0",
