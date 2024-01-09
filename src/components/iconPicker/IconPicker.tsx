@@ -67,7 +67,8 @@ const Paper = styled(MuiPaper)(({ theme }) => ({ padding: "2px 4px", display: "f
 
 const Input = styled(InputBase)({ marginLeft: 8, flex: 1 });
 
-const searchIndex = new FlexSearch.Index({ tokenize: "full" });
+//const searchIndex = new FlexSearch.Index({ tokenize: "full" });
+const searchIndex = FlexSearch.create({ tokenize: "full" });
 
 function createSearchIndex() {
   // create component names from icons list
@@ -89,7 +90,8 @@ function createSearchIndex() {
   iconsAndComponentNames.forEach(icon => {
     let searchTerm = icon.iconName + " " + icon.componentName;
 
-    searchIndex.addAsync(icon.iconName, searchTerm)
+    //searchIndex.addAsync(icon.iconName, searchTerm)
+    searchIndex.add(searchTerm);
   })
 
 }
@@ -116,7 +118,8 @@ export function IconPicker(props: Props) {
     () =>
       debounce((value) => {
         if (value === "") setKeys(defaultIcons);
-        else searchIndex.searchAsync(value, { limit: 3000 }).then((results: any) => { setKeys(results); setPage(1); });
+        else searchIndex.search(value, { limit: 3000 }).then((results: any) => { setKeys(results); setPage(1); });
+        //else searchIndex.searchAsync(value, { limit: 3000 }).then((results: any) => { setKeys(results); setPage(1); });
       }, UPDATE_SEARCH_INDEX_WAIT_MS),
     []
   );
