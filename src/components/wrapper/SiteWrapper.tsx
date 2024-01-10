@@ -90,7 +90,7 @@ export const SiteWrapper: React.FC<Props> = props => {
       </Toolbar>
       {props.navContent}
     </CustomDrawer>
-    <Box component="main" sx={{ flexGrow: 1, overflow: "auto", marginTop: 8, minHeight: "90vh" }}>
+    <Box component="main" sx={{ flexGrow: 1, marginTop: 8, minHeight: "90vh" }}>
       <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
         {props.children}
       </Container>
