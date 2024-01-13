@@ -1,13 +1,13 @@
 import React from "react"
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND, $getSelection, $isRangeSelection, $createParagraphNode, $getNodeByKey } from "lexical";
+import { SELECTION_CHANGE_COMMAND, FORMAT_TEXT_COMMAND, $getSelection, $isRangeSelection, $createParagraphNode, $getNodeByKey, } from "lexical";
 import { $wrapNodes, $isAtNodeEnd } from "@lexical/selection";
 import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import { INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND, $isListNode, ListNode } from "@lexical/list";
 import { createPortal } from "react-dom";
 import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from "@lexical/rich-text";
-import { $isCodeNode, getDefaultCodeLanguage, getCodeLanguages } from "@lexical/code";
+import { $isCodeNode, getDefaultCodeLanguage, getCodeLanguages, $createCodeNode } from "@lexical/code";
 import { Icon } from "@mui/material";
 import FloatingLinkEditor from "./customLink/FloatingLinkEditor";
 import { TOGGLE_CUSTOM_LINK_NODE_COMMAND, $isCustomLinkNode } from "./customLink/CustomLinkNode";
@@ -200,6 +200,16 @@ function BlockOptionsDropdownList({ editor, blockType, toolbarRef, setShowBlockO
     setShowBlockOptionsDropDown(false);
   };
 
+  const formatCodeBlock = () => {
+    if (blockType !== "code") {
+      editor.update(() => {
+        const selection = $getSelection();
+        if ($isRangeSelection(selection)) { $wrapNodes(selection, () => $createCodeNode()); }
+      });
+    }
+    setShowBlockOptionsDropDown(false);
+  };
+
   return (
     <div className="dropdown" ref={dropDownRef}>
       <button className="item" onClick={formatParagraph}>
@@ -242,6 +252,11 @@ function BlockOptionsDropdownList({ editor, blockType, toolbarRef, setShowBlockO
         <span className="text">Quote</span>
         {blockType === "quote" && <span className="active" />}
       </button>
+      <button className="item" onClick={formatCodeBlock}>
+        <span className="icon code" />
+        <span className="text">Code</span>
+        {blockType === "code" && <span className="active" />}
+      </button>
     </div>
   );
 }
@@ -261,6 +276,7 @@ export function ToolbarPlugin(props: Props) {
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
+  const [isCode, setIsCode] = useState(false);
   //const [isStrikethrough, setIsStrikethrough] = useState(false);
   const [linkUrl, setLinkUrl] = useState<string>("https://");
   const [targetAttribute, setTargetAttribute] = useState<string>("_self");
@@ -291,6 +307,7 @@ export function ToolbarPlugin(props: Props) {
       setIsBold(selection.hasFormat("bold"));
       setIsItalic(selection.hasFormat("italic"));
       setIsUnderline(selection.hasFormat("underline"));
+      setIsCode(selection.hasFormat("code"));
       //setIsStrikethrough(selection.hasFormat("strikethrough"));
 
       // Update links
@@ -389,6 +406,9 @@ export function ToolbarPlugin(props: Props) {
           </button>
           <button onClick={insertLink} className={"toolbar-item spaced " + (isLink ? "active" : "")} aria-label="Insert Link">
             <i className="format link" />
+          </button>
+          <button onClick={() => { editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code"); }} className={"toolbar-item spaced " + (isCode ? "active" : "")} aria-label="Format Code">
+            <i className="format code" />
           </button>
           {isLink && createPortal(<FloatingLinkEditor selectedElementKey={selectedElementKey} linkUrl={linkUrl} setLinkUrl={setLinkUrl} classNamesList={classNamesList} setClassNamesList={setClassNamesList} targetAttribute={targetAttribute} setTargetAttribute={setTargetAttribute} />, document.body)}
         </>)}
