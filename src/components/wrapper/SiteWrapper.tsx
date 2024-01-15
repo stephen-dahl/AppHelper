@@ -1,4 +1,4 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { IconButton, Toolbar, Icon, Typography, Box, Container, Link } from "@mui/material";
 import { UserHelper, AppearanceHelper, PersonHelper, AppearanceInterface, ApiHelper } from "../../helpers";
 import { UserMenu } from "./UserMenu";
@@ -14,7 +14,8 @@ interface Props {
   children: React.ReactNode,
   appName: string,
   router?: any,
-  appearance?: AppearanceInterface
+  appearance?: AppearanceInterface,
+  omitOverflow?: boolean
 }
 
 export const SiteWrapper: React.FC<Props> = props => {
@@ -66,6 +67,8 @@ export const SiteWrapper: React.FC<Props> = props => {
     console.log("RELOADED SiteWrapper2");
   }, []);
 
+  const boxStyle: CSSProperties = { flexGrow: 1, marginTop: 8, minHeight: "90vh" }
+  if (!props.omitOverflow) boxStyle.overflow = "auto";
 
   return <>
     <CustomAppBar position="absolute">
@@ -90,7 +93,7 @@ export const SiteWrapper: React.FC<Props> = props => {
       </Toolbar>
       {props.navContent}
     </CustomDrawer>
-    <Box component="main" sx={{ flexGrow: 1, marginTop: 8, minHeight: "90vh" }}>
+    <Box component="main" sx={boxStyle}>
       <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
         {props.children}
       </Container>

@@ -19,6 +19,7 @@ interface Props {
 /* "& p": { color: "#666" }, */
 const CustomContextBox = styled(Box)({
   marginTop: 10,
+  overflowX: "hidden",
   "& label": { color: "#999" },
   "& ul": { paddingLeft: 0 },
   "& li": {
