@@ -1,7 +1,7 @@
 import React from "react";
-import { ColumnInterface, ReportOutputInterface, ReportResultInterface } from "../../interfaces"
-import { DateHelper } from "../../helpers"
+import { ReportOutputInterface, ReportResultInterface } from "../../interfaces"
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material"
+import { ReportHelper } from "../../helpers/ReportHelper";
 
 interface Props { reportResult: ReportResultInterface, output: ReportOutputInterface }
 
@@ -36,8 +36,8 @@ export const TreeReport = (props: Props) => {
       groupingRows.forEach(gr => result.push(gr));
       for (let i = totalGroupings; i < columns.length; i++) {
         const c = columns[i];
-        if (i === totalGroupings) row.push(<TableCell style={{ paddingLeft: 30 * totalGroupings }}>{getField(c, d)}</TableCell>);
-        else row.push(<TableCell>{getField(c, d)}</TableCell>);
+        if (i === totalGroupings) row.push(<TableCell style={{ paddingLeft: 30 * totalGroupings }}>{ReportHelper.getField(c, d)}</TableCell>);
+        else row.push(<TableCell>{ReportHelper.getField(c, d)}</TableCell>);
       }
       result.push(<TableRow>{row}</TableRow>);
       previousData = d;
@@ -61,8 +61,8 @@ export const TreeReport = (props: Props) => {
     for (let i = prevCols; i < prevCols + g; i++) {
       const c = props.output.columns[i];
       const className = "heading" + (groupNumber + 1);
-      if (i === prevCols && i > 0) outputRow.push(<TableCell className={className} style={{ paddingLeft: 30 * groupNumber }}>{getField(c, row)}</TableCell>);
-      else outputRow.push(<TableCell className={className}>{getField(c, row)}</TableCell>);
+      if (i === prevCols && i > 0) outputRow.push(<TableCell className={className} style={{ paddingLeft: 30 * groupNumber }}>{ReportHelper.getField(c, row)}</TableCell>);
+      else outputRow.push(<TableCell className={className}>{ReportHelper.getField(c, row)}</TableCell>);
     }
     return (<TableRow>{outputRow}</TableRow>);
   }
@@ -85,16 +85,6 @@ export const TreeReport = (props: Props) => {
     return firstGroupModified;
   }
 
-  const getField = (column: ColumnInterface, dataRow: any) => {
-    let result = dataRow[column.value]?.toString() || "";
-    switch (column.formatter) {
-      case "date":
-        let dt = new Date(result);
-        result = DateHelper.prettyDate(dt);
-        break;
-    }
-    return result;
-  }
 
   return (
     <Table className="table table-sm report">

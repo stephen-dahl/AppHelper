@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { ColumnInterface, ReportOutputInterface, ReportResultInterface } from "../../interfaces";
-import { DateHelper } from "../../helpers";
+import { ReportOutputInterface, ReportResultInterface } from "../../interfaces";
+import { ReportHelper } from "../../helpers/ReportHelper";
 
 interface Props { reportResult: ReportResultInterface, output: ReportOutputInterface }
 
@@ -18,7 +18,7 @@ export const ChartReport = (props: Props) => {
     const uniqueValues: string[] = [];
 
     props.reportResult.table.forEach(d => {
-      const val = getField(props.output.columns[1], d);
+      const val = ReportHelper.getField(props.output.columns[1], d);
       if (uniqueValues.indexOf(val) === -1) uniqueValues.push(val);
     });
 
@@ -41,8 +41,8 @@ export const ChartReport = (props: Props) => {
   const transformData = (headers: string[]) => {
     const result: any[] = [];
     props.reportResult.table.forEach(d => {
-      const firstVal = getField(props.output.columns[0], d);
-      const secondVal = getField(props.output.columns[1], d);
+      const firstVal = ReportHelper.getField(props.output.columns[0], d);
+      const secondVal = ReportHelper.getField(props.output.columns[1], d);
       const headerIndex = getHeaderIndex(headers, secondVal);
 
       let row: any[] = []
@@ -73,21 +73,9 @@ export const ChartReport = (props: Props) => {
     rows = [];
     rows.push([props.output.columns[0].header, props.output.columns[1].header]);
     props.reportResult.table.forEach(d => {
-      rows.push([getField(props.output.columns[0], d), parseFloat(getField(props.output.columns[1], d))])
+      rows.push([ReportHelper.getField(props.output.columns[0], d), parseFloat(ReportHelper.getField(props.output.columns[1], d))])
     });
     return rows;
-  }
-
-  const getField = (column: ColumnInterface, dataRow: any) => {
-    let result = dataRow[column.value]?.toString() || "";
-
-    switch (column.formatter) {
-      case "date":
-        let dt = new Date(result);
-        result = DateHelper.prettyDate(dt);
-        break;
-    }
-    return result;
   }
 
   let result = <p>There is no data to display</p>

@@ -27,7 +27,9 @@ export class ErrorHelper {
         details: details
       }
 
-      if (log.errorType==="401" && log.message.indexOf("/users/login")===-1) return;
+      console.log("ERROR LOG", log);
+
+      if (log.errorType==="401" && log.message.indexOf("/users/login")>-1) return;
       ApiHelper.postAnonymous("/errors", [log], "MembershipApi");
       if (ErrorHelper.customErrorHandler) ErrorHelper.customErrorHandler(log);
     }
