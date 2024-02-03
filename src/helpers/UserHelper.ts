@@ -1,5 +1,5 @@
 import { ApiHelper } from "./ApiHelper"
-import { UserInterface, UserContextInterface, IPermission, PersonInterface, LoginUserChurchInterface } from "../interfaces";
+import { UserInterface, UserContextInterface, IApiPermission, PersonInterface, LoginUserChurchInterface } from "@churchapps/helpers";
 
 export class UserHelper {
   static currentUserChurch: LoginUserChurchInterface;
@@ -39,7 +39,7 @@ export class UserHelper {
     ApiHelper.setDefaultPermissions(user.jwt);
   }
 
-  static checkAccess({ api, contentType, action }: IPermission): boolean {
+  static checkAccess({ api, contentType, action }: IApiPermission): boolean {
     const permissions = ApiHelper.getConfig(api).permisssions;
 
     let result = false;

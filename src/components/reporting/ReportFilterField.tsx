@@ -1,5 +1,5 @@
 import React from "react";
-import { ReportInterface, ParameterInterface } from "../../interfaces";
+import { ReportInterface, ParameterInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper } from "../../helpers";
 import { FormControl, InputLabel, Select, SelectChangeEvent, TextField, MenuItem } from "@mui/material";
 import { useMountedState } from "../../hooks/useMountedState";

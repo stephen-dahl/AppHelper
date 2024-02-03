@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiHelper } from "../../helpers";
 import { InputBox } from "../../components";
-import { StripePaymentMethod, SubscriptionInterface } from "../../interfaces";
+import { StripePaymentMethod, SubscriptionInterface } from "@churchapps/helpers";
 import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { DonationHelper } from "../../helpers"
 

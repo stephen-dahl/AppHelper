@@ -1,7 +1,7 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { UserHelper, ApiHelper } from "../helpers";
-import { Permissions, PersonInterface, HouseholdInterface } from "../interfaces";
+import { Permissions, PersonInterface, HouseholdInterface } from "@churchapps/helpers";
 import { Button, Grid, TextField } from "@mui/material"
 import { ErrorMessages } from "./ErrorMessages"
 import { useMountedState } from "../hooks/useMountedState"

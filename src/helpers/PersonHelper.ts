@@ -1,4 +1,4 @@
-import { PersonInterface, ContactInfoInterface } from "../interfaces";
+import { PersonInterface, ContactInfoInterface } from "@churchapps/helpers";
 import { CommonEnvironmentHelper } from "./CommonEnvironmentHelper";
 
 export class PersonHelper {

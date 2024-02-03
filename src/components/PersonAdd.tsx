@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ApiHelper } from "../helpers";
-import { PersonInterface } from "../interfaces"
+import { PersonInterface } from "@churchapps/helpers"
 import { TextField, Button, Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { SmallButton } from "./SmallButton";
 import { CreatePerson } from "./CreatePerson";

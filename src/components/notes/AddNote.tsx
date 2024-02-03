@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { ApiHelper, PersonHelper } from "../../helpers"
-import { MessageInterface, UserContextInterface } from "../../interfaces"
+import { MessageInterface, UserContextInterface } from "@churchapps/helpers"
 import { Icon, Stack, TextField } from "@mui/material"
 import { ErrorMessages } from "../ErrorMessages"
 import { SmallButton } from "../SmallButton"

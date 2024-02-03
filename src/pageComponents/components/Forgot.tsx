@@ -1,7 +1,7 @@
 import React, { FormEventHandler } from "react";
 import { ApiHelper } from "../../helpers";
 import { ErrorMessages } from "../../components";
-import { ResetPasswordRequestInterface, ResetPasswordResponseInterface } from "../../interfaces";
+import { ResetPasswordRequestInterface, ResetPasswordResponseInterface } from "@churchapps/helpers";
 import { Stack, TextField, Box, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 

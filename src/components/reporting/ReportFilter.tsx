@@ -1,5 +1,5 @@
 import React from "react";
-import { ReportInterface, ParameterInterface } from "../../interfaces";
+import { ReportInterface, ParameterInterface } from "@churchapps/helpers";
 import { ArrayHelper } from "../../helpers"
 import { InputBox } from "../"
 import { ReportFilterField } from "./ReportFilterField";

@@ -1,6 +1,6 @@
 import React from "react";
 import { ApiHelper } from "../../helpers"
-import { ChurchInterface, RegisterChurchRequestInterface } from "../../interfaces";
+import { ChurchInterface, RegisterChurchRequestInterface } from "@churchapps/helpers";
 import { ErrorMessages, InputBox } from "../../components"
 import { Grid, InputAdornment, TextField } from "@mui/material";
 

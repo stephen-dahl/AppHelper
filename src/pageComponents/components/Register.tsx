@@ -1,5 +1,5 @@
 import React, { FormEventHandler } from "react";
-import { LoginResponseInterface, RegisterUserInterface, UserInterface } from "../../interfaces";
+import { LoginResponseInterface, RegisterUserInterface, UserInterface } from "@churchapps/helpers";
 import { AnalyticsHelper, ApiHelper } from "../../helpers";
 import { ErrorMessages } from "../../components";
 import { Button, Stack, TextField, Link } from "@mui/material";

@@ -3,7 +3,7 @@ import { ApiHelper } from "../../helpers/ApiHelper";
 import { UserHelper } from "../../helpers/UserHelper";
 import { NavItem } from "./NavItem";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
-import { LoginUserChurchInterface } from "../../interfaces";
+import { LoginUserChurchInterface } from "@churchapps/helpers";
 
 export interface Props { appName: string; currentUserChurch: LoginUserChurchInterface; router?: any; }
 

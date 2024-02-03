@@ -1,7 +1,7 @@
 import { Box, Paper, Stack } from "@mui/material";
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, PersonHelper } from "../../helpers";
-import { ConversationInterface, MessageInterface, UserContextInterface } from "../../interfaces";
+import { ConversationInterface, MessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { AddNote } from "./AddNote";
 import { Note } from "./Note";
 

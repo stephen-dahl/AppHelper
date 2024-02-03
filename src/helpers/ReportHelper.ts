@@ -1,5 +1,5 @@
 import { parse } from "path";
-import { ColumnInterface } from "../interfaces";
+import { ColumnInterface } from "@churchapps/helpers";
 import { DateHelper } from "./DateHelper";
 
 export class ReportHelper {

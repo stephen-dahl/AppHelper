@@ -1,6 +1,6 @@
 import React from "react";
 import { Chart } from "react-google-charts";
-import { ReportOutputInterface, ReportResultInterface } from "../../interfaces";
+import { ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
 import { ReportHelper } from "../../helpers/ReportHelper";
 
 interface Props { reportResult: ReportResultInterface, output: ReportOutputInterface }

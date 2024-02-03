@@ -1,4 +1,4 @@
-import { ErrorLogInterface, ErrrorAppDataInterface } from "../interfaces/Error";
+import { ErrorLogInterface, ErrrorAppDataInterface } from "@churchapps/helpers";
 import { ApiHelper } from "./ApiHelper";
 
 

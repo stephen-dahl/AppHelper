@@ -1,6 +1,6 @@
 import React from "react";
 import { SmallButton } from "../SmallButton";
-import { PrivateMessageInterface, UserContextInterface } from "../../interfaces";
+import { PrivateMessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { Notes } from "../notes/Notes";
 
 interface Props {

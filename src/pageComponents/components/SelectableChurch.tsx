@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import React from "react";
 import { ArrayHelper } from "../../helpers"
-import { ChurchInterface, GenericSettingInterface } from "../../interfaces";
+import { ChurchInterface, GenericSettingInterface } from "@churchapps/helpers";
 
 interface Props {
   selectChurch: (churchId: string) => void,

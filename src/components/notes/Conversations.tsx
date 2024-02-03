@@ -1,7 +1,7 @@
 import React from "react";
 import { Loading } from "../";
 import { ApiHelper, ArrayHelper } from "../../helpers";
-import { ConversationInterface, UserContextInterface } from "../../interfaces";
+import { ConversationInterface, UserContextInterface } from "@churchapps/helpers";
 import { Conversation } from "./Conversation";
 import { NewConversation } from "./NewConversation";
 

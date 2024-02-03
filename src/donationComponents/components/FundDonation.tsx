@@ -1,5 +1,5 @@
 import React from "react";
-import { FundDonationInterface, FundInterface } from "../../interfaces";
+import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
 import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 
 interface Props {

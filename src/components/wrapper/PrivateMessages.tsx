@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ApiHelper } from "../../helpers/ApiHelper";
 import { Box, Stack } from "@mui/material";
 import { SmallButton } from "../SmallButton";
-import { PrivateMessageInterface, UserContextInterface } from "../../interfaces";
+import { PrivateMessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { ArrayHelper, DateHelper, PersonHelper } from "../../helpers";
 import { PrivateMessageDetails } from "./PrivateMessageDetails";
 import { NewPrivateMessage } from "./NewPrivateMessage";

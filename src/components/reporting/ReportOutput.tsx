@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { ReportInterface, ReportResultInterface } from "../../interfaces";
+import { ReportInterface, ReportResultInterface } from "@churchapps/helpers";
 import { DisplayBox, ExportLink, Loading } from "../"
 import { ApiHelper } from "../../helpers"
 import { useReactToPrint } from "react-to-print";

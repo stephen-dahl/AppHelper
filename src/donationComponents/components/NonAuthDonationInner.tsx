@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ErrorMessages, InputBox } from "../../components";
 import { ApiHelper, DateHelper, CurrencyHelper } from "../../helpers";
-import { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface, ChurchInterface } from "../../interfaces";
+import { FundDonationInterface, FundInterface, PersonInterface, StripeDonationInterface, StripePaymentMethod, UserInterface, ChurchInterface } from "@churchapps/helpers";
 import { FundDonations } from "./FundDonations";
 import { Grid, Alert, TextField, Button, FormControl, InputLabel, Select, MenuItem, PaperProps, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material"
 import { DonationHelper } from "../../helpers/DonationHelper";
@@ -243,13 +243,15 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
       }
       {getFundList()}
       <div>
-        {fundsTotal > 0 &&
-          <>
-            {(gateway && gateway.payFees === true) ? <Typography fontSize={14} fontStyle="italic">*Transaction fees of {CurrencyHelper.formatCurrency(transactionFee)} are applied.</Typography> : (
-              <FormGroup>
-                <FormControlLabel control={<Checkbox />} name="transaction-fee" label={`I'll generously add ${CurrencyHelper.formatCurrency(transactionFee)} to cover the transaction fees so you can keep 100% of my donation.`} onChange={handleCheckChange} />
-              </FormGroup>
-            )}
+        {fundsTotal > 0
+          && <>
+            {(gateway && gateway.payFees === true)
+              ? <Typography fontSize={14} fontStyle="italic">*Transaction fees of {CurrencyHelper.formatCurrency(transactionFee)} are applied.</Typography>
+              : (
+                <FormGroup>
+                  <FormControlLabel control={<Checkbox />} name="transaction-fee" label={`I'll generously add ${CurrencyHelper.formatCurrency(transactionFee)} to cover the transaction fees so you can keep 100% of my donation.`} onChange={handleCheckChange} />
+                </FormGroup>
+              )}
             <p>Total Donation Amount: ${total}</p>
           </>
         }

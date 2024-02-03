@@ -3,7 +3,7 @@ import { Note } from "./Note";
 import { AddNote } from "./AddNote";
 import { DisplayBox, Loading } from "../";
 import { ApiHelper, ArrayHelper } from "../../helpers";
-import { MessageInterface, UserContextInterface } from "../../interfaces";
+import { MessageInterface, UserContextInterface } from "@churchapps/helpers";
 
 interface Props {
   //showEditNote: (messageId?: string) => void;

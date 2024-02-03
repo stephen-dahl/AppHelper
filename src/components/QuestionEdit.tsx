@@ -1,6 +1,6 @@
 import React from "react";
 import { MuiTelInput } from "mui-tel-input";
-import { AnswerInterface, QuestionInterface } from "../interfaces";
+import { AnswerInterface, QuestionInterface } from "@churchapps/helpers";
 import { Select, MenuItem, SelectChangeEvent, FormControl, InputLabel, TextField } from "@mui/material";
 
 interface Props {

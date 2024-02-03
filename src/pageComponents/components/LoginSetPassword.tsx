@@ -1,7 +1,7 @@
 import React from "react";
 import { InputBox } from "../../components";
 import { TextField } from "@mui/material";
-import { LoginResponseInterface, UserInterface } from "../../interfaces";
+import { LoginResponseInterface, UserInterface } from "@churchapps/helpers";
 import { ApiHelper } from "../../helpers";
 
 interface Props {

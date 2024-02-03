@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginUserChurchInterface, UserContextInterface } from "../../interfaces";
+import { LoginUserChurchInterface, UserContextInterface } from "@churchapps/helpers";
 import { UserHelper } from "../../helpers/UserHelper";
 import { NavItem } from "./NavItem";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { FundDonation } from ".";
-import { FundDonationInterface, FundInterface } from "../../interfaces";
+import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
 
 interface Props { fundDonations: FundDonationInterface[], funds: FundInterface[], updatedFunction: (fundDonations: FundDonationInterface[]) => void }
 

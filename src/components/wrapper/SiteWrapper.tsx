@@ -2,7 +2,7 @@ import React, { CSSProperties } from "react";
 import { IconButton, Toolbar, Icon, Typography, Box, Container, Link } from "@mui/material";
 import { UserHelper, AppearanceHelper, PersonHelper, AppearanceInterface, ApiHelper } from "../../helpers";
 import { UserMenu } from "./UserMenu";
-import { UserContextInterface } from "../../interfaces";
+import { UserContextInterface } from "@churchapps/helpers";
 import { useMountedState } from "../../hooks/useMountedState";
 import { SocketHelper } from "../../helpers/SocketHelper";
 import { NotificationMenu } from "./NotificationMenu";

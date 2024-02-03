@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
 import { ApiHelper } from "../../helpers"
-import { ChurchInterface } from "../../interfaces";
+import { ChurchInterface } from "@churchapps/helpers";
 import { SelectableChurch } from "./SelectableChurch";
 import { SelectChurchRegister } from "./SelectChurchRegister";
 

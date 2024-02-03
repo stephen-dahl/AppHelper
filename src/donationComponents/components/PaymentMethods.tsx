@@ -4,7 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { CardForm, BankForm } from ".";
 import { DisplayBox, Loading } from "../../components";
 import { ApiHelper, UserHelper } from "../../helpers";
-import { PersonInterface, StripePaymentMethod, Permissions } from "../../interfaces";
+import { PersonInterface, StripePaymentMethod, Permissions } from "@churchapps/helpers";
 import { Icon, Table, TableBody, TableCell, TableRow, IconButton, Menu, MenuItem } from "@mui/material";
 
 interface Props { person: PersonInterface, customerId: string, paymentMethods: StripePaymentMethod[], stripePromise: Promise<Stripe>, appName: string, dataUpdate: (message?: string) => void }

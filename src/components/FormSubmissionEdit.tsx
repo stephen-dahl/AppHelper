@@ -1,7 +1,7 @@
 import React from "react";
 import { ErrorMessages, InputBox, QuestionEdit } from "./";
 import { ApiHelper, UniqueIdHelper, UserHelper } from "../helpers";
-import { AnswerInterface, QuestionInterface, FormSubmissionInterface } from "../interfaces";
+import { AnswerInterface, QuestionInterface, FormSubmissionInterface } from "@churchapps/helpers";
 
 interface Props {
   addFormId: string,

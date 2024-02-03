@@ -1,7 +1,7 @@
 import { Button, TextField, TableRow, TableCell, Table, TableBody } from "@mui/material";
 import React from "react";
 import { ApiHelper, PersonHelper } from "../../helpers";
-import { ConversationInterface, PersonInterface, PrivateMessageInterface, UserContextInterface } from "../../interfaces";
+import { ConversationInterface, PersonInterface, PrivateMessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { AddNote } from "../notes/AddNote";
 import { SmallButton } from "../SmallButton";
 

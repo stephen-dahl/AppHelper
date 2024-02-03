@@ -1,7 +1,6 @@
 import React from "react";
 import { useCookies } from "react-cookie"
-import { ApiHelper } from "../helpers";
-import { UserContextInterface } from "../interfaces";
+import { ApiHelper, UserContextInterface } from "../helpers";
 
 interface Props { context?: UserContextInterface, }
 

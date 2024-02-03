@@ -1,6 +1,6 @@
 import React from "react";
 import { DateHelper, CurrencyHelper } from "../../helpers";
-import { StripeDonationInterface } from "../../interfaces";
+import { StripeDonationInterface } from "@churchapps/helpers";
 import { Table, TableBody, TableRow, TableCell, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mui/material"
 
 interface Props {

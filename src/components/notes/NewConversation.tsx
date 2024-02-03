@@ -1,7 +1,7 @@
 import { Icon, Paper, Stack, TextField } from "@mui/material";
 import React from "react";
 import { ApiHelper, PersonHelper } from "../../helpers";
-import { ConversationInterface, MessageInterface, UserContextInterface } from "../../interfaces";
+import { ConversationInterface, MessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { ErrorMessages } from "../ErrorMessages";
 import { SmallButton } from "../SmallButton";
 

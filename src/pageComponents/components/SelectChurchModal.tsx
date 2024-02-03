@@ -1,5 +1,5 @@
 import React from "react";
-import { ChurchInterface, LoginUserChurchInterface } from "../../interfaces";
+import { ChurchInterface, LoginUserChurchInterface } from "@churchapps/helpers";
 import { SelectChurchSearch } from "./SelectChurchSearch";
 import { SelectableChurch } from "./SelectableChurch";
 import { ErrorMessages } from "../../components"

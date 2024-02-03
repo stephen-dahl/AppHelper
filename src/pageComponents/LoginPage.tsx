@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ErrorMessages, FloatingSupport, Loading } from "../components";
-import { LoginResponseInterface, UserContextInterface, ChurchInterface, UserInterface, LoginUserChurchInterface } from "../interfaces";
+import { LoginResponseInterface, UserContextInterface, ChurchInterface, UserInterface, LoginUserChurchInterface } from "@churchapps/helpers";
 import { AnalyticsHelper, ApiHelper, ArrayHelper, UserHelper } from "../helpers";
 import { useCookies } from "react-cookie"
 import jwt_decode from "jwt-decode"

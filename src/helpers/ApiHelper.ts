@@ -1,4 +1,4 @@
-import { ApiConfig, RolePermissionInterface, ApiListType } from "../interfaces";
+import { ApiConfig, RolePermissionInterface, ApiListType } from "@churchapps/helpers";
 import { ErrorHelper } from "./ErrorHelper";
 
 export class ApiHelper {
