@@ -29,6 +29,10 @@ export class AppearanceHelper {
     else return this.getLogoLight(appearanceSettings, defaultLogoLight);
   }
 
+  public static getLogoByTextColor(logoLight: string, logoDark: string, textColor: string) {
+    return (this.isDark(textColor)) ? logoLight : logoDark;
+  }
+
   private static isDark(backgroundColor: string) {
     let valid = false;
     let r = 0;
