@@ -6,7 +6,10 @@ interface Props {
   data: any[],
   spaceAfter?: boolean,
   spaceBefore?: boolean,
-  filename?: string
+  filename?: string,
+  icon?: string,
+  text?: string,
+  customHeaders?: {label: string, key: string}[]
 }
 
 export const ExportLink: React.FC<Props> = (props) => {
@@ -60,7 +63,7 @@ export const ExportLink: React.FC<Props> = (props) => {
   else {
     let items = [];
     if (props.spaceBefore) items.push(" ");
-    items.push(<CSVLink key={props.filename} data={people} headers={getHeaders()} filename={props.filename || "export.csv"}> <Button><Icon>file_download</Icon></Button></CSVLink>);
+    items.push(<CSVLink key={props.filename} data={people} headers={props.customHeaders || getHeaders()} filename={props.filename || "export.csv"}> <Button><Icon sx={{ marginRight: props.text ? 1 : 0 }}>{props.icon || "file_download"}</Icon>{props.text || ""}</Button></CSVLink>);
     if (props.spaceAfter) items.push(" ");
     return (<>{items}</>);
   }

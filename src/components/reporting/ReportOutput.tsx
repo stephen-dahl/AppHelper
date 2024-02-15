@@ -1,24 +1,62 @@
 import React, { useRef } from "react";
-import { ReportInterface, ReportResultInterface } from "@churchapps/helpers";
+import { ArrayHelper, PersonInterface, ReportInterface, ReportResultInterface } from "@churchapps/helpers";
 import { DisplayBox, ExportLink, Loading } from "../"
 import { ApiHelper } from "../../helpers"
 import { useReactToPrint } from "react-to-print";
 import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
 import { TreeReport } from "./TreeReport";
-import { Icon } from "@mui/material";
+import { Button, Icon, Menu, MenuItem } from "@mui/material";
 import { useMountedState } from "../../hooks/useMountedState";
 
 interface Props { report: ReportInterface }
 
 export const ReportOutput = (props: Props) => {
   const [reportResult, setReportResult] = React.useState<ReportResultInterface>(null);
+  const [detailedPersonSummary, setDetailedPersonSummary] = React.useState<any[]>(null);
+  const [customHeaders, setCustomHeaders] = React.useState([]);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const contentRef = useRef<HTMLDivElement>(null);
   const isMounted = useMountedState();
 
   const handlePrint = useReactToPrint({
     content: () => contentRef.current
   })
+
+  const populatePeople = async (data: any[]) => {
+    let result: any[] = [];
+    let headers: {label: string, key: string}[] = [];
+    const peopleIds = ArrayHelper.getIds(data, "personId");
+    if (peopleIds.length > 0) {
+      const people = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
+      data.forEach((d) => {
+        const person: PersonInterface = ArrayHelper.getOne(people, "id", d.personId);
+        const funds = Object.assign({}, ...d.funds);
+        const obj = {
+          firstName: person.name.first,
+          lastName: person.name.last,
+          address: person.contactInfo.address1 + (person.contactInfo.address2 ? `, ${person.contactInfo.address2}` : ""),
+          city: person.contactInfo.city,
+          state: person.contactInfo.state,
+          zip: person.contactInfo.zip,
+          totalDonation: d.totalAmount,
+          ...funds
+        };
+        result.push(obj);
+      });
+    }
+
+    //set custom headers
+    const maxKeysObj = result?.reduce((a, b) => {
+      return Object.keys(a).length > Object.keys(b).length ? a : b;
+    }, []);
+    const objKeys = Object.keys(maxKeysObj);
+    objKeys.forEach(key => headers.push({ label: key, key: key }));
+
+    setCustomHeaders(headers);
+    setDetailedPersonSummary(result);
+  }
 
   const runReport = () => {
     if (props.report) {
@@ -34,7 +72,27 @@ export const ReportOutput = (props: Props) => {
           setReportResult(data);
         }
       });
+
+      const donationUrl = "/donations/summary?type=person&" + queryParams.join("&");
+      ApiHelper.get(donationUrl, "GivingApi").then((data) => { populatePeople(data); });
     }
+  }
+
+  const getExportMenu = (key: number) => {
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    }
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    }
+    return (<>
+      <Button size="small" title="Download Options" onClick={handleClick} key={key}><Icon>download</Icon></Button>
+      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text="Fund Summary" icon="volunteer_activism" /></MenuItem>}
+        {detailedPersonSummary?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text="Detailed Summary" icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
+      </Menu>
+    </>)
   }
 
   React.useEffect(runReport, [props.report, isMounted]);
@@ -44,7 +102,9 @@ export const ReportOutput = (props: Props) => {
 
     if (reportResult) {
       result.push(<button type="button" className="no-default-style" key={result.length - 2} onClick={handlePrint} title="print"><Icon>print</Icon></button>);
-      result.push(<ExportLink key={result.length - 1} data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} />);
+    }
+    if (reportResult?.table.length > 0 || detailedPersonSummary?.length > 0) {
+      result.push(getExportMenu(result.length - 1))
     }
     return result;
   }
