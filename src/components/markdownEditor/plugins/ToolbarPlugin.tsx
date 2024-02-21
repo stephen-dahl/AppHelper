@@ -84,9 +84,17 @@ function BlockOptionsDropdownList({ editor, blockType, toolbarRef, setShowBlockO
     const dropDown = dropDownRef.current;
 
     if (toolbar !== null && dropDown !== null) {
-      const { top, left } = toolbar.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${left}px`;
+      const onScroll = () => {
+        const { top, left } = toolbar.getBoundingClientRect();
+        dropDown.style.top = `${top + 40}px`;
+        dropDown.style.left = `20px`;
+      }
+      onScroll();
+      document.addEventListener("scroll", onScroll);
+      
+      return () => {
+        document.removeEventListener("scroll", onScroll);
+      }
     }
   }, [dropDownRef, toolbarRef]);
 
@@ -361,6 +369,8 @@ export function ToolbarPlugin(props: Props) {
     });
   }, [editor, isLink]); //eslint-disable-line
 
+  const editorEl = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox');
+
   return (
     <div className="toolbar" ref={toolbarRef}>
       {supportedBlockTypes.has(blockType) && (
@@ -384,7 +394,7 @@ export function ToolbarPlugin(props: Props) {
                 toolbarRef={toolbarRef}
                 setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
               />,
-              document.body
+              editorEl
             )}
           <Divider />
         </>
@@ -410,7 +420,7 @@ export function ToolbarPlugin(props: Props) {
           <button onClick={() => { editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code"); }} className={"toolbar-item spaced " + (isCode ? "active" : "")} aria-label="Format Code">
             <i className="format code" />
           </button>
-          {isLink && createPortal(<FloatingLinkEditor selectedElementKey={selectedElementKey} linkUrl={linkUrl} setLinkUrl={setLinkUrl} classNamesList={classNamesList} setClassNamesList={setClassNamesList} targetAttribute={targetAttribute} setTargetAttribute={setTargetAttribute} />, document.body)}
+          {isLink && createPortal(<FloatingLinkEditor selectedElementKey={selectedElementKey} linkUrl={linkUrl} setLinkUrl={setLinkUrl} classNamesList={classNamesList} setClassNamesList={setClassNamesList} targetAttribute={targetAttribute} setTargetAttribute={setTargetAttribute} />, editorEl)}
         </>)}
       <Divider />
       <button onClick={() => { props.goFullScreen() }} className="toolbar-item spaced" aria-label="Full Screen">
