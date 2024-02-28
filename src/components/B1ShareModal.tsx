@@ -1,4 +1,4 @@
-import { GroupInterface, ApiHelper, UserHelper } from "@churchapps/helpers";
+import { GroupInterface, ApiHelper } from "../helpers";
 import { Modal, Box, FormControl, InputLabel, MenuItem, Select, TextField, SelectChangeEvent, Button, DialogActions, Alert, Snackbar } from "@mui/material";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -67,7 +67,7 @@ export function B1ShareModal(props: Props) {
   };
 
   const getModalContent = () => {
-    if (!UserHelper.currentUserChurch) return <p>Please log in first.</p>
+    if (!ApiHelper.isAuthenticated) return <p>Please log in first.</p>
     else if (!groups) return (<Loading />);
     else if (groups.length === 0) return (<p>You are not a currently a member of any groups on B1.</p>);
     else return (<>
