@@ -16,6 +16,7 @@ export { SmallButton } from "./SmallButton";
 export { SupportModal } from "./SupportModal";
 export { MarkdownEditor } from "./markdownEditor/MarkdownEditor";
 export { MarkdownPreview } from "./markdownEditor/MarkdownPreview";
+export { B1ShareModal } from "./B1ShareModal";
 
 export * from "./wrapper";
 export * from "./gallery";
