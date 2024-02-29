@@ -30,12 +30,14 @@ export const ReportOutput = (props: Props) => {
     const peopleIds = ArrayHelper.getIds(data, "personId");
     if (peopleIds.length > 0) {
       const people = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
-      data.forEach((d) => {
+      const filteredData = data.filter((d) => d.personId !== null);
+      filteredData.forEach((d) => {
         const person: PersonInterface = ArrayHelper.getOne(people, "id", d.personId);
         const funds = Object.assign({}, ...d.funds);
         const obj = {
           firstName: person.name.first,
           lastName: person.name.last,
+          email: person.contactInfo?.email,
           address: person.contactInfo.address1 + (person.contactInfo.address2 ? `, ${person.contactInfo.address2}` : ""),
           city: person.contactInfo.city,
           state: person.contactInfo.state,
@@ -45,6 +47,18 @@ export const ReportOutput = (props: Props) => {
         };
         result.push(obj);
       });
+    }
+
+    //for anonymous donations
+    const anonDonations = ArrayHelper.getOne(data, "personId", null);
+    if (anonDonations) {
+      const funds = Object.assign({}, ...anonDonations.funds);
+      const obj = {
+        firstName: "Anonymous",
+        totalDonation: anonDonations.totalAmount,
+        ...funds
+      }
+      result.push(obj);
     }
 
     //set custom headers
