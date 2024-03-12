@@ -52,6 +52,8 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
   const handleSave = () => {
     if (validate()) {
       setIsSubmitting(true);
+      const c = { ...church };
+      if (!c.subDomain) c.subDomain = suggestSubDomain(c.name);
       ApiHelper.post("/churches/add", church, "MembershipApi").then(async resp => {
         setIsSubmitting(false);
         if (resp.errors !== undefined) setErrors(errors);
