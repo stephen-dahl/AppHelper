@@ -39,7 +39,7 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
   const validate = () => {
     let errors = [];
     if (!church.name?.trim()) errors.push("Church name cannot be blank.");
-    if (!church.subDomain?.trim()) errors.push("Subdomain cannot be blank.");
+    //if (!church.subDomain?.trim()) errors.push("Subdomain cannot be blank.");
     if (!church.address1?.trim()) errors.push("Address cannot be blank.");
     if (!church.city?.trim()) errors.push("City cannot be blank.");
     if (!church.state?.trim()) errors.push("State/Province cannot be blank.");
