@@ -213,7 +213,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
   const getCheckEmail = () => { if (new URLSearchParams(location?.search).get("checkEmail") === "1") return <Alert severity="info"> Thank you for registering.  Please check your email to continue.</Alert> }
   const handleRegisterCallback = () => { setShowForgot(false); setShowRegister(true); }
   const handleLoginCallback = () => { setShowForgot(false); setShowRegister(false); }
-  const handleChurchRegistered = (church: ChurchInterface) => { registeredChurch = church; }
+  const handleChurchRegistered = (church: ChurchInterface) => { registeredChurch = church; setShowRegister(false); console.log("Updated VERSION********") }
 
   const getInputBox = () => {
     if (showRegister) return (
