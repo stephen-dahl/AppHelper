@@ -90,7 +90,9 @@ export class ApiHelper {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     };
-    console.log(config.url + path, requestOptions);
+    if (!config.url.includes("/login")) {
+      console.log(config.url + path, requestOptions);
+    }
     return await this.fetchWithErrorHandling(config.url + path, requestOptions);
   }
 
