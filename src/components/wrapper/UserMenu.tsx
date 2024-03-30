@@ -83,8 +83,10 @@ export const UserMenu: React.FC<Props> = (props) => {
         <AppList currentUserChurch={props.currentUserChurch} appName={props.appName} />
       </TabPanel>
       {props.userChurches.length > 1 && <TabPanel value={tabIndex} index={2}>
-        <NavItem label="Back" key="ChurchBack" icon="arrow_back" onClick={() => { setTabIndex(0); }} />
-        <ChurchList userChurches={props.userChurches} currentUserChurch={props.currentUserChurch} context={props.context} />
+        <div style={{ maxHeight: '70vh', overflowY: "auto" }}>
+          <NavItem label="Back" key="ChurchBack" icon="arrow_back" onClick={() => { setTabIndex(0); }} />
+          <ChurchList userChurches={props.userChurches} currentUserChurch={props.currentUserChurch} context={props.context} />
+        </div>
       </TabPanel>}
 
     </Box>
@@ -98,7 +100,7 @@ export const UserMenu: React.FC<Props> = (props) => {
         <Typography color="inherit" noWrap>{userName}</Typography>
       </Button>
 
-      <Menu anchorEl={anchorEl} id="account-menu" open={open} onClose={handleClose} onClick={(e) => { handleItemClick(e) }} PaperProps={paperProps} transformOrigin={{ horizontal: "right", vertical: "top" }} anchorOrigin={{ horizontal: "right", vertical: "bottom" }} sx={{ "& .MuiBox-root": { borderBottom: 0 } }}>
+      <Menu anchorEl={anchorEl} id="account-menu" open={open} onClose={handleClose} onClick={(e) => { handleItemClick(e) }} slotProps={{ paper: paperProps }} transformOrigin={{ horizontal: "right", vertical: "top" }} anchorOrigin={{ horizontal: "right", vertical: "bottom" }} sx={{ "& .MuiBox-root": { borderBottom: 0 } }}>
         {getTabs()}
       </Menu>
     </>
