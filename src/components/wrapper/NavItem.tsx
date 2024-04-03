@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, ListItemButton, ListItemIcon, ListItemText, styled, Tooltip } from "@mui/material";
+import { Icon, IconButton, ListItemButton, ListItemIcon, ListItemText, styled, Tooltip } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 
 interface Props {
@@ -11,6 +11,9 @@ interface Props {
   router?: any;
   external?: boolean;
   selected?: boolean;
+  deleteIcon?: string;
+  deleteLabel?: string;
+  deleteFunction?: () => void;
 }
 
 const StyledNavLink = styled(NavLink)({
@@ -33,6 +36,13 @@ export const NavItem: React.FC<Props> = (props) => {
       <ListItemIcon sx={{ minWidth: "40px" }}>{getIcon()}</ListItemIcon>
     </Tooltip>
     <ListItemText primary={props.label} />
+    {props?.deleteIcon ? (
+      <Tooltip title={props.deleteLabel || ""} arrow placement="left">
+        <IconButton onClick={props.deleteFunction ? (e) => { e.stopPropagation(); e.preventDefault(); props.deleteFunction() } : null} sx={{ color: "#f7a9a9" }} size="small">
+          <Icon sx={{ fontSize: 19 }}>delete</Icon>
+        </IconButton>
+      </Tooltip>
+    ) : ""}
   </ListItemButton>)
 
   if (props.router) return (<a href={props.url} target={props.target} onClick={(e) => { e.preventDefault(); props.onClick ? props.onClick() : props.router.push(props.url) }} className={(props.selected) ? "selected" : ""}>{getLinkContents()}</a>)

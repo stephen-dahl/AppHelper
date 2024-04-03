@@ -85,7 +85,7 @@ export const UserMenu: React.FC<Props> = (props) => {
       {props.userChurches.length > 1 && <TabPanel value={tabIndex} index={2}>
         <div style={{ maxHeight: '70vh', overflowY: "auto" }}>
           <NavItem label="Back" key="ChurchBack" icon="arrow_back" onClick={() => { setTabIndex(0); }} />
-          <ChurchList userChurches={props.userChurches} currentUserChurch={props.currentUserChurch} context={props.context} />
+          <ChurchList userChurches={props.userChurches} currentUserChurch={props.currentUserChurch} context={props.context} onDelete={handleClose} />
         </div>
       </TabPanel>}
 
