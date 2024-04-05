@@ -39,7 +39,10 @@ export const Notifications: React.FC<Props> = (props) => {
       case "task": app = "chums"; path = "/tasks/" + notification.contentId; break;
       case "assignment": app = "b1"; path = "/member/plans/" + notification.contentId; break;
     }
-    setRedirectUrl(getAppUrl(app) + path);
+
+    const appUrl = getAppUrl(app);
+    if (appUrl === "") setRedirectUrl(path);
+    else window.location.href = appUrl + path;
   }
 
   const getMainLinks = () => {
