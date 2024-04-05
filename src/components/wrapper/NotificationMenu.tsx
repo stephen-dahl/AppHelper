@@ -7,6 +7,7 @@ import { Notifications } from "./Notifications";
 import { Badge } from "@mui/base";
 
 interface Props {
+  appName: string;
   counts: { notificationCount: number, pmCount: number };
   context: UserContextInterface;
   router?: any;
@@ -85,7 +86,7 @@ export const NotificationMenu: React.FC<Props> = (props) => {
             <Tab label="Notifications" icon={(props.counts.notificationCount>0) ? <Icon style={{color:"#FF0000"}}>notifications</Icon> : <></>} iconPosition="end"  />
           </Tabs>
           {tabIndex === 0 && <PrivateMessages context={props.context} refreshKey={refreshKey} onUpdate={props.onUpdate} />}
-          {tabIndex === 1 && <Notifications context={props.context} onUpdate={props.onUpdate} />}
+          {tabIndex === 1 && <Notifications context={props.context} appName={props.appName} onUpdate={props.onUpdate} />}
         </Box>
       </Menu>
     </>
