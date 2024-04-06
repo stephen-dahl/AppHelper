@@ -83,10 +83,10 @@ export const NotificationMenu: React.FC<Props> = (props) => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs variant="fullWidth" value={tabIndex} onChange={handleChange}>
             <Tab label="Messages" icon={(props.counts.pmCount>0) ? <Icon style={{color:"#FF0000"}}>notifications</Icon> : <></>} iconPosition="end" />
-            <Tab label="Notifications" icon={(props.counts.notificationCount>0) ? <Icon style={{color:"#FF0000"}}>notifications</Icon> : <></>} iconPosition="end"  />
+            <Tab label="Notifications" icon={(props.counts.notificationCount>0) ? <Icon style={{color:"#FF0000"}}>notifications</Icon> : <></>} iconPosition="end" />
           </Tabs>
           {tabIndex === 0 && <PrivateMessages context={props.context} refreshKey={refreshKey} onUpdate={props.onUpdate} />}
-          {tabIndex === 1 && <Notifications context={props.context} appName={props.appName} onUpdate={props.onUpdate} />}
+          {tabIndex === 1 && <Notifications context={props.context} appName={props.appName} onUpdate={props.onUpdate} router={props.router} />}
         </Box>
       </Menu>
     </>

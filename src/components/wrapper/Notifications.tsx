@@ -8,6 +8,7 @@ import { Navigate } from "react-router-dom";
 interface Props {
   appName: string;
   context: UserContextInterface;
+  router?: any;
   onUpdate: () => void;
 }
 
@@ -41,8 +42,14 @@ export const Notifications: React.FC<Props> = (props) => {
     }
 
     const appUrl = getAppUrl(app);
-    if (appUrl === "") setRedirectUrl(path);
-    else window.location.href = appUrl + path;
+    if (appUrl === "") {
+      if (props.router) props.router.push(path);
+      else setRedirectUrl(path);
+    }
+    else {
+      console.log("REDIRECTING TO", appUrl + path)
+      window.location.assign(appUrl + path);
+    }
   }
 
   const getMainLinks = () => {
