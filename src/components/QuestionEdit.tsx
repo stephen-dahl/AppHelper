@@ -1,7 +1,7 @@
 import React from "react";
 import { MuiTelInput } from "mui-tel-input";
 import { AnswerInterface, QuestionInterface } from "@churchapps/helpers";
-import { Select, MenuItem, SelectChangeEvent, FormControl, InputLabel, TextField } from "@mui/material";
+import { Checkbox, Select, MenuItem, SelectChangeEvent, FormControl, InputLabel, TextField, FormLabel, FormGroup, FormControlLabel } from "@mui/material";
 
 interface Props {
   answer: AnswerInterface
@@ -14,6 +14,18 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
     props.changeFunction(props.question.id, e.target.value);
   }
+
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedOptions = props.answer.value ? props.answer.value.split(",") : [];
+    if (e.target.checked) {
+      selectedOptions.push(e.target.name);
+    } else {
+      const idx = selectedOptions.indexOf(e.target.name);
+      selectedOptions.splice(idx, 1);
+    }
+    props.changeFunction(props.question.id, selectedOptions.join());
+  }
+
   let q = props.question;
 
   if (q.fieldType === "Heading") return <h5>{q.title}</h5>;
@@ -21,7 +33,11 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
     let input = null;
     let choiceOptions = [];
     if (q.choices !== undefined && q.choices !== null) {
-      for (let i = 0; i < q.choices.length; i++) choiceOptions.push(<MenuItem key={i} value={q.choices[i].value}>{q.choices[i].text}</MenuItem>);
+      if (q.fieldType === "Multiple Choice") {
+        for (let i = 0; i < q.choices.length; i++) choiceOptions.push(<MenuItem key={i} value={q.choices[i].value}>{q.choices[i].text}</MenuItem>);
+      } else if (q.fieldType === "Checkbox") {
+        for (let i = 0; i < q.choices.length; i++) choiceOptions.push(<FormControlLabel key={i} label={q.choices[i].text} control={<Checkbox onChange={handleCheck} name={q.choices[i].value} />} />);
+      }
     }
 
     let answerValue = (props.answer === null) ? "" : props.answer.value
@@ -44,6 +60,17 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
               <MenuItem value="True">Yes</MenuItem>
             </Select>
           </FormControl>);
+        break;
+      }
+      case "Checkbox": {
+        input = (
+          <FormControl fullWidth sx={{ marginLeft: 1 }}>
+            <FormLabel>{q.title}</FormLabel>
+            <FormGroup>
+              {choiceOptions}
+            </FormGroup>
+          </FormControl>
+        );
         break;
       }
       case "Whole Number":
