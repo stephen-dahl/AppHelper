@@ -84,17 +84,9 @@ function BlockOptionsDropdownList({ editor, blockType, toolbarRef, setShowBlockO
     const dropDown = dropDownRef.current;
 
     if (toolbar !== null && dropDown !== null) {
-      const onScroll = () => {
-        const { top, left } = toolbar.getBoundingClientRect();
-        dropDown.style.top = `${top + 40}px`;
-        dropDown.style.left = `20px`;
-      }
-      onScroll();
-      document.addEventListener("scroll", onScroll);
-      
-      return () => {
-        document.removeEventListener("scroll", onScroll);
-      }
+      const { top, left } = toolbar.getBoundingClientRect();
+      dropDown.style.top = `${top + 40}px`;
+      dropDown.style.left = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox') ? '20px' : `${left}px`;
     }
   }, [dropDownRef, toolbarRef]);
 
@@ -370,6 +362,7 @@ export function ToolbarPlugin(props: Props) {
   }, [editor, isLink]); //eslint-disable-line
 
   const editorEl = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox');
+  const portalKey = editorEl ? editorEl : document.body;
 
   return (
     <div className="toolbar" ref={toolbarRef}>
@@ -394,7 +387,7 @@ export function ToolbarPlugin(props: Props) {
                 toolbarRef={toolbarRef}
                 setShowBlockOptionsDropDown={setShowBlockOptionsDropDown}
               />,
-              editorEl
+              portalKey
             )}
           <Divider />
         </>
@@ -420,7 +413,7 @@ export function ToolbarPlugin(props: Props) {
           <button onClick={() => { editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code"); }} className={"toolbar-item spaced " + (isCode ? "active" : "")} aria-label="Format Code">
             <i className="format code" />
           </button>
-          {isLink && createPortal(<FloatingLinkEditor selectedElementKey={selectedElementKey} linkUrl={linkUrl} setLinkUrl={setLinkUrl} classNamesList={classNamesList} setClassNamesList={setClassNamesList} targetAttribute={targetAttribute} setTargetAttribute={setTargetAttribute} />, editorEl)}
+          {isLink && createPortal(<FloatingLinkEditor selectedElementKey={selectedElementKey} linkUrl={linkUrl} setLinkUrl={setLinkUrl} classNamesList={classNamesList} setClassNamesList={setClassNamesList} targetAttribute={targetAttribute} setTargetAttribute={setTargetAttribute} />, portalKey)}
         </>)}
       <Divider />
       <button onClick={() => { props.goFullScreen() }} className="toolbar-item spaced" aria-label="Full Screen">

@@ -16,7 +16,14 @@ const positionEditorElement = (editor: HTMLElement, rect: DOMRect | null) => {
   } else {
     editor.style.opacity = "1";
     editor.style.top = `${rect.top + rect.height + 10}px`;
-    editor.style.left = `20px`;
+    editor.style.left = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox') ? '20px' :`${
+      rect.left + window.pageXOffset - editor.offsetWidth / 2 + rect.width / 2 < 0
+        ? 0
+        : rect.left
+          + window.pageXOffset
+          - editor.offsetWidth / 2
+          + rect.width / 2
+    }px`;
   }
 };
 
@@ -79,30 +86,22 @@ const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({
       && rootElement !== null
       && rootElement.contains(nativeSelection.anchorNode)
     ) {
-      const onScroll = () => {
-        const domRange = nativeSelection.getRangeAt(0);
-        let rect;
-        if (nativeSelection.anchorNode === rootElement) {
-          let inner: Element | HTMLElement = rootElement;
-          while (inner.firstElementChild != null) {
-            inner = inner.firstElementChild;
-          }
-          rect = inner.getBoundingClientRect();
-        } else {
-          rect = domRange.getBoundingClientRect();
+      const domRange = nativeSelection.getRangeAt(0);
+      let rect;
+      if (nativeSelection.anchorNode === rootElement) {
+        let inner: Element | HTMLElement = rootElement;
+        while (inner.firstElementChild != null) {
+          inner = inner.firstElementChild;
         }
-
-        if (!mouseDownRef.current) {
-          positionEditorElement(editorElem, rect);
-        }
-        //setLastSelection(selection);
+        rect = inner.getBoundingClientRect();
+      } else {
+        rect = domRange.getBoundingClientRect();
       }
-      onScroll();
-      document.addEventListener("scroll", onScroll);
 
-      return () => {
-        document.removeEventListener("scroll", onScroll);
+      if (!mouseDownRef.current) {
+        positionEditorElement(editorElem, rect);
       }
+      //setLastSelection(selection);
     } else if (!activeElement || activeElement.className !== "link-input") {
       positionEditorElement(editorElem, null);
       //setLastSelection(null);
