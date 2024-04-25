@@ -84,7 +84,7 @@ export const SiteWrapper: React.FC<Props> = props => {
       </Toolbar>
     </CustomAppBar>
 
-    <CustomDrawer variant="permanent" open={open}>
+    <CustomDrawer variant="permanent" open={open} onMouseOver={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       <Toolbar sx={{ display: "flex", alignItems: "center", width: "100%", px: [1] }}>
         <img src={churchLogo || "/images/logo-wrapper.png"} alt="logo" style={{ maxWidth: 170 }} />
         <div style={{ justifyContent: "flex-end", flex: 1, display: "flex" }}>
