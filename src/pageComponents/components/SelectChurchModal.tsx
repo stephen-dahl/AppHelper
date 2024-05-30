@@ -3,7 +3,7 @@ import { ChurchInterface, LoginUserChurchInterface } from "@churchapps/helpers";
 import { SelectChurchSearch } from "./SelectChurchSearch";
 import { SelectableChurch } from "./SelectableChurch";
 import { ErrorMessages } from "../../components"
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Icon, IconButton, Tooltip } from "@mui/material";
 
 interface Props {
   appName: string,
@@ -32,6 +32,11 @@ export const SelectChurchModal: React.FC<Props> = (props) => {
   return (
     <Dialog open={props.show} onClose={handleClose}>
       <DialogTitle>Select Church</DialogTitle>
+      <Tooltip title="Logout" arrow>
+        <IconButton sx={{ position: "absolute", right: 8, top: 8 }} color="error" onClick={() => { window.location.href = "/logout" }}>
+          <Icon>logout</Icon>
+        </IconButton>
+      </Tooltip>
       <DialogContent sx={{ width: 500, maxWidth: "100%" }}>
         <ErrorMessages errors={props.errors} />
         {getContents()}
