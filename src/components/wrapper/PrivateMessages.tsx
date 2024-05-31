@@ -28,7 +28,7 @@ export const PrivateMessages: React.FC<Props> = (props) => {
       if (peopleIds.indexOf(personId) === -1) peopleIds.push(personId);
     });
     if (peopleIds.length > 0) {
-      const people = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
+      const people = await ApiHelper.get("/people/basic?ids=" + peopleIds.join(","), "MembershipApi");
       pms.forEach(pm => {
         const personId = (pm.fromPersonId === props.context.person.id) ? pm.toPersonId : pm.fromPersonId;
         pm.person = ArrayHelper.getOne(people, "id", personId);

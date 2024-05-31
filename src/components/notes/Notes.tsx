@@ -24,7 +24,7 @@ export function Notes(props: Props) {
     const messages: MessageInterface[] = (props.conversationId) ? await ApiHelper.get("/messages/conversation/" + props.conversationId, "MessagingApi") : [];
     if (messages.length > 0) {
       const peopleIds = ArrayHelper.getIds(messages, "personId");
-      const people = await ApiHelper.get("/people/ids?ids=" + peopleIds.join(","), "MembershipApi");
+      const people = await ApiHelper.get("/people/basic?ids=" + peopleIds.join(","), "MembershipApi");
       messages.forEach(n => {
         n.person = ArrayHelper.getOne(people, "id", n.personId);
       })
