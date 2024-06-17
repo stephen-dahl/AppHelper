@@ -1,0 +1,22 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "save": "Guardar",
+    "submit": "Enviar",
+    "pleaseWait": "Por favor, espere..."
+  },
+  "login": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgot": "Olvidé la contraseña",
+    "signInTitle": "Por favor, inicie sesión",
+    "signIn": "Iniciar sesión",
+    "register": "Registrarse",
+    "validate": {
+      "email": "Por favor, introduzca una dirección de correo electrónico válida.",
+      "password": "Por favor, introduzca una contraseña."
+    }
+  }
+}

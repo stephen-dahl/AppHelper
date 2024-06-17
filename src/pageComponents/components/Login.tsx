@@ -1,6 +1,7 @@
 import React from "react";
 import { InputBox } from "../../components";
 import { TextField, Box, PaperProps } from "@mui/material";
+import { Locale } from "../../helpers/Locale";
 
 interface Props {
   //registerCallback: () => void,
@@ -21,9 +22,9 @@ export const Login: React.FC<Props> = ({ mainContainerCssProps = {}, ...props })
 
   const validate = () => {
     const result = [];
-    if (!email) result.push("Please enter your email address.");
-    else if (!validateEmail(email)) result.push("Please enter a valid email address.");
-    if (!password) result.push("Please enter your password.");
+    if (!email) result.push(Locale.label("login.validate.email"));
+    else if (!validateEmail(email)) result.push(Locale.label("login.validate.email"));
+    if (!password) result.push(Locale.label("login.validate.password"));
     props.setErrors(result);
     return result.length === 0;
   }
@@ -33,7 +34,7 @@ export const Login: React.FC<Props> = ({ mainContainerCssProps = {}, ...props })
   }
 
   const getRegisterLink = () => (
-    <><a href="about:blank" className="text-decoration" onClick={handleShowRegister}>Register</a> &nbsp; | &nbsp; </>
+    <><a href="about:blank" className="text-decoration" onClick={handleShowRegister}>{Locale.label("login.register")}</a> &nbsp; | &nbsp; </>
   )
 
   const handleShowRegister = (e: React.MouseEvent) => {
@@ -42,12 +43,12 @@ export const Login: React.FC<Props> = ({ mainContainerCssProps = {}, ...props })
   }
 
   return (
-    <InputBox headerText="Please Sign In" saveFunction={submitLogin} saveButtonType="submit" saveText={props.isSubmitting ? "Please wait..." : "Sign in"} isSubmitting={props.isSubmitting} mainContainerCssProps={mainContainerCssProps}>
-      <TextField fullWidth autoFocus name="email" type="email" label="Email" value={email} onChange={(e) => { e.preventDefault(); setEmail(e.target.value) }} />
-      <TextField fullWidth name="email" type="password" label="Password" value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }} />
+    <InputBox headerText={Locale.label("login.signInTitle")} saveFunction={submitLogin} saveButtonType="submit" saveText={props.isSubmitting ? Locale.label("common.pleaseWait") : Locale.label("login.signIn")} isSubmitting={props.isSubmitting} mainContainerCssProps={mainContainerCssProps}>
+      <TextField fullWidth autoFocus name="email" type="email" label={Locale.label("login.email")} value={email} onChange={(e) => { e.preventDefault(); setEmail(e.target.value) }} />
+      <TextField fullWidth name="email" type="password" label={Locale.label("login.password")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }} />
       <Box sx={{ textAlign: "right", marginY: 1 }}>
         {getRegisterLink()}
-        <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.setShowForgot(true); }}>Forgot Password</a>&nbsp;
+        <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.setShowForgot(true); }}>{Locale.label("login.forgot")}</a>&nbsp;
       </Box>
     </InputBox>
   );

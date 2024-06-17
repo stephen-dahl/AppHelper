@@ -1,6 +1,6 @@
 {
   "name": "@churchapps/apphelper",
-  "version": "0.2.30",
+  "version": "0.2.31",
   "description": "Library of helper functions for React and NextJS ChurchApps",
   "main": "dist/index.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "copy-css": "copyfiles -f src/components/markdownEditor/editor.css dist/components/markdownEditor",
     "copy-icons": "copyfiles -f src/components/markdownEditor/images/icons/* dist/components/markdownEditor/images/icons",
     "copy-emojis": "copyfiles -f src/components/markdownEditor/images/emoji/* dist/components/markdownEditor/images/emoji",
-    "copy-assets": "npm-run-all copy-css copy-icons copy-emojis",
+    "copy-languages": "copyfiles -a public/** dist",
+    "copy-assets": "npm-run-all copy-css copy-icons copy-emojis copy-languages",
     "link": "link",
     "tsc": "tsc",
     "build": "npm-run-all clean tsc copy-assets",
