@@ -1,8 +1,8 @@
 import React from "react";
-import { ApiHelper } from "../../helpers"
+import { ApiHelper, Locale } from "../../helpers"
 import { ChurchInterface, RegisterChurchRequestInterface } from "@churchapps/helpers";
 import { ErrorMessages, InputBox } from "../../components"
-import { Grid, InputAdornment, TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 
 interface Props {
   initialChurchName: string,
@@ -38,13 +38,12 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
 
   const validate = () => {
     let errors = [];
-    if (!church.name?.trim()) errors.push("Church name cannot be blank.");
-    //if (!church.subDomain?.trim()) errors.push("Subdomain cannot be blank.");
-    if (!church.address1?.trim()) errors.push("Address cannot be blank.");
-    if (!church.city?.trim()) errors.push("City cannot be blank.");
-    if (!church.state?.trim()) errors.push("State/Province cannot be blank.");
-    if (!church.zip?.trim()) errors.push("Zip/Postal cannot be blank.");
-    if (!church.country?.trim()) errors.push("Country cannot be blank.");
+    if (!church.name?.trim()) errors.push(Locale.label("selectChurch.validate.name"));
+    if (!church.address1?.trim()) errors.push(Locale.label("selectChurch.validate.address"));
+    if (!church.city?.trim()) errors.push(Locale.label("selectChurch.validate.city"));
+    if (!church.state?.trim()) errors.push(Locale.label("selectChurch.validate.state"));
+    if (!church.zip?.trim()) errors.push(Locale.label("selectChurch.validate.zip"));
+    if (!church.country?.trim()) errors.push(Locale.label("selectChurch.validate.country"));
     setErrors(errors);
     return errors.length === 0;
   }
@@ -65,25 +64,21 @@ export const SelectChurchRegister: React.FC<Props> = (props) => {
     }
   }
 
-  /*<TextField required fullWidth name="subDomain" label="Subdomain" id="subDomain" InputProps={{
-    endAdornment: <InputAdornment position="end">.churchapps.org</InputAdornment>
-  }} value={church.subDomain} onChange={handleChange} />
-  */
   return (
-    <InputBox id="churchBox" saveFunction={handleSave} headerText="Register a New Church" headerIcon="church" isSubmitting={isSubmitting}>
+    <InputBox id="churchBox" saveFunction={handleSave} headerText={Locale.label("selectChurch.register")} headerIcon="church" isSubmitting={isSubmitting}>
       <ErrorMessages errors={errors} />
-      <TextField required fullWidth name="churchName" label="Church Name" value={church.name} onChange={handleChange} />
+      <TextField required fullWidth name="churchName" label={Locale.label("selectChurch.name")} value={church.name} onChange={handleChange} />
 
-      <TextField required fullWidth name="address1" label="Address Line 1" value={church.address1} onChange={handleChange} />
+      <TextField required fullWidth name="address1" label={Locale.label("selectChurch.address1")} value={church.address1} onChange={handleChange} />
       <Grid container spacing={3}>
-        <Grid item xs={6}><TextField fullWidth name="address2" label="Address Line 2" value={church.address2} onChange={handleChange} /></Grid>
-        <Grid item xs={6}><TextField required fullWidth name="city" label="City" value={church.city} onChange={handleChange} /></Grid>
+        <Grid item xs={6}><TextField fullWidth name="address2" label={Locale.label("selectChurch.address2")} value={church.address2} onChange={handleChange} /></Grid>
+        <Grid item xs={6}><TextField required fullWidth name="city" label={Locale.label("selectChurch.city")} value={church.city} onChange={handleChange} /></Grid>
       </Grid>
       <Grid container spacing={3}>
-        <Grid item xs={6}><TextField required fullWidth name="state" label="State / Province" value={church.state} onChange={handleChange} /></Grid>
-        <Grid item xs={6}><TextField required fullWidth name="zip" label="Zip / Postal" value={church.zip} onChange={handleChange} /></Grid>
+        <Grid item xs={6}><TextField required fullWidth name="state" label={Locale.label("selectChurch.state")} value={church.state} onChange={handleChange} /></Grid>
+        <Grid item xs={6}><TextField required fullWidth name="zip" label={Locale.label("selectChurch.zip")} value={church.zip} onChange={handleChange} /></Grid>
       </Grid>
-      <TextField required fullWidth name="country" label="Country" value={church.country} onChange={handleChange} />
+      <TextField required fullWidth name="country" label={Locale.label("selectChurch.country")} value={church.country} onChange={handleChange} />
     </InputBox>
   );
 };

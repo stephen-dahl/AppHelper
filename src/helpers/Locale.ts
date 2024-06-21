@@ -8,12 +8,13 @@ import HttpBackend from 'i18next-http-backend';
 
 export class Locale {
 
+  private static supportedLanguages = ["de", "en", "es", "fr", "hi", "it", "ko", "no", "pt", "ru", "tl", "zh"];
+
   private static keys:any = {}
 
   static init = async (backends:string[]) => {
     const l = navigator.language.split("-")[0];
-    const langs = (l==="en") ? [l] : ["en", l];
-    console.log("LANGUAGE", navigator.language, l, langs);
+    const langs = (l==="en" || this.supportedLanguages.indexOf(l)===-1) ? [l] : ["en", l];
 
     let result = {};
     for (let lang of langs) {
@@ -42,40 +43,5 @@ export class Locale {
     return result;
   }
 
-  /*
-  //'/locales/{{lng}}.json'
-  static init = async (backends:string[]) => {
-
-    const backendOptions = backends.map((path) => ({ loadPath: path }));
-
-
-    console.log("backend options", backendOptions)
-    console.log({backend: {
-      backends: backends.map(() => HttpBackend),
-      backendOptions,
-    }})
-
-    await i18n
-  	  .use(Backend)
-  	  .use(LanguageDetector)
-      .use(initReactI18next)
-      .init({
-        fallbackLng: 'en',
-        debug: true,
-        interpolation: {
-          escapeValue: false, // React already does escaping
-        },
-        backend: {
-          backends: backends.map(() => HttpBackend),
-          backendOptions,
-        },
-        supportedLngs: ['en', 'es'],
-      });
-  }
-
-  static label(key:string) {
-    return i18n.t(key);
-  }
-  */
 
 }

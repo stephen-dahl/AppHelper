@@ -1,6 +1,6 @@
 import React from "react";
 import { ReportInterface, ParameterInterface } from "@churchapps/helpers";
-import { ArrayHelper } from "../../helpers"
+import { ArrayHelper, Locale } from "../../helpers"
 import { InputBox } from "../"
 import { ReportFilterField } from "./ReportFilterField";
 
@@ -47,7 +47,7 @@ export const ReportFilter = (props: Props) => {
 
   const inputs = getInputs();
   if (inputs.length > 0) {
-    return <InputBox id="formSubmissionBox" headerText="Filter Report" headerIcon="summarize" saveFunction={props.onRun} saveText="Run Report">
+    return <InputBox id="formSubmissionBox" headerText="Filter Report" headerIcon="summarize" saveFunction={props.onRun} saveText={Locale.label("reporting.runReport")}>
       {inputs}
     </InputBox>
   } else return <> </>

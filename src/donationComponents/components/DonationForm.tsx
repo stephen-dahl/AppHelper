@@ -4,7 +4,7 @@ import { Stripe } from "@stripe/stripe-js";
 import { InputBox, ErrorMessages } from "../../components";
 import { FundDonations } from ".";
 import { DonationPreviewModal } from "../modals/DonationPreviewModal";
-import { ApiHelper, CurrencyHelper, DateHelper } from "../../helpers";
+import { ApiHelper, CurrencyHelper, DateHelper, Locale } from "../../helpers";
 import { PersonInterface, StripePaymentMethod, StripeDonationInterface, FundDonationInterface, FundInterface, ChurchInterface } from "@churchapps/helpers";
 import { Grid, InputLabel, MenuItem, Select, TextField, FormControl, Button, SelectChangeEvent, FormControlLabel, Checkbox, FormGroup, Typography } from "@mui/material"
 import { DonationHelper } from "../../helpers";
@@ -102,7 +102,7 @@ export const DonationForm: React.FC<Props> = (props) => {
 
   const handleCancel = () => { setDonationType(null); }
   const handleSave = () => {
-    if (donation.amount < .5) setErrorMessage("Donation amount must be greater than $0.50");
+    if (donation.amount < .5) setErrorMessage(Locale.label("donation.donationForm.tooLow"));
     else setShowDonationPreviewModal(true);
   }
   const handleDonationSelect = (type: string) => {
@@ -130,7 +130,7 @@ export const DonationForm: React.FC<Props> = (props) => {
     }
     if (results?.raw?.message) {
       setShowDonationPreviewModal(false);
-      setErrorMessage("Error: " + results?.raw?.message);
+      setErrorMessage(Locale.label("donation.common.error") + ": " + results?.raw?.message);
     }
   }
 
@@ -167,13 +167,13 @@ export const DonationForm: React.FC<Props> = (props) => {
   else return (
     <>
       <DonationPreviewModal show={showDonationPreviewModal} onHide={() => setShowDonationPreviewModal(false)} handleDonate={makeDonation} donation={donation} donationType={donationType} payFee={payFee} paymentMethodName={paymentMethodName} funds={funds} />
-      <InputBox id="donationBox" aria-label="donation-box" headerIcon="volunteer_activism" headerText="Donate" ariaLabelSave="save-button" cancelFunction={donationType ? handleCancel : undefined} saveFunction={donationType ? handleSave : undefined} saveText="Preview Donation">
+      <InputBox id="donationBox" aria-label="donation-box" headerIcon="volunteer_activism" headerText={Locale.label("donation.donationForm.donate")} ariaLabelSave="save-button" cancelFunction={donationType ? handleCancel : undefined} saveFunction={donationType ? handleSave : undefined} saveText={Locale.label("donation.donationForm.preview")}>
         <Grid container spacing={3}>
           <Grid item md={6} xs={12}>
-            <Button aria-label="single-donation" size="small" fullWidth style={{ minHeight: "50px" }} variant={donationType === "once" ? "contained" : "outlined"} onClick={() => handleDonationSelect("once")}>Make a Donation</Button>
+            <Button aria-label="single-donation" size="small" fullWidth style={{ minHeight: "50px" }} variant={donationType === "once" ? "contained" : "outlined"} onClick={() => handleDonationSelect("once")}>{Locale.label("donation.donationForm.make")}</Button>
           </Grid>
           <Grid item md={6} xs={12}>
-            <Button aria-label="recurring-donation" size="small" fullWidth style={{ minHeight: "50px" }} variant={donationType === "recurring" ? "contained" : "outlined"} onClick={() => handleDonationSelect("recurring")}>Make a Recurring Donation</Button>
+            <Button aria-label="recurring-donation" size="small" fullWidth style={{ minHeight: "50px" }} variant={donationType === "recurring" ? "contained" : "outlined"} onClick={() => handleDonationSelect("recurring")}>{Locale.label("donation.donationForm.makeRecurring")}</Button>
           </Grid>
         </Grid>
         {donationType
@@ -181,8 +181,8 @@ export const DonationForm: React.FC<Props> = (props) => {
             <Grid container spacing={3}>
               <Grid item md={12} xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel>Method</InputLabel>
-                  <Select label="Method" name="method" aria-label="method" value={donation.id} className="capitalize" onChange={handleChange}>
+                  <InputLabel>{Locale.label("donation.donationForm.method")}</InputLabel>
+                  <Select label={Locale.label("donation.donationForm.method")} name="method" aria-label="method" value={donation.id} className="capitalize" onChange={handleChange}>
                     {props.paymentMethods.map((paymentMethod: any, i: number) => <MenuItem key={i} value={paymentMethod.id}>{paymentMethod.name} ****{paymentMethod.last4}</MenuItem>)}
                   </Select>
                 </FormControl>
@@ -191,17 +191,17 @@ export const DonationForm: React.FC<Props> = (props) => {
             {donationType === "recurring"
               && <Grid container spacing={3} style={{marginTop:10}}>
                 <Grid item md={6} xs={12}>
-                  <TextField fullWidth name="date" type="date" aria-label="date" label="Start Date" value={DateHelper.formatHtml5Date(new Date(donation.billing_cycle_anchor))} onChange={handleChange} onKeyDown={handleKeyDown} />
+                  <TextField fullWidth name="date" type="date" aria-label="date" label={Locale.label("donation.donationForm.startDate")} value={DateHelper.formatHtml5Date(new Date(donation.billing_cycle_anchor))} onChange={handleChange} onKeyDown={handleKeyDown} />
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel>Frequency</InputLabel>
-                    <Select label="Frequency" name="interval" aria-label="interval" value={interval} onChange={handleChange}>
-                      <MenuItem value="one_week">Weekly</MenuItem>
-                      <MenuItem value="two_week">Bi-Weekly</MenuItem>
-                      <MenuItem value="one_month">Monthly</MenuItem>
-                      <MenuItem value="three_month">Quarterly</MenuItem>
-                      <MenuItem value="one_year">Annually</MenuItem>
+                    <InputLabel>{Locale.label("donation.donationForm.frequency")}</InputLabel>
+                    <Select label={Locale.label("donation.donationForm.frequency")} name="interval" aria-label="interval" value={interval} onChange={handleChange}>
+                      <MenuItem value="one_week">{Locale.label("donation.donationForm.weekly")}</MenuItem>
+                      <MenuItem value="two_week">{Locale.label("donation.donationForm.biWeekly")}</MenuItem>
+                      <MenuItem value="one_month">{Locale.label("donation.donationForm.monthly")}</MenuItem>
+                      <MenuItem value="three_month">{Locale.label("donation.donationForm.quarterly")}</MenuItem>
+                      <MenuItem value="one_year">{Locale.label("donation.donationForm.annually")}</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -210,21 +210,21 @@ export const DonationForm: React.FC<Props> = (props) => {
             <div className="form-group">
               {funds && fundDonations
                 && <>
-                  <h4>Fund</h4>
+                  <h4>{Locale.label("donation.donationForm.fund")}</h4>
                   <FundDonations fundDonations={fundDonations} funds={funds} updatedFunction={handleFundDonationsChange} />
                 </>
               }
               {fundsTotal > 0
                 && <>
-                  {(gateway && gateway.payFees === true) ? <Typography fontSize={14} fontStyle="italic">*Transaction fees of {CurrencyHelper.formatCurrency(transactionFee)} are applied.</Typography> : (
+                  {(gateway && gateway.payFees === true) ? <Typography fontSize={14} fontStyle="italic">*{Locale.label("donation.donationForm.fees").replace("{}", CurrencyHelper.formatCurrency(transactionFee))}</Typography> : (
                     <FormGroup>
-                      <FormControlLabel control={<Checkbox />} name="transaction-fee" label={`I'll generously add ${CurrencyHelper.formatCurrency(transactionFee)} to cover the transaction fees so you can keep 100% of my donation.`} onChange={handleCheckChange} />
+                      <FormControlLabel control={<Checkbox />} name="transaction-fee" label={Locale.label("donation.donationForm.cover").replace("{}", CurrencyHelper.formatCurrency(transactionFee))} onChange={handleCheckChange} />
                     </FormGroup>
                   )}
-                  <p>Total Donation Amount: ${total}</p>
+                  <p>{Locale.label("donation.donationForm.total")}: ${total}</p>
                 </>
               }
-              <TextField fullWidth label="Notes" multiline aria-label="note" name="notes" value={donation.notes || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
+              <TextField fullWidth label={Locale.label("donation.donationForm.notes")} multiline aria-label="note" name="notes" value={donation.notes || ""} onChange={handleChange} onKeyDown={handleKeyDown} />
             </div>
             {errorMessage && <ErrorMessages errors={[errorMessage]}></ErrorMessages>}
           </div>

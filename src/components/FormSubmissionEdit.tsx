@@ -1,6 +1,6 @@
 import React from "react";
 import { ErrorMessages, InputBox, QuestionEdit } from "./";
-import { ApiHelper, UniqueIdHelper, UserHelper } from "../helpers";
+import { ApiHelper, Locale, UniqueIdHelper, UserHelper } from "../helpers";
 import { AnswerInterface, QuestionInterface, FormSubmissionInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -23,7 +23,7 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
 
   const getDeleteFunction = () => (!UniqueIdHelper.isMissing(formSubmission?.id)) ? handleDelete : undefined
   const handleDelete = () => {
-    if (window.confirm("Are you sure you wish to delete this form data?")) {
+    if (window.confirm(Locale.label("formSubmissionEdit.confirmDelete"))) {
       ApiHelper.delete("/formsubmissions/" + formSubmission.id, "MembershipApi").then(() => {
         props.updatedFunction();
       });
@@ -74,10 +74,10 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
     fs.churchId = props.churchId || null;
     let e: any = [];
     fs.answers.forEach((a: AnswerInterface) => {
-    
+
       if (a.required && a.value === "") {
         const q: QuestionInterface = fs.questions.find((q: QuestionInterface) => q.id === a.questionId);
-        e.push(q.title + " is required");
+        e.push(q.title + " " + Locale.label("formSubmissionEdit.isRequired"));
         setErrors(e);
       }
     });
@@ -111,7 +111,7 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
   }
 
   return (
-    <InputBox id="formSubmissionBox" headerText={showHeader ? (formSubmission?.form?.name || "Edit Form") : ""} headerIcon={showHeader ? "person" : ""} mainContainerCssProps={noBackground ? { sx: {backgroundColor: "transparent", boxShadow: 0}}: {}} saveFunction={handleSave} saveText={props.contentType === "form" ? "Submit" : ""} cancelFunction={props.cancelFunction} deleteFunction={getDeleteFunction()}>
+    <InputBox id="formSubmissionBox" headerText={showHeader ? (formSubmission?.form?.name || Locale.label("formSubmissionEdit.editForm")) : ""} headerIcon={showHeader ? "person" : ""} mainContainerCssProps={noBackground ? { sx: {backgroundColor: "transparent", boxShadow: 0}}: {}} saveFunction={handleSave} saveText={props.contentType === "form" ? Locale.label("formSubmissionEdit.submit") : ""} cancelFunction={props.cancelFunction} deleteFunction={getDeleteFunction()}>
       <ErrorMessages errors={errors} />
       {questionList}
     </InputBox>

@@ -36,13 +36,15 @@ export const NavItem: React.FC<Props> = (props) => {
       <ListItemIcon sx={{ minWidth: "40px" }}>{getIcon()}</ListItemIcon>
     </Tooltip>
     <ListItemText primary={props.label} />
-    {props?.deleteIcon ? (
-      <Tooltip title={props.deleteLabel || ""} arrow placement="left">
-        <IconButton onClick={props.deleteFunction ? (e) => { e.stopPropagation(); e.preventDefault(); props.deleteFunction() } : null} sx={{ color: "#f7a9a9" }} size="small">
-          <Icon sx={{ fontSize: 19 }}>delete</Icon>
-        </IconButton>
-      </Tooltip>
-    ) : ""}
+    {props?.deleteIcon
+      ? (
+        <Tooltip title={props.deleteLabel || ""} arrow placement="left">
+          <IconButton onClick={props.deleteFunction ? (e) => { e.stopPropagation(); e.preventDefault(); props.deleteFunction() } : null} sx={{ color: "#f7a9a9" }} size="small">
+            <Icon sx={{ fontSize: 19 }}>delete</Icon>
+          </IconButton>
+        </Tooltip>
+      )
+      : ""}
   </ListItemButton>)
 
   if (props.router) return (<a href={props.url} target={props.target} onClick={(e) => { e.preventDefault(); props.onClick ? props.onClick() : props.router.push(props.url) }} className={(props.selected) ? "selected" : ""}>{getLinkContents()}</a>)

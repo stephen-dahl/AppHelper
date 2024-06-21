@@ -4,6 +4,7 @@ import { SelectChurchSearch } from "./SelectChurchSearch";
 import { SelectableChurch } from "./SelectableChurch";
 import { ErrorMessages } from "../../components"
 import { Dialog, DialogContent, DialogTitle, Icon, IconButton, Tooltip } from "@mui/material";
+import { Locale } from "../../helpers";
 
 interface Props {
   appName: string,
@@ -25,13 +26,14 @@ export const SelectChurchModal: React.FC<Props> = (props) => {
     if (showSearch || props.userChurches?.length === 0) return <SelectChurchSearch selectChurch={props.selectChurch} registeredChurchCallback={props.registeredChurchCallback} appName={props.appName} />
     else return (<>
       {props.userChurches?.map(uc => (<SelectableChurch church={uc.church} selectChurch={props.selectChurch} key={uc.church.id} />))}
-      <a href="about:blank" style={{ display: "block", textAlign: "center" }} onClick={(e) => { e.preventDefault(); setShowSearch(true); }}>Choose another church</a>
+      <a href="about:blank" style={{ display: "block", textAlign: "center" }} onClick={(e) => { e.preventDefault(); setShowSearch(true); }}>{Locale.label("selectChurch.another")}</a>
     </>);
   }
 
   return (
     <Dialog open={props.show} onClose={handleClose}>
-      <DialogTitle>Select Church</DialogTitle>
+      <DialogTitle>{Locale.label("selectChurch.selectChurch")}
+      </DialogTitle>
       <Tooltip title="Logout" arrow>
         <IconButton sx={{ position: "absolute", right: 8, top: 8 }} color="error" onClick={() => { window.location.href = "/logout" }}>
           <Icon>logout</Icon>

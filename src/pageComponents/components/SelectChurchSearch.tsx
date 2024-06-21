@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
-import { ApiHelper } from "../../helpers"
+import { ApiHelper, Locale } from "../../helpers"
 import { ChurchInterface } from "@churchapps/helpers";
 import { SelectableChurch } from "./SelectableChurch";
 import { SelectChurchRegister } from "./SelectChurchRegister";
@@ -28,7 +28,7 @@ export const SelectChurchSearch: React.FC<Props> = (props) => {
 
   const handleRegisterClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (window.confirm("Are you sure you wish to register a new church?")) {
+    if (window.confirm(Locale.label("selectChurch.confirmRegister"))) {
       setShowRegister(true);
     }
   }
@@ -36,7 +36,7 @@ export const SelectChurchSearch: React.FC<Props> = (props) => {
   const getRegisterLink = () => (
     <div>
       <a style={{ display: "block", textAlign: "center" }} href="about:blank" onClick={handleRegisterClick}>
-        Register a New Church
+        {Locale.label("selectChurch.register")}
       </a>
     </div>
   )
@@ -52,7 +52,7 @@ export const SelectChurchSearch: React.FC<Props> = (props) => {
 
   const getResults = () => {
     if (churches === null) return;
-    else if (churches.length === 0) return <><p>No matches found</p>{getRegisterLink()}</>
+    else if (churches.length === 0) return <><p>{Locale.label("selectChurch.noMatches")}</p>{getRegisterLink()}</>
     else return getChurches();
   }
 
@@ -60,7 +60,7 @@ export const SelectChurchSearch: React.FC<Props> = (props) => {
   else return (
     <>
       <TextField fullWidth name="searchText" label="Name" value={searchText} onChange={handleChange} onKeyDown={handleKeyDown}
-        InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSubmit}>Search</Button> }}
+        InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSubmit}>{Locale.label("common.search")}</Button> }}
       />
       {getResults()}
     </>

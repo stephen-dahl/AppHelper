@@ -1,6 +1,6 @@
 import { Button, TextField, TableRow, TableCell, Table, TableBody } from "@mui/material";
 import React from "react";
-import { ApiHelper, PersonHelper } from "../../helpers";
+import { ApiHelper, Locale, PersonHelper } from "../../helpers";
 import { ConversationInterface, PersonInterface, PrivateMessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { AddNote } from "../notes/AddNote";
 import { SmallButton } from "../SmallButton";
@@ -59,7 +59,7 @@ export const NewPrivateMessage: React.FC<Props> = (props) => {
   }
 
   const createConversation = async () => {
-    const conv: ConversationInterface = { allowAnonymousPosts: false, contentType: "privateMessage", contentId: props.context.person.id, title: props.context.person.name.display + " Private Message", visibility: "hidden" }
+    const conv: ConversationInterface = { allowAnonymousPosts: false, contentType: "privateMessage", contentId: props.context.person.id, title: props.context.person.name.display + " " + Locale.label("wrapper.privateMessage"), visibility: "hidden" }
     const result: ConversationInterface[] = await ApiHelper.post("/conversations", [conv], "MessagingApi");
 
     const pm: PrivateMessageInterface = {
@@ -76,12 +76,12 @@ export const NewPrivateMessage: React.FC<Props> = (props) => {
       <span style={{ float: "right" }}>
         <SmallButton icon="chevron_left" text="Back" onClick={props.onBack} />
       </span>
-      <b>New Private Message</b>
-      <div>Search for a person</div>
+      <b>{Locale.label("wrapper.newPrivateMessage")}</b>
+      <div>{Locale.label("wrapper.searchForPerson")}</div>
 
       <TextField fullWidth label="Name" id="searchText" data-cy="search-input" name="searchText" type="text" placeholder="Name" value={searchText} onChange={handleChange}
         onKeyDown={(e) => {e.stopPropagation()}}
-        InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSubmit}>Search</Button> }}
+        InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSubmit}>{Locale.label("common.search")}</Button> }}
       />
       <br />
       <Table id="smallPeopleTable" size="small">
@@ -95,7 +95,7 @@ export const NewPrivateMessage: React.FC<Props> = (props) => {
         <span style={{ float: "right" }}>
           <SmallButton icon="chevron_left" text="Back" onClick={props.onBack} />
         </span>
-        <b>New Private Message</b>
+        <b>{Locale.label("wrapper.newPrivateMessage")}</b>
         <div>To: {selectedPerson.name.display}</div>
         <AddNote context={props.context} conversationId={null} onUpdate={handleNoteAdded} createConversation={createConversation} />
       </div>

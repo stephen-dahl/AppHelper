@@ -1,5 +1,6 @@
 import { PersonInterface, ContactInfoInterface } from "@churchapps/helpers";
 import { CommonEnvironmentHelper } from "./CommonEnvironmentHelper";
+import { Locale } from "./Locale";
 
 export class PersonHelper {
 
@@ -13,7 +14,7 @@ export class PersonHelper {
       let ageDifMs = Date.now() - new Date(birthdate).getTime();
       let ageDate = new Date(ageDifMs);
       let years = Math.abs(ageDate.getUTCFullYear() - 1970);
-      return years + " years";
+      return years + " " + Locale.label("person.years");
     }
     else return "";
   }

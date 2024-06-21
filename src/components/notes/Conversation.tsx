@@ -1,6 +1,6 @@
 import { Box, Paper, Stack } from "@mui/material";
 import React from "react";
-import { ApiHelper, ArrayHelper, DateHelper, PersonHelper } from "../../helpers";
+import { ApiHelper, ArrayHelper, DateHelper, Locale, PersonHelper } from "../../helpers";
 import { ConversationInterface, MessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { AddNote } from "./AddNote";
 import { Note } from "./Note";
@@ -65,8 +65,8 @@ export function Conversation(props: Props) {
       </div>
       {props.showCommentCount && (
         <div className="commentCount">
-          <div>{(conversation.postCount === 1) ? "1 comment" : conversation.postCount + " comments"}</div>
-          {(conversation.postCount > conversation.messages.length) ? <a href="about:blank" onClick={(e) => { e.preventDefault(); loadNotes(); }}>View all {conversation.postCount} comments</a> : <>&nbsp;</>}
+          <div>{(conversation.postCount === 1) ? "1 " + Locale.label("notes.comment") : conversation.postCount + " " + Locale.label("notes.comments")}</div>
+          {(conversation.postCount > conversation.messages.length) ? <a href="about:blank" onClick={(e) => { e.preventDefault(); loadNotes(); }}>{Locale.label("notes.viewAll")} {conversation.postCount} {Locale.label("notes.comments")}</a> : <>&nbsp;</>}
         </div>
       )}
       <div className="messages">

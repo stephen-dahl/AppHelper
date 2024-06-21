@@ -2,6 +2,7 @@ import React from "react";
 import { SmallButton } from "../SmallButton";
 import { PrivateMessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { Notes } from "../notes/Notes";
+import { Locale } from "../../helpers";
 
 interface Props {
   context: UserContextInterface;
@@ -16,7 +17,7 @@ export const PrivateMessageDetails: React.FC<Props> = (props) => (
       <span style={{ float: "right" }}>
         <SmallButton icon="chevron_left" text="Back" onClick={props.onBack} />
       </span>
-      Chat with {props.privateMessage.person.name.display}
+      {Locale.label("wrapper.chatWith")} {props.privateMessage.person.name.display}
     </div>
     <Notes maxHeight={"50vh"} context={props.context} conversationId={props.privateMessage.conversationId} noDisplayBox={true} refreshKey={props.refreshKey} />
   </>

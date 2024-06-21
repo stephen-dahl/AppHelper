@@ -2,7 +2,7 @@ import React from "react";
 import { Note } from "./Note";
 import { AddNote } from "./AddNote";
 import { DisplayBox, Loading } from "../";
-import { ApiHelper, ArrayHelper } from "../../helpers";
+import { ApiHelper, ArrayHelper, Locale } from "../../helpers";
 import { MessageInterface, UserContextInterface } from "@churchapps/helpers";
 
 interface Props {
@@ -65,5 +65,5 @@ export function Notes(props: Props) {
     {messages && (<AddNote context={props.context} conversationId={props.conversationId} onUpdate={loadNotes} createConversation={props.createConversation} messageId={editMessageId} />)}
   </>
   if (props.noDisplayBox) return result;
-  else return (<DisplayBox id="notesBox" data-cy="notes-box" headerIcon="sticky_note_2" headerText="Notes">{result}</DisplayBox>);
+  else return (<DisplayBox id="notesBox" data-cy="notes-box" headerIcon="sticky_note_2" headerText={Locale.label("notes.notes")}>{result}</DisplayBox>);
 };

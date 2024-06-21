@@ -3,7 +3,7 @@ import { Stripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { CardForm, BankForm } from ".";
 import { DisplayBox, Loading } from "../../components";
-import { ApiHelper, UserHelper } from "../../helpers";
+import { ApiHelper, Locale, UserHelper } from "../../helpers";
 import { PersonInterface, StripePaymentMethod, Permissions } from "@churchapps/helpers";
 import { Icon, Table, TableBody, TableCell, TableRow, IconButton, Menu, MenuItem } from "@mui/material";
 
@@ -22,11 +22,11 @@ export const PaymentMethods: React.FC<Props> = (props) => {
   }
 
   const handleDelete = async () => {
-    let confirmed = window.confirm("Are you sure you want to delete this payment method?");
+    let confirmed = window.confirm(Locale.label("donation.paymentMethods.confirmDelete"));
     if (confirmed) {
       ApiHelper.delete("/paymentmethods/" + editPaymentMethod.id + "/" + props.customerId, "GivingApi").then(() => {
         setMode("display");
-        props.dataUpdate("Payment method deleted.");
+        props.dataUpdate(Locale.label("donation.paymentMethods.deleted"));
       })
     }
   }
@@ -62,10 +62,10 @@ export const PaymentMethods: React.FC<Props> = (props) => {
           onClose={handleClose}
         >
           <MenuItem aria-label="add-card" onClick={handleEdit(new StripePaymentMethod({ type: "card" }))}>
-            <Icon sx={{mr: "3px"}}>credit_card</Icon> Add Card
+            <Icon sx={{mr: "3px"}}>credit_card</Icon> {Locale.label("donation.paymentMethods.addCard")}
           </MenuItem>
           <MenuItem aria-label="add-bank" onClick={handleEdit(new StripePaymentMethod({ type: "bank" }))}>
-            <Icon sx={{mr: "3px"}}>account_balance</Icon> Add Bank
+            <Icon sx={{mr: "3px"}}>account_balance</Icon> {Locale.label("donation.paymentMethods.addBank")}
           </MenuItem>
         </Menu>
       </>
@@ -91,7 +91,7 @@ export const PaymentMethods: React.FC<Props> = (props) => {
       rows.push(
         <TableRow key={method.id}>
           <TableCell className="capitalize">{getPMIcon(method.type)} {method.name + " ****" + method.last4}</TableCell>
-          <TableCell>{method?.status === "new" && <a href="about:blank" aria-label="verify-account" onClick={handleEdit(method, true)}>Verify Account</a>}</TableCell>
+          <TableCell>{method?.status === "new" && <a href="about:blank" aria-label="verify-account" onClick={handleEdit(method, true)}>{Locale.label("donation.paymentMethods.verify")}</a>}</TableCell>
           <TableCell align="right">{getEditOptions(method)}</TableCell>
         </TableRow>
       );
@@ -110,7 +110,7 @@ export const PaymentMethods: React.FC<Props> = (props) => {
         </Table>
       );
     }
-    else return <div>No payment methods. Add a payment method to make a donation.</div>
+    else return <div>{Locale.label("donation.paymentMethods.noMethod")}</div>
   }
 
   const EditForm = () => (

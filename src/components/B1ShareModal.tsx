@@ -1,4 +1,4 @@
-import { GroupInterface, ApiHelper } from "../helpers";
+import { GroupInterface, ApiHelper, Locale } from "../helpers";
 import { Modal, Box, FormControl, InputLabel, MenuItem, Select, TextField, SelectChangeEvent, Button, DialogActions, Alert, Snackbar } from "@mui/material";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -37,8 +37,8 @@ export function B1ShareModal(props: Props) {
 
   const handlePost = () => {
     setShowSuccess(true);
-    if (groupId === "") alert("Please select a group.");
-    else if (comment === "") alert("Please add a comment.");
+    if (groupId === "") alert(Locale.label("b1Share.validate.selectGroup"));
+    else if (comment === "") alert(Locale.label("b1Share.validate.addComment"));
     else {
       const payload = {
         groupId: groupId,
@@ -67,24 +67,24 @@ export function B1ShareModal(props: Props) {
   };
 
   const getModalContent = () => {
-    if (!ApiHelper.isAuthenticated) return <p>Please log in first.</p>
+    if (!ApiHelper.isAuthenticated) return <p>{Locale.label("b1Share.validate.loginFirst")}</p>
     else if (!groups) return (<Loading />);
-    else if (groups.length === 0) return (<p>You are not a currently a member of any groups on B1.</p>);
+    else if (groups.length === 0) return (<p>{Locale.label("b1Share.validate.notMember")}</p>);
     else return (<>
-      <h2>Sharing '{props.contentDisplayName}' to B1 Group</h2>
+      <h2>{Locale.label("b1Share.sharingToGroup").replace("{}", props.contentDisplayName)}</h2>
       <FormControl fullWidth>
-        <InputLabel>Group</InputLabel>
-        <Select label="Group" name="group" value={groupId} onChange={handleChange}>
+        <InputLabel>{Locale.label("b1Share.group")}</InputLabel>
+        <Select label={Locale.label("b1Share.group")} name="group" value={groupId} onChange={handleChange}>
           {groups.map(g => <MenuItem key={g.id} value={g.id}>{g.name}</MenuItem>)}
         </Select>
       </FormControl>
-      <TextField fullWidth multiline label="Comment" name="comment" value={comment} onChange={handleChange} rows={3} placeholder="Include a comment with your post." />
+      <TextField fullWidth multiline label={Locale.label("b1Share.comment")} name="comment" value={comment} onChange={handleChange} rows={3} placeholder={Locale.label("b1Share.commentPlaceholder")} />
     </>);
   }
 
 
   if (showSuccess) return (<Snackbar open={true} anchorOrigin={{ horizontal: "center", vertical: "bottom" }} autoHideDuration={2500} onClose={() => props.onClose()}>
-    <Alert variant="filled" severity="success">Content shared</Alert>
+    <Alert variant="filled" severity="success">{Locale.label("b1Share.contentShared")}</Alert>
   </Snackbar>)
   else return (<Modal open={true} onClose={props.onClose}>
     <Box sx={style}>

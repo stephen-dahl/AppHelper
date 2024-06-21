@@ -1,6 +1,7 @@
 import React from "react";
 import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
 import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
+import { Locale } from "../../helpers";
 
 interface Props {
   fundDonation: FundDonationInterface,
@@ -33,12 +34,12 @@ export const FundDonation: React.FC<Props> = (props) => {
   return (
     <Grid container spacing={3}>
       <Grid item md={6} xs={12}>
-        <TextField fullWidth name="amount" label="Amount" type="number" aria-label="amount" lang="en-150" value={props.fundDonation.amount || ""} onChange={handleChange} />
+        <TextField fullWidth name="amount" label={Locale.label("donation.fundDonations.amount")} type="number" aria-label="amount" lang="en-150" value={props.fundDonation.amount || ""} onChange={handleChange} />
       </Grid>
       <Grid item md={6} xs={12}>
         <FormControl fullWidth>
-          <InputLabel>Fund</InputLabel>
-          <Select fullWidth label="Fund" name="fund" aria-label="fund" value={props.fundDonation.fundId} onChange={handleChange}>
+          <InputLabel>{Locale.label("donation.fundDonations.fund")}</InputLabel>
+          <Select fullWidth label={Locale.label("donation.fundDonations.fund")} name="fund" aria-label="fund" value={props.fundDonation.fundId} onChange={handleChange}>
             {getOptions()}
           </Select>
         </FormControl>

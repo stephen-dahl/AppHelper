@@ -1,6 +1,6 @@
 import React from "react";
 import { DisplayBox } from "../../components";
-import { ApiHelper, UserHelper, CurrencyHelper, DateHelper } from "../../helpers";
+import { ApiHelper, UserHelper, CurrencyHelper, DateHelper, Locale } from "../../helpers";
 import { Permissions, SubscriptionInterface } from "@churchapps/helpers";
 import { RecurringDonationsEdit } from ".";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead } from "@mui/material";
@@ -41,7 +41,7 @@ export const RecurringDonations: React.FC<Props> = (props) => {
 
   const getPaymentMethod = (sub: SubscriptionInterface) => {
     const pm = props.paymentMethods.find((pm: any) => pm.id === (sub.default_payment_method || sub.default_source));
-    if (!pm) return <span style={{ color: "red" }}>Payment method not found.</span>;
+    if (!pm) return <span style={{ color: "red" }}>{Locale.label("donation.recurring.notFound")}</span>;
     return `${pm.name} ****${pm.last4}`;
   }
 
@@ -75,7 +75,7 @@ export const RecurringDonations: React.FC<Props> = (props) => {
 
   const getTableHeader = () => {
     let result: JSX.Element[] = [];
-    result.push(<TableRow key="header" sx={{textAlign: "left"}}><TableCell><b>Start Date</b></TableCell><TableCell><b>Amount</b></TableCell><TableCell><b>Interval</b></TableCell><TableCell><b>Payment Method</b></TableCell>{props?.paymentMethods?.length > 0 && <TableCell></TableCell>}</TableRow>);
+    result.push(<TableRow key="header" sx={{textAlign: "left"}}><TableCell><b>{Locale.label("donation.recurring.startDate")}</b></TableCell><TableCell><b>{Locale.label("donation.recurring.amount")}</b></TableCell><TableCell><b>{Locale.label("donation.recurring.interval")}</b></TableCell><TableCell><b>{Locale.label("donation.recurring.paymentMethod")}</b></TableCell>{props?.paymentMethods?.length > 0 && <TableCell></TableCell>}</TableRow>);
     return result;
   }
 
@@ -87,7 +87,7 @@ export const RecurringDonations: React.FC<Props> = (props) => {
         <TableRow key={sub.id}>
           <TableCell>{DateHelper.prettyDate(new Date(sub.billing_cycle_anchor * 1000))}</TableCell>
           <TableCell>{getFunds(sub)}</TableCell>
-          <TableCell>Every {getInterval(sub)}</TableCell>
+          <TableCell>{Locale.label("donation.recurring.every")} {getInterval(sub)}</TableCell>
           <TableCell className="capitalize">{getPaymentMethod(sub)}</TableCell>
           <TableCell align="right">{getEditOptions(sub)}</TableCell>
         </TableRow>

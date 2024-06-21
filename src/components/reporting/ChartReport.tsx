@@ -2,6 +2,7 @@ import React from "react";
 import { Chart } from "react-google-charts";
 import { ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers";
 import { ReportHelper } from "../../helpers/ReportHelper";
+import { Locale } from "../../helpers";
 
 interface Props { reportResult: ReportResultInterface, output: ReportOutputInterface }
 
@@ -78,7 +79,7 @@ export const ChartReport = (props: Props) => {
     return rows;
   }
 
-  let result = <p>There is no data to display</p>
+  let result = <p>{Locale.label("reporting.noData")}</p>
   if (props.reportResult.table?.length > 0) result = (<Chart chartType="ColumnChart" data={getChartData()} width="100%" height="400px" options={{ height: 400, legend: { position: "top", maxLines: 3 }, bar: { groupWidth: "75%" }, isStacked: true }} />);
 
   return result;

@@ -1,6 +1,6 @@
 import React from "react"
 import { useNavigate } from "react-router-dom"
-import { UserHelper, ApiHelper } from "../helpers";
+import { UserHelper, ApiHelper, Locale } from "../helpers";
 import { Permissions, PersonInterface, HouseholdInterface } from "@churchapps/helpers";
 import { Button, Grid, TextField } from "@mui/material"
 import { ErrorMessages } from "./ErrorMessages"
@@ -62,17 +62,17 @@ export function CreatePerson({ navigateOnCreate = true, onCreate = () => {} }: P
   if (!UserHelper.checkAccess(Permissions.membershipApi.people.edit)) return null;
   return (
     <div>
-      <p className="pl-1 mb-3 text-dark"><b>Add a New Person</b></p>
+      <p className="pl-1 mb-3 text-dark"><b>{Locale.label("createPerson.addNewPerson")}</b></p>
       <ErrorMessages errors={errors} />
       <Grid container spacing={3} alignItems="center">
         <Grid item md={4} xs={12}>
-          <TextField size="small" margin="none" fullWidth type="text" aria-label="firstName" label="First Name" name="first" value={person.name.first || ""} onChange={handleChange} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit} />
+          <TextField size="small" margin="none" fullWidth type="text" aria-label="firstName" label={Locale.label("createPerson.firstName")} name="first" value={person.name.first || ""} onChange={handleChange} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit} />
         </Grid>
         <Grid item md={4} xs={12}>
-          <TextField size="small" margin="none" fullWidth type="text" aria-label="lastName" label="Last Name" name="last" value={person.name.last || ""} onChange={handleChange} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit} />
+          <TextField size="small" margin="none" fullWidth type="text" aria-label="lastName" label={Locale.label("createPerson.lastName")} name="last" value={person.name.last || ""} onChange={handleChange} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && handleSubmit} />
         </Grid>
         <Grid item md={4} xs={12}>
-          <Button type="submit" fullWidth variant="contained" disabled={isSubmitting} onClick={handleSubmit}>Add</Button>
+          <Button type="submit" fullWidth variant="contained" disabled={isSubmitting} onClick={handleSubmit}>{Locale.label("common.add")}</Button>
         </Grid>
       </Grid>
     </div>

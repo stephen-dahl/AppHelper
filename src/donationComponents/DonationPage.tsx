@@ -2,7 +2,7 @@ import React from "react";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { DonationForm, RecurringDonations, PaymentMethods } from "./components";
 import { DisplayBox, Loading } from "../components";
-import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper } from "../helpers";
+import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import { DonationInterface, PersonInterface, StripePaymentMethod, ChurchInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom"
 import { Table, TableBody, TableRow, TableCell, TableHead, Alert } from "@mui/material"
@@ -66,7 +66,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     let rows: JSX.Element[] = [];
 
     if (donations.length === 0) {
-      rows.push(<TableRow key="0"><TableCell>Donations will appear once a donation has been entered.</TableCell></TableRow>);
+      rows.push(<TableRow key="0"><TableCell>{Locale.label("donation.page.willAppear")}</TableCell></TableRow>);
       return rows;
     }
 
@@ -91,11 +91,11 @@ export const DonationPage: React.FC<Props> = (props) => {
     if (donations.length > 0) {
       rows.push(
         <TableRow key="header" sx={{textAlign: "left"}}>
-          {appName !== "B1App" && <th>Batch</th>}
-          <th>Date</th>
-          <th>Method</th>
-          <th>Fund</th>
-          <th>Amount</th>
+          {appName !== "B1App" && <th>{Locale.label("donation.page.bath")}</th>}
+          <th>{Locale.label("donation.page.date")}</th>
+          <th>{Locale.label("donation.page.method")}</th>
+          <th>{Locale.label("donation.page.fund")}</th>
+          <th>{Locale.label("donation.page.amount")}</th>
         </TableRow>
       );
     }

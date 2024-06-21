@@ -1,6 +1,7 @@
 import React from "react";
 import { FundDonation } from ".";
 import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
+import { Locale } from "../../helpers";
 
 interface Props { fundDonations: FundDonationInterface[], funds: FundInterface[], updatedFunction: (fundDonations: FundDonationInterface[]) => void }
 
@@ -32,7 +33,7 @@ export const FundDonations: React.FC<Props> = (props) => {
   return (
     <>
       {getRows()}
-      <a href="about:blank" aria-label="add-fund-donation" className="text-decoration" style={{ display: "block", marginBottom: "15px" }} onClick={addRow}>Add more</a>
+      <a href="about:blank" aria-label="add-fund-donation" className="text-decoration" style={{ display: "block", marginBottom: "15px" }} onClick={addRow}>{Locale.label("donation.fundDonations.addMore")}</a>
     </>
   );
 }

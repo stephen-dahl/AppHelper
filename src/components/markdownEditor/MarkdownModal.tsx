@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import { MarkdownPreview } from "./MarkdownPreview";
+import { Locale } from "../../helpers";
 
 interface Props {
   hideModal: () => void
@@ -8,7 +9,7 @@ interface Props {
   value?: string;
 }
 
-const guideLink = <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" rel="noopener noreferrer" style={{ float: "right" }}>Markdown Guide</a>;
+const guideLink = <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank" rel="noopener noreferrer" style={{ float: "right" }}>{Locale.label("markdownEditor.markdownGuide")}</a>;
 
 
 export const MarkdownModal: React.FC<Props> = ({ value, onChange, hideModal }) => {
@@ -23,11 +24,11 @@ export const MarkdownModal: React.FC<Props> = ({ value, onChange, hideModal }) =
   useEffect(() => { onChange(inputVal); }, [inputVal, onChange]);
 
   return (<Dialog open={true} onClose={() => { hideModal() }} fullScreen={true}>
-    <DialogTitle>Markdown Editor</DialogTitle>
+    <DialogTitle>{Locale.label("markdownEditor.markdownGuide")}</DialogTitle>
     <DialogContent>
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <TextField fullWidth multiline label={<>Content &nbsp; {guideLink}</>} name="modalMarkdown" className="modalMarkdown" InputProps={{ style: { height: "80vh" } }} value={inputVal} onChange={(e) => {
+          <TextField fullWidth multiline label={<>{Locale.label("markdownEditor.content")} &nbsp; {guideLink}</>} name="modalMarkdown" className="modalMarkdown" InputProps={{ style: { height: "80vh" } }} value={inputVal} onChange={(e) => {
             setInputVal(e.target.value);
           }} placeholder="" />
         </Grid>
@@ -40,7 +41,7 @@ export const MarkdownModal: React.FC<Props> = ({ value, onChange, hideModal }) =
       </Grid>
     </DialogContent>
     <DialogActions sx={{ paddingX: "16px", paddingBottom: "12px" }}>
-      <Button variant="outlined" onClick={() => { hideModal() }}>Close</Button>
+      <Button variant="outlined" onClick={() => { hideModal() }}>{Locale.label("common.close")}</Button>
     </DialogActions>
   </Dialog>)
 };

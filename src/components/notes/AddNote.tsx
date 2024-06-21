@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { ApiHelper, PersonHelper } from "../../helpers"
+import { ApiHelper, Locale, PersonHelper } from "../../helpers"
 import { MessageInterface, UserContextInterface } from "@churchapps/helpers"
 import { Icon, Stack, TextField } from "@mui/material"
 import { ErrorMessages } from "../ErrorMessages"
@@ -36,7 +36,7 @@ export function AddNote({ context, ...props }: Props) {
 
   const validate = () => {
     const result = [];
-    if (!message.content.trim()) result.push("Please enter a note.");
+    if (!message.content.trim()) result.push(Locale.label("notes.validate.content"));
     setErrors(result);
     return result.length === 0;
   }

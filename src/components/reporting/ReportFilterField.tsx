@@ -1,6 +1,6 @@
 import React from "react";
 import { ReportInterface, ParameterInterface } from "@churchapps/helpers";
-import { ApiHelper, ArrayHelper, DateHelper } from "../../helpers";
+import { ApiHelper, ArrayHelper, DateHelper, Locale } from "../../helpers";
 import { FormControl, InputLabel, Select, SelectChangeEvent, TextField, MenuItem } from "@mui/material";
 import { useMountedState } from "../../hooks/useMountedState";
 
@@ -73,7 +73,8 @@ export const ReportFilterField = (props: Props) => {
   }
 
   const getMonths = () => {
-    const list = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novermber", "December"]
+    const list = [Locale.label("month.january"), Locale.label("month.february"), Locale.label("month.march"), Locale.label("month.april"), Locale.label("month.may"), Locale.label("month.june"), Locale.label("month.july"), Locale.label("month.august"), Locale.label("month.september"), Locale.label("month.october"), Locale.label("month.november"), Locale.label("month.december")]
+
     const result = [];
     for (let i = 0; i < list.length; i++) result.push({ value: (i + 1).toString(), text: list[i] });
     return result;
@@ -152,7 +153,7 @@ export const ReportFilterField = (props: Props) => {
       );
       break;
     case "date":
-      result = (<TextField type="date" fullWidth InputLabelProps={{shrink: true}} label="Date" value={props.parameter.value || ""} onChange={handleChange} name={props.parameter.keyName} />)
+      result = (<TextField type="date" fullWidth InputLabelProps={{shrink: true}} label={Locale.label("common.date")} value={props.parameter.value || ""} onChange={handleChange} name={props.parameter.keyName} />)
       break;
   }
   return result;

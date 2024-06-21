@@ -2,6 +2,7 @@ import * as React from "react";
 import { styled, Icon, InputBase, Typography, debounce, Grid, IconButton, Pagination, Stack } from "@mui/material";
 import MuiPaper from "@mui/material/Paper";
 import IconNamesList from "./IconNamesList"
+import { Locale } from "../../helpers";
 //import FlexSearch from "flexsearch";
 const UPDATE_SEARCH_INDEX_WAIT_MS = 220;
 
@@ -141,10 +142,10 @@ export function IconPicker(props: Props) {
           <IconButton sx={{ padding: "10px" }} aria-label="search">
             <Icon>search</Icon>
           </IconButton>
-          <Input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search icons…" inputProps={{ "aria-label": "search icons" }} />
+          <Input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={Locale.label("iconPicker.searchIcons")} inputProps={{ "aria-label": "search icons" }} />
         </Paper>
-        {(query === "") && <Typography sx={{ mb: 1 }}>{`${IconNamesList.length} icons available`}</Typography>}
-        {(query !== "") && <Typography sx={{ mb: 1 }}>{`${icons.length} matching results`}</Typography>}
+        {(query === "") && <Typography sx={{ mb: 1 }}>{IconNamesList.length} {Locale.label("iconPicker.iconsAvailable")}</Typography>}
+        {(query !== "") && <Typography sx={{ mb: 1 }}>{icons.length} {Locale.label("iconPicker.matchingResults")}</Typography>}
 
         <Icons icons={paged(icons, page)} handleOpenClick={props.onSelect} />
       </Grid>

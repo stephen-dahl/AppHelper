@@ -2,7 +2,7 @@ import React from "react";
 import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { useStripe } from "@stripe/react-stripe-js";
 import { InputBox, ErrorMessages } from "../../components";
-import { ApiHelper } from "../../helpers";
+import { ApiHelper, Locale } from "../../helpers";
 import { PersonInterface, StripePaymentMethod, PaymentMethodInterface, StripeBankAccountInterface, StripeBankAccountUpdateInterface, StripeBankAccountVerifyInterface } from "@churchapps/helpers";
 
 interface Props { bank: StripePaymentMethod, showVerifyForm: boolean, customerId: string, person: PersonInterface, setMode: any, deletePayment: any, updateList: (message?: string) => void }
@@ -25,7 +25,7 @@ export const BankForm: React.FC<Props> = (props) => {
   }
 
   const createBank = async () => {
-    if (!bankAccount.routing_number || !bankAccount.account_number) setErrorMessage("Routing and account number are required.")
+    if (!bankAccount.routing_number || !bankAccount.account_number) setErrorMessage(Locale.label("donation.bankForm.validate.accountNumber"))
     else {
       await stripe.createToken("bank_account", bankAccount).then(response => {
         if (response?.error?.message) setErrorMessage(response.error.message);
@@ -35,7 +35,7 @@ export const BankForm: React.FC<Props> = (props) => {
           ApiHelper.post("/paymentmethods/addbankaccount", pm, "GivingApi").then(result => {
             if (result?.raw?.message) setErrorMessage(result.raw.message);
             else {
-              props.updateList("Bank account added. Verify your bank account to make a donation.");
+              props.updateList(Locale.label("donation.bankForm.added"));
               props.setMode("display");
             }
           });
@@ -46,7 +46,7 @@ export const BankForm: React.FC<Props> = (props) => {
   }
 
   const updateBank = () => {
-    if (bankAccount.account_holder_name === "") setErrorMessage("Account holder name is required.");
+    if (bankAccount.account_holder_name === "") setErrorMessage(Locale.label("donation.bankForm.validate.holderName"));
     else {
       let bank = { ...updateBankData };
       bank.bankData.account_holder_name = bankAccount.account_holder_name;
@@ -54,7 +54,7 @@ export const BankForm: React.FC<Props> = (props) => {
       ApiHelper.post("/paymentmethods/updatebank", bank, "GivingApi").then(response => {
         if (response?.raw?.message) setErrorMessage(response.raw.message);
         else {
-          props.updateList("Bank account updated.");
+          props.updateList(Locale.label("donation.bankForm.updated"));
           props.setMode("display");
         }
       });
@@ -68,7 +68,7 @@ export const BankForm: React.FC<Props> = (props) => {
       ApiHelper.post("/paymentmethods/verifyBank", verifyBankData, "GivingApi").then(response => {
         if (response?.raw?.message) setErrorMessage(response.raw.message);
         else {
-          props.updateList("Bank account verified.");
+          props.updateList(Locale.label("donation.bankForm.verified"));
           props.setMode("display");
         }
       });
@@ -103,13 +103,13 @@ export const BankForm: React.FC<Props> = (props) => {
   const getForm = () => {
     if (props.showVerifyForm) {
       return (<>
-        <p>Enter the two deposits you received in your account to finish verifying your bank account.</p>
+        <p>{Locale.label("donation.bankForm.twoDeposits")}</p>
         <Grid container columnSpacing={2}>
           <Grid item md={6} xs={12}>
-            <TextField fullWidth aria-label="amount1" label="First Deposit" name="amount1" placeholder="00" inputProps={{ maxLength: 2 }} onChange={handleVerify} onKeyPress={handleKeyPress} />
+            <TextField fullWidth aria-label="amount1" label={Locale.label("donation.bankForm.firstDeposit")} name="amount1" placeholder="00" inputProps={{ maxLength: 2 }} onChange={handleVerify} onKeyPress={handleKeyPress} />
           </Grid>
           <Grid item md={6} xs={12}>
-            <TextField fullWidth aria-label="amount2" label="Second Deposit" name="amount2" placeholder="00" inputProps={{ maxLength: 2 }} onChange={handleVerify} onKeyPress={handleKeyPress} />
+            <TextField fullWidth aria-label="amount2" label={Locale.label("donation.bankForm.secondDeposit")} name="amount2" placeholder="00" inputProps={{ maxLength: 2 }} onChange={handleVerify} onKeyPress={handleKeyPress} />
           </Grid>
         </Grid>
       </>);
@@ -119,10 +119,10 @@ export const BankForm: React.FC<Props> = (props) => {
       if (!props.bank.id) accountDetails = (
         <Grid container spacing={3}>
           <Grid item md={6} xs={12} style={{ marginBottom: "20px" }}>
-            <TextField fullWidth label="Routing Number" type="number" name="routing_number" aria-label="routing-number" placeholder="Routing Number" className="form-control" onChange={handleChange} />
+            <TextField fullWidth label={Locale.label("donation.bankForm.routingNumber")} type="number" name="routing_number" aria-label="routing-number" placeholder="Routing Number" className="form-control" onChange={handleChange} />
           </Grid>
           <Grid item md={6} xs={12} style={{ marginBottom: "20px" }}>
-            <TextField fullWidth label="Account Number" type="number" name="account_number" aria-label="account-number" placeholder="Account Number" className="form-control" onChange={handleChange} />
+            <TextField fullWidth label={Locale.label("donation.bankForm.accountNumber")} type="number" name="account_number" aria-label="account-number" placeholder="Account Number" className="form-control" onChange={handleChange} />
           </Grid>
         </Grid>
       );
@@ -133,10 +133,10 @@ export const BankForm: React.FC<Props> = (props) => {
           </Grid>
           <Grid item md={6} xs={12} style={{ marginBottom: "20px" }}>
             <FormControl fullWidth>
-              <InputLabel>Account Holder Type</InputLabel>
-              <Select label="Account Holder Type" name="account_holder_type" aria-label="account-holder-type" value={bankAccount.account_holder_type} onChange={handleChange}>
-                <MenuItem value="individual">Individual</MenuItem>
-                <MenuItem value="company">Company</MenuItem>
+              <InputLabel>{Locale.label("donation.bankForm.name")}</InputLabel>
+              <Select label={Locale.label("donation.bankForm.name")} name="account_holder_type" aria-label="account-holder-type" value={bankAccount.account_holder_type} onChange={handleChange}>
+                <MenuItem value="individual">{Locale.label("donation.bankForm.individual")}</MenuItem>
+                <MenuItem value="company">{Locale.label("donation.bankForm.company")}</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -150,7 +150,7 @@ export const BankForm: React.FC<Props> = (props) => {
     <InputBox headerIcon="volunteer_activism" headerText={getHeaderText()} ariaLabelSave="save-button" ariaLabelDelete="delete-button" cancelFunction={handleCancel} saveFunction={showSave ? handleSave : saveDisabled} deleteFunction={props.bank.id && !props.showVerifyForm ? handleDelete : undefined}>
       {errorMessage && <ErrorMessages errors={[errorMessage]}></ErrorMessages>}
       <div>
-        {!props.bank.id && <p>Bank accounts will need to be verified before making any donations. Your account will receive two small deposits in approximately 1-3 business days. You will need to enter those deposit amounts to finish verifying your account by selecting the verify account link next to your bank account under the payment methods section.</p>}
+        {!props.bank.id && <p>{Locale.label("donation.bankForm.needVerified")}</p>}
         {getForm()}
       </div>
     </InputBox>

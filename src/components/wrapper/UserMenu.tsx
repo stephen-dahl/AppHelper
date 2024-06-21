@@ -1,15 +1,14 @@
 import React from "react";
 import { ApiHelper } from "../../helpers/ApiHelper";
 import { UserHelper } from "../../helpers/UserHelper";
-import { Avatar, Menu, Typography, Icon, Button, Box, Tabs, Tab, Divider } from "@mui/material";
+import { Avatar, Menu, Typography, Icon, Button, Box } from "@mui/material";
 import { NavItem, AppList } from ".";
 import { LoginUserChurchInterface, UserContextInterface } from "@churchapps/helpers";
 import { ChurchList } from "./ChurchList";
 import { SupportModal } from "../SupportModal";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 import { TabPanel } from "../TabPanel";
-import { NavLink } from "react-router-dom";
-
+import { Locale } from "../../helpers";
 
 interface Props {
   userName: string;
@@ -41,13 +40,13 @@ export const UserMenu: React.FC<Props> = (props) => {
     const jwt = ApiHelper.getConfig("MembershipApi").jwt;
     const churchId = UserHelper.currentUserChurch.church.id;
     let result: JSX.Element[] = [];
-    if (props.appName === "CHUMS") result.push(<NavItem url={"/profile"} key="/profile" label="Profile" icon="person" router={props.router} />);
-    else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label="Profile" icon="person" external={true} router={props.router} />);
-    result.push(<NavItem url="/logout" label="Logout" icon="logout" key="/logout" router={props.router} />);
-    result.push(<NavItem label="Support" key="Support" icon="help" onClick={() => { setShowSupport(true) }} />);
+    if (props.appName === "CHUMS") result.push(<NavItem url={"/profile"} key="/profile" label={Locale.label("wrapper.profile")} icon="person" router={props.router} />);
+    else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label={Locale.label("wrapper.profile")} icon="person" external={true} router={props.router} />);
+    result.push(<NavItem url="/logout" label={Locale.label("wrapper.logout")} icon="logout" key="/logout" router={props.router} />);
+    result.push(<NavItem label="Support" key={Locale.label("wrapper.support")} icon="help" onClick={() => { setShowSupport(true) }} />);
     result.push(<div style={{borderTop:"1px solid #CCC", paddingTop:2, paddingBottom:2}}></div>)
-    result.push(<NavItem label="Switch App" key="Switch App" icon="apps" onClick={() => { setTabIndex(1); }} />);
-    if (props.userChurches.length > 1) result.push(<NavItem label="Switch Church" key="Switch Church" icon="church" onClick={() => { setTabIndex(2); }} />);
+    result.push(<NavItem label="Switch App" key={Locale.label("wrapper.switchApp")} icon="apps" onClick={() => { setTabIndex(1); }} />);
+    if (props.userChurches.length > 1) result.push(<NavItem label={Locale.label("wrapper.switchChurch")} key="Switch Church" icon="church" onClick={() => { setTabIndex(2); }} />);
     return result;
   }
 

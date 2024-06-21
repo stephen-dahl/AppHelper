@@ -1,6 +1,6 @@
 import React, { FormEventHandler } from "react";
 import { LoginResponseInterface, RegisterUserInterface, UserInterface } from "@churchapps/helpers";
-import { AnalyticsHelper, ApiHelper } from "../../helpers";
+import { AnalyticsHelper, ApiHelper, Locale } from "../../helpers";
 import { ErrorMessages } from "../../components";
 import { Button, Stack, TextField, Link } from "@mui/material";
 
@@ -52,10 +52,10 @@ export const Register: React.FC<Props> = (props) => {
 
   const validate = () => {
     let errors = [];
-    if (!user.email?.trim()) errors.push("Please enter your email address.");
-    else if (!validateEmail(user.email)) errors.push("Please enter a valid email address.");
-    if (!user.firstName?.trim()) errors.push("Please enter your first name.");
-    if (!user.lastName?.trim()) errors.push("Please enter your last name.");
+    if (!user.email?.trim()) errors.push(Locale.label("login.validate.email"));
+    else if (!validateEmail(user.email)) errors.push(Locale.label("login.validate.email"));
+    if (!user.firstName?.trim()) errors.push(Locale.label("login.validate.firstName"));
+    if (!user.lastName?.trim()) errors.push(Locale.label("login.validate.lastName"));
     setErrors(errors);
     return errors.length === 0;
   }
@@ -79,12 +79,6 @@ export const Register: React.FC<Props> = (props) => {
     }
   };
 
-  const getThankYou = () => (
-    <>
-      <p>Thank you for registering. Please check your email to continue.</p>
-    </>
-  )
-
   const getForm = () => (<>
     <ErrorMessages errors={errors} />
     <form onSubmit={register}>
@@ -93,7 +87,7 @@ export const Register: React.FC<Props> = (props) => {
       <TextField fullWidth type="email" name="email" label="Email" value={user.email} onChange={handleChange} />
       <br />
       <Stack direction="row" sx={{ marginTop: 1 }} spacing={1} justifyContent="end">
-        {props.loginCallback && (<Button variant="text" onClick={(e) => { e.preventDefault(); props.loginCallback(); }}>Login</Button>)}
+        {props.loginCallback && (<Button variant="text" onClick={(e) => { e.preventDefault(); props.loginCallback(); }}>{Locale.label("login.login")}</Button>)}
         <Button id="signInButton" variant="contained" disableElevation type="submit" disabled={isSubmitting} color="primary" onClick={register} sx={{ "&:focus": { outline: "none" } }}>
           {isSubmitting ? "Please wait..." : "Register"}
         </Button>
@@ -101,7 +95,7 @@ export const Register: React.FC<Props> = (props) => {
     </form>
   </>)
 
-  if (registered) return getThankYou();
+  if (registered) return (<p>{Locale.label("login.registerThankYou")}</p>);
   else return getForm();
 
 };

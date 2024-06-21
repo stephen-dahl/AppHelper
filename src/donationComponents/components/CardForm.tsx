@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Grid, TextField } from "@mui/material"
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { InputBox, ErrorMessages } from "../../components";
-import { ApiHelper } from "../../helpers";
+import { ApiHelper, Locale } from "../../helpers";
 import { PersonInterface, StripePaymentMethod, PaymentMethodInterface, StripeCardUpdateInterface } from "@churchapps/helpers";
 
 interface Props { card: StripePaymentMethod, customerId: string, person: PersonInterface, setMode: any, deletePayment: any, updateList: (message: string) => void }
@@ -55,7 +55,7 @@ export const CardForm: React.FC<Props> = (props) => {
           setShowSave(true);
         }
         else {
-          props.updateList("Card added successfully");
+          props.updateList(Locale.label("donation.cardForm.added"));
           props.setMode("display");
         }
       });
@@ -71,7 +71,7 @@ export const CardForm: React.FC<Props> = (props) => {
           setShowSave(true);
         }
         else {
-          props.updateList("Card updated successfully");
+          props.updateList(Locale.label("donation.cardForm.updated"));
           props.setMode("display");
         }
       });
@@ -80,7 +80,7 @@ export const CardForm: React.FC<Props> = (props) => {
 
   const getHeaderText = () => props.card.id
     ? `${props.card.name.toUpperCase()} ****${props.card.last4}`
-    : "Add New Card"
+    : Locale.label("donation.cardForm.addNew")
 
   return (
     <InputBox headerIcon="volunteer_activism" headerText={getHeaderText()} ariaLabelSave="save-button" ariaLabelDelete="delete-button" cancelFunction={handleCancel} saveFunction={showSave ? handleSave : saveDisabled} deleteFunction={props.card.id ? handleDelete : undefined}>
@@ -90,10 +90,10 @@ export const CardForm: React.FC<Props> = (props) => {
           ? <CardElement options={formStyling} />
           : <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
-              <TextField fullWidth aria-label="card-exp-month" label="Card Expiration Month:" name="exp_month" value={cardUpdate.cardData.card.exp_month} placeholder="MM" inputProps={{ maxLength: 2 }} onChange={handleChange} onKeyPress={handleKeyPress} />
+              <TextField fullWidth aria-label="card-exp-month" label={Locale.label("donation.cardForm.expirationMonth")} name="exp_month" value={cardUpdate.cardData.card.exp_month} placeholder="MM" inputProps={{ maxLength: 2 }} onChange={handleChange} onKeyPress={handleKeyPress} />
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField fullWidth aria-label="card-exp-year" label="Card Expiration Year:" name="exp_year" value={cardUpdate.cardData.card.exp_year} placeholder="YY" inputProps={{ maxLength: 2 }} onChange={handleChange} onKeyPress={handleKeyPress} />
+              <TextField fullWidth aria-label="card-exp-year" label={Locale.label("donation.cardForm.expirationYear")} name="exp_year" value={cardUpdate.cardData.card.exp_year} placeholder="YY" inputProps={{ maxLength: 2 }} onChange={handleChange} onKeyPress={handleKeyPress} />
             </Grid>
           </Grid>
         }

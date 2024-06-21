@@ -1,5 +1,5 @@
 import React, { FormEventHandler } from "react";
-import { ApiHelper } from "../../helpers";
+import { ApiHelper, Locale } from "../../helpers";
 import { ErrorMessages } from "../../components";
 import { ResetPasswordRequestInterface, ResetPasswordResponseInterface } from "@churchapps/helpers";
 import { Stack, TextField, Box, Typography } from "@mui/material";
@@ -24,8 +24,8 @@ export const Forgot: React.FC<Props> = props => {
 
   const validate = () => {
     const result = [];
-    if (!email) result.push("Please enter your email address.");
-    else if (!validateEmail(email)) result.push("Please enter a valid email address.");
+    if (!email) result.push(Locale.label("login.validate.email"));
+    else if (!validateEmail(email)) result.push(Locale.label("login.validate.email"));
     setErrors(result);
     return result.length === 0;
   }
@@ -40,7 +40,7 @@ export const Forgot: React.FC<Props> = props => {
           setErrors([]);
           setSuccessMessage(
             <Typography textAlign="center" marginTop="35px">
-              Password reset email sent! <br /><br /><a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.loginCallback(); }}>Go to Login</a>
+              {Locale.label("login.resetSent")} <br /><br /><a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.loginCallback(); }}>{Locale.label("login.goLogin")}</a>
             </Typography>
           );
           setEmail("");
@@ -54,22 +54,22 @@ export const Forgot: React.FC<Props> = props => {
 
   return (
     <Box id="loginBox" sx={{ backgroundColor: "#FFF", border: "1px solid #CCC", borderRadius: "5px", padding: "20px" }}>
-      <Typography component="h2" sx={{ fontSize: "32px", fontWeight: 500, lineHeight: 1.2, margin: "0 0 8px 0" }}>Reset Password</Typography>
+      <Typography component="h2" sx={{ fontSize: "32px", fontWeight: 500, lineHeight: 1.2, margin: "0 0 8px 0" }}>{Locale.label("login.resetPassword")}</Typography>
 
       <form onSubmit={reset}>
-        <p>Enter your email address to request a password reset.</p>
+        <p>{Locale.label("login.resetInstructions")}</p>
         <ErrorMessages errors={errors} />
         {successMessage}
         {!successMessage && (
           <>
-            <TextField fullWidth autoFocus label="Email" aria-label="email" id="email" name="email" value={email} onChange={handleChange} placeholder="Email address" onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && reset} />
+            <TextField fullWidth autoFocus label={Locale.label("login.email")} aria-label="email" id="email" name="email" value={email} onChange={handleChange} placeholder={Locale.label("login.email")} onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && reset} />
             <br />
             <Box sx={{ textAlign: "right", marginY: 1 }}>
-              <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.registerCallback(); }}>Register</a> &nbsp; | &nbsp;
-              <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.loginCallback(); }}>Login</a>&nbsp;
+              <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.registerCallback(); }}>{Locale.label("login.register")}</a> &nbsp; | &nbsp;
+              <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.loginCallback(); }}>{Locale.label("login.login")}</a>&nbsp;
             </Box>
             <Stack direction="row" sx={{ marginTop: 1.5 }} spacing={1} justifyContent="flex-end">
-              <LoadingButton loading={isSubmitting} variant="contained" type="submit" disabled={isSubmitting}>Reset</LoadingButton>
+              <LoadingButton loading={isSubmitting} variant="contained" type="submit" disabled={isSubmitting}>{Locale.label("login.reset")}</LoadingButton>
             </Stack>
           </>
         )}

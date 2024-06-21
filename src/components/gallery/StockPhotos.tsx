@@ -1,6 +1,6 @@
 import { Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { ApiHelper } from "../../helpers";
+import { ApiHelper, Locale } from "../../helpers";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 
 interface Props {
@@ -42,7 +42,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
         </a>
         <div>
           <i style={{ fontSize: 12 }}>
-            <a href={p.url} target="_blank" rel="noreferrer noopener">Photo</a> by: <a href={p.photographerUrl} target="_blank" rel="noreferrer noopener">{p.photographer}</a></i>
+            <a href={p.url} target="_blank" rel="noreferrer noopener">{Locale.label("stockPhotos.photoBy")}</a> <a href={p.photographerUrl} target="_blank" rel="noreferrer noopener">{p.photographer}</a></i>
         </div>
       </Grid>);
     })
@@ -65,7 +65,7 @@ export const StockPhotos: React.FC<Props> = (props: Props) => {
     <TextField fullWidth name="personAddText" label="Search Term" value={searchText} onChange={handleChange}
       InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch}>Search</Button> }}
     />
-    {searchResults && <div>Stock photos provided by <a href="https://pexels.com">Pexels</a>.</div>}
+    {searchResults && <div>{Locale.label("stockPhotos.providedBy")} <a href="https://pexels.com">Pexels</a>.</div>}
     <Grid container spacing={3} alignItems="center">
       {getImages()}
     </Grid>

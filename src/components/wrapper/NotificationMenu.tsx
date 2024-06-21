@@ -2,7 +2,6 @@ import React from "react";
 import { Menu, Icon, Button, Box, Tabs, Tab } from "@mui/material";
 import { UserContextInterface } from "@churchapps/helpers";
 import { PrivateMessages } from "./PrivateMessages";
-import { TabPanel } from "../TabPanel";
 import { Notifications } from "./Notifications";
 import { Badge } from "@mui/base";
 

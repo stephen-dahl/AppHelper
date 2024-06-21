@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { InputBox, SmallButton } from ".";
+import { Locale } from "../helpers";
 
 interface Props {
   title?: string;
@@ -105,7 +106,7 @@ export function ImageEditor(props: Props) {
       headerIcon=""
       headerText={props.title}
       ariaLabelDelete="deletePhoto"
-      saveText="Update"
+      saveText={Locale.label("common.update")}
       saveFunction={handleSave}
       cancelFunction={props.onCancel}
       deleteFunction={(!props.hideDelete) && handleDelete}

@@ -1,4 +1,4 @@
-import { FileHelper, ApiHelper } from "../../helpers";
+import { FileHelper, ApiHelper, Locale } from "../../helpers";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 import { } from "../../helpers";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, Tab, Tabs, Tooltip, Icon } from "@mui/material";
@@ -38,7 +38,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   };
 
   const handleDelete = (folder: string, image: string) => {
-    if (window.confirm("Are you sure you wish to delete this image from gallery?")){
+    if (window.confirm(Locale.label("gallery.confirmDelete"))){
       ApiHelper.delete("/gallery/" + folder + "/" + image, "ContentApi").then(() => { loadData(); });
     }
   }
@@ -101,9 +101,9 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
         <TabPanel value={tabIndex} index={0}>
           {(props.aspectRatio === 0) && (
             <FormControl fullWidth>
-              <InputLabel>Aspect Ratio</InputLabel>
-              <Select size="small" label="Aspect Ratio" name="aspectRatio" value={aspectRatio} onChange={(e) => setAspectRatio(parseFloat(e.target.value.toString()))}>
-                <MenuItem value="0">Free Form</MenuItem>
+              <InputLabel>{Locale.label("gallery.aspectRatio")}</InputLabel>
+              <Select size="small" label={Locale.label("gallery.aspectRatio")} name="aspectRatio" value={aspectRatio} onChange={(e) => setAspectRatio(parseFloat(e.target.value.toString()))}>
+                <MenuItem value="0">{Locale.label("gallery.freeForm")}</MenuItem>
                 <MenuItem value="1">1:1</MenuItem>
                 <MenuItem value="2">2:1</MenuItem>
                 <MenuItem value="3">3:1</MenuItem>
@@ -120,7 +120,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
           </Grid>
         </TabPanel>
         <TabPanel value={tabIndex} index={1}>
-          <div>Aspect Ratio: {getDisplayAspect()}</div>
+          <div>{Locale.label("gallery.aspectRatio")}: {getDisplayAspect()}</div>
           <ImageEditor onUpdate={handleImageUpdated} photoUrl={editorPhotoUrl} aspectRatio={aspectRatio} outputWidth={1280} outputHeight={768} hideDelete={true} />
         </TabPanel>
         <TabPanel value={tabIndex} index={2}>

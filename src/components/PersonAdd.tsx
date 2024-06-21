@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ApiHelper } from "../helpers";
+import { ApiHelper, Locale } from "../helpers";
 import { PersonInterface } from "@churchapps/helpers"
 import { TextField, Button, Table, TableBody, TableRow, TableCell } from "@mui/material";
 import { SmallButton } from "./SmallButton";
@@ -63,8 +63,8 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
 
   return (
     <>
-      <TextField fullWidth name="personAddText" label="Person" value={searchText} onChange={handleChange} onKeyDown={handleKeyDown}
-        InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch}>Search</Button> }}
+      <TextField fullWidth name="personAddText" label={Locale.label("person.person")} value={searchText} onChange={handleChange} onKeyDown={handleKeyDown}
+        InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch}>{Locale.label("common.search")}</Button> }}
       />
       {showCreatePersonOnNotFound && hasSearched && searchText && searchResults.length === 0 && (
         <CreatePerson navigateOnCreate={false} onCreate={person => { setSearchText(""); setSearchResults([person]) }} />

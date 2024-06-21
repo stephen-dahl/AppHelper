@@ -1,6 +1,6 @@
 import { Icon, Paper, Stack, TextField } from "@mui/material";
 import React from "react";
-import { ApiHelper, PersonHelper } from "../../helpers";
+import { ApiHelper, Locale, PersonHelper } from "../../helpers";
 import { ConversationInterface, MessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { ErrorMessages } from "../ErrorMessages";
 import { SmallButton } from "../SmallButton";
@@ -28,7 +28,7 @@ export function NewConversation({ context, ...props }: Props) {
 
   const validate = () => {
     const result = [];
-    if (!message.content.trim()) result.push("Please enter a note.");
+    if (!message.content.trim()) result.push(Locale.label("notes.validate.content"));
     setErrors(result);
     return result.length === 0;
   }
@@ -66,7 +66,7 @@ export function NewConversation({ context, ...props }: Props) {
         {image ? <img src={image} alt="user" style={{ width: 60, height: 45, borderRadius: 5, marginLeft: 8 }} /> : <Icon>person</Icon>}
         <Stack direction="column" spacing={2} style={{ width: "100%" }} justifyContent="end">
           <div><b>{context?.person?.name?.display}</b></div>
-          <TextField fullWidth name="noteText" aria-label={"Start a conversation"} placeholder="Start a conversation" multiline style={{ marginTop: 0, border: "none" }} variant="standard" onChange={handleChange} value={message.content} />
+          <TextField fullWidth name="noteText" aria-label={Locale.label("notes.startConversation")} placeholder={Locale.label("notes.startConversation")} multiline style={{ marginTop: 0, border: "none" }} variant="standard" onChange={handleChange} value={message.content} />
         </Stack>
         <Stack direction="column" spacing={1} justifyContent="end">
           <SmallButton icon="send" onClick={handleSave} disabled={isSubmitting} />

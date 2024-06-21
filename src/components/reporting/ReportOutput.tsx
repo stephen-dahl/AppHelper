@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { ArrayHelper, PersonInterface, ReportInterface, ReportResultInterface } from "@churchapps/helpers";
 import { DisplayBox, ExportLink, Loading } from "../"
-import { ApiHelper } from "../../helpers"
+import { ApiHelper, Locale } from "../../helpers"
 import { useReactToPrint } from "react-to-print";
 import { TableReport } from "./TableReport";
 import { ChartReport } from "./ChartReport";
@@ -62,9 +62,7 @@ export const ReportOutput = (props: Props) => {
     }
 
     //set custom headers
-    const maxKeysObj = result?.reduce((a, b) => {
-      return Object.keys(a).length > Object.keys(b).length ? a : b;
-    }, []);
+    const maxKeysObj = result?.reduce((a, b) => Object.keys(a).length > Object.keys(b).length ? a : b, []);
     const objKeys = Object.keys(maxKeysObj);
     objKeys.forEach(key => headers.push({ label: key, key: key }));
 
@@ -101,10 +99,10 @@ export const ReportOutput = (props: Props) => {
       setAnchorEl(null);
     }
     return (<>
-      <Button size="small" title="Download Options" onClick={handleClick} key={key}><Icon>download</Icon></Button>
+      <Button size="small" title={Locale.label("reporting.downloadOptions")} onClick={handleClick} key={key}><Icon>download</Icon></Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text="Fund Summary" icon="volunteer_activism" /></MenuItem>}
-        {detailedPersonSummary?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text="Detailed Summary" icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
+        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.detailedSummary")} icon="volunteer_activism" /></MenuItem>}
+        {detailedPersonSummary?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailedSummary")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
       </Menu>
     </>)
   }
@@ -135,7 +133,7 @@ export const ReportOutput = (props: Props) => {
   }
 
   const getResults = () => {
-    if (!props.report) return (<DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText="Run Report" editContent={getEditContent()}><p>Use the filter to run the report.</p></DisplayBox>);
+    if (!props.report) return (<DisplayBox ref={contentRef} id="reportsBox" headerIcon="summarize" headerText={Locale.label("reporting.runReport")} editContent={getEditContent()}><p>{Locale.label("reporting.useFilter")}</p></DisplayBox>);
 
     else if (!reportResult) return <Loading />
     else {

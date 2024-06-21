@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ErrorMessages, FloatingSupport, Loading } from "../components";
 import { LoginResponseInterface, UserContextInterface, ChurchInterface, UserInterface, LoginUserChurchInterface } from "@churchapps/helpers";
-import { AnalyticsHelper, ApiHelper, ArrayHelper, UserHelper } from "../helpers";
+import { AnalyticsHelper, ApiHelper, ArrayHelper, Locale, UserHelper } from "../helpers";
 import { useCookies } from "react-cookie"
 import jwt_decode from "jwt-decode"
 import { Register } from "./components/Register"
@@ -183,7 +183,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
       UserHelper.selectChurch(props.context, churchId, null).then(() => { continueLoginProcess() });
     } catch (err) {
       console.log("Error in selecting church: ", err)
-      setErrors(["Error in selecting church. Please verify and try again"])
+      setErrors([Locale.label("login.validate.selectChurch")])
       loginFormRef?.current?.setSubmitting(false);
     }
 
@@ -192,7 +192,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
   const handleLoginErrors = (errors: string[]) => {
     setWelcomeBackName("");
     console.log(errors);
-    setErrors(["Invalid login. Please check your email or password."]);
+    setErrors([Locale.label("login.validate.invalid")]);
   }
 
   const login = async (data: any) => {
@@ -209,8 +209,8 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
     }
   };
 
-  const getWelcomeBack = () => { if (welcomeBackName !== "") return (<><Alert severity="info">Welcome back, <b>{welcomeBackName}</b>!  Please wait while we load your data.</Alert><Loading /></>); }
-  const getCheckEmail = () => { if (new URLSearchParams(location?.search).get("checkEmail") === "1") return <Alert severity="info"> Thank you for registering.  Please check your email to continue.</Alert> }
+  const getWelcomeBack = () => { if (welcomeBackName !== "") return (<><Alert severity="info">{Locale.label("login.welcomeName").replace("{}", welcomeBackName)}</Alert><Loading /></>); }
+  const getCheckEmail = () => { if (new URLSearchParams(location?.search).get("checkEmail") === "1") return <Alert severity="info">{Locale.label("login.registerThankYou")}</Alert> }
   const handleRegisterCallback = () => { setShowForgot(false); setShowRegister(true); }
   const handleLoginCallback = () => { setShowForgot(false); setShowRegister(false); }
   const handleChurchRegistered = (church: ChurchInterface) => { registeredChurch = church; setShowRegister(false); console.log("Updated VERSION********") }
@@ -218,7 +218,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
   const getInputBox = () => {
     if (showRegister) return (
       <Box id="loginBox" sx={{ backgroundColor: "#FFF", border: "1px solid #CCC", borderRadius: "5px", padding: "20px" }}>
-        <Typography component="h2" sx={{ fontSize: "32px", fontWeight: 500, lineHeight: 1.2, margin: "0 0 8px 0" }}>Create an Account</Typography>
+        <Typography component="h2" sx={{ fontSize: "32px", fontWeight: 500, lineHeight: 1.2, margin: "0 0 8px 0" }}>{Locale.label("login.createAccount")}</Typography>
         <Register updateErrors={setErrors} appName={props.appName} appUrl={cleanAppUrl()} loginCallback={handleLoginCallback} userRegisteredCallback={props.userRegisteredCallback} />
       </Box>
     );
