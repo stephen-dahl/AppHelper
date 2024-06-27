@@ -9,12 +9,15 @@ import HttpBackend from 'i18next-http-backend';
 export class Locale {
 
   private static supportedLanguages = ["de", "en", "es", "fr", "hi", "it", "ko", "no", "pt", "ru", "tl", "zh"];
+  private static extraCodes: {[key: string]: string[]} = {no: ["nb", "nn"]}
 
   private static keys:any = {}
 
   static init = async (backends:string[]) => {
-    const l = navigator.language.split("-")[0];
-    const langs = (l==="en" || this.supportedLanguages.indexOf(l)===-1) ? [l] : ["en", l];
+    let l = navigator.language.split("-")[0];
+    l = Object.keys(this.extraCodes).find(code => this.extraCodes[code].includes(l)) || l
+    const notSupported = this.supportedLanguages.indexOf(l) === -1
+    const langs = (l==="en" || notSupported) ? ["en"] : ["en", l];
 
     let result = {};
     for (let lang of langs) {
