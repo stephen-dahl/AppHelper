@@ -25,10 +25,24 @@ export class Locale {
         let url = backend.replace("{{lng}}", lang);
         console.log(url);
         const data = await fetch(url).then((response) => response.json());
-        result = {...result, ...data};
+        result = this.deepMerge(result, data);
       }
     }
     this.keys = result;
+  }
+
+  private static deepMerge(target:any, source:any) {
+    for (const key in source) {
+      if (this.isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        this.deepMerge(target[key], source[key]);
+      } else Object.assign(target, { [key]: source[key] });
+    }
+    return target;
+  }
+
+  private static isObject(obj:any) {
+    return obj && typeof obj === 'object' && !Array.isArray(obj);
   }
 
   static label(key:string) {
