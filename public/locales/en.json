@@ -250,10 +250,8 @@
 		"providedBy": "Stock photos provided by"
 	},
 	"support": {
-		"email": "Email",
-		"knowledge base": "Knowledge Base",
-		"messenger": "Messenger",
-		"phone": "Phone"
+		"documentation": "Documentation",
+		"discussions": "Support Forum"
 	},
 	"wrapper": {
 		"chatWith": "Chat with",
