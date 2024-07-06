@@ -255,14 +255,14 @@
 	},
 	"wrapper": {
 		"chatWith": "Chat with",
-		"deleteChurch": "Delete church from the list",
+		"deleteChurch": "Delete",
 		"logout": "Logout",
 		"newPrivateMessage": "New Private Message",
 		"privateMessage": "Private Message",
 		"profile": "Profile",
 		"searchForPerson": "Search for a person",
 		"support": "Support",
-		"sureRemoveChurch": "Are you sure you wish to delete {} from the list?",
+		"sureRemoveChurch": "Are you sure you wish to delete this church? You no longer will be a member of {}.",
 		"switchApp": "Switch App",
 		"switchChurch": "Switch Church"
 	}
