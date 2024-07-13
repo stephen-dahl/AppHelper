@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "../helpers";
 import { PersonInterface } from "@churchapps/helpers"
-import { TextField, Button, Table, TableBody, TableRow, TableCell } from "@mui/material";
+import { TextField, Button, Table, TableBody, TableRow, TableCell, Typography } from "@mui/material";
 import { SmallButton } from "./SmallButton";
 import { CreatePerson } from "./CreatePerson";
 
@@ -20,6 +20,7 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
   const [searchResults, setSearchResults] = useState<PersonInterface[]>([]);
   const [searchText, setSearchText] = useState("");
   const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { e.preventDefault(); setHasSearched(false); setSearchText(e.currentTarget.value); }
   const handleKeyDown = (e: React.KeyboardEvent<any>) => { if (e.key === "Enter") { e.preventDefault(); handleSearch(null); } }
@@ -67,9 +68,10 @@ export const PersonAdd: React.FC<Props> = ({ addFunction, getPhotoUrl, searchCli
         InputProps={{ endAdornment: <Button variant="contained" id="searchButton" data-cy="search-button" onClick={handleSearch}>{Locale.label("common.search")}</Button> }}
       />
       {showCreatePersonOnNotFound && hasSearched && searchText && searchResults.length === 0 && (
-        <CreatePerson navigateOnCreate={false} onCreate={person => { setSearchText(""); setSearchResults([person]) }} />
+        <Typography sx={{ marginTop: "7px" }}>{Locale.label("person.noRec")} <a href="about:blank" onClick={(e) => { e.preventDefault(); setOpen(true); }}>{Locale.label("createPerson.addNewPerson")}</a></Typography>
       )}
       <Table size="small" id="householdMemberAddTable"><TableBody>{rows}</TableBody></Table>
+      {open && <CreatePerson showInModal onClose={() => { setOpen(false); }} navigateOnCreate={false} onCreate={person => { setSearchText(""); setSearchResults([person]) }} />}
     </>
   );
 }

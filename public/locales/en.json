@@ -29,7 +29,8 @@
 	"createPerson": {
 		"addNewPerson": "Add a New Person",
 		"firstName": "First Name",
-		"lastName": "Last Name"
+		"lastName": "Last Name",
+		"email": "Email"
 	},
 	"donation": {
 		"bankForm": {
@@ -214,7 +215,8 @@
 		"lastName": "Last Name",
 		"name": "Name",
 		"person": "Person",
-		"years": "years"
+		"years": "years",
+		"noRec": "Don't have a person record?"
 	},
 	"reporting": {
 		"detailedSummary": "Detailed Summary",
