@@ -42,11 +42,11 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
 
     let answerValue = (props.answer === null) ? "" : props.answer.value
     switch (q.fieldType) {
-      case "Textbox": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
+      case "Textbox": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
       case "Multiple Choice": {
         input = (
           <FormControl fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}}>
-            <InputLabel>{q.title}</InputLabel>
+            <InputLabel sx={{ fontWeight: "bold" }}>{q.title}</InputLabel>
             <Select fullWidth label={q.title} value={answerValue} onChange={handleChange}>{choiceOptions}</Select>
           </FormControl>);
         break;
@@ -54,7 +54,7 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
       case "Yes/No": {
         input = (
           <FormControl fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}}>
-            <InputLabel>{q.title}</InputLabel>
+            <InputLabel sx={{ fontWeight: "bold" }}>{q.title}</InputLabel>
             <Select fullWidth label={q.title} value={answerValue} onChange={handleChange}>
               <MenuItem value="False">No</MenuItem>
               <MenuItem value="True">Yes</MenuItem>
@@ -65,7 +65,7 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
       case "Checkbox": {
         input = (
           <FormControl fullWidth sx={{ marginLeft: 1 }}>
-            <FormLabel>{q.title}</FormLabel>
+            <FormLabel sx={{ fontWeight: "bold" }}>{q.title}</FormLabel>
             <FormGroup>
               {choiceOptions}
             </FormGroup>
@@ -75,12 +75,12 @@ export const QuestionEdit: React.FC<Props> = ({noBackground = false, ...props}) 
       }
       case "Whole Number":
       case "Decimal":
-        input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="number" InputLabelProps={{shrink: true}} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />;
+        input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="number" InputLabelProps={{ shrink: true, sx: { fontWeight: "bold" } }} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />;
         break;
-      case "Date": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="date" InputLabelProps={{shrink: true}} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
-      case "Phone Number": input = <MuiTelInput fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} label={q.title} placeholder="" value={answerValue} onChange={(value) => { props.changeFunction(props.question.id, value); }} defaultCountry="US" focusOnSelectCountry excludedCountries={["TA", "AC"]} />; break;
-      case "Email": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="email" label={q.title} placeholder="john@doe.com" value={answerValue} onChange={handleChange} />; break;
-      case "Text Area": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} multiline rows={4} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
+      case "Date": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="date" InputLabelProps={{ shrink: true, sx: { fontWeight: "bold" } }} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
+      case "Phone Number": input = <MuiTelInput fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={q.title} placeholder="" value={answerValue} onChange={(value) => { props.changeFunction(props.question.id, value); }} defaultCountry="US" focusOnSelectCountry excludedCountries={["TA", "AC"]} />; break;
+      case "Email": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} type="email" InputLabelProps={{ sx: { fontWeight: "bold" } }} label={q.title} placeholder="john@doe.com" value={answerValue} onChange={handleChange} />; break;
+      case "Text Area": input = <TextField fullWidth style={noBackground ? {backgroundColor: "white", borderRadius: "4px"} : {}} multiline rows={4} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={q.title} placeholder={q.placeholder} value={answerValue} onChange={handleChange} />; break;
       default: return null;
     }
     return input;
