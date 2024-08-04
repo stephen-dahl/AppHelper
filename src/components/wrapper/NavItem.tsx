@@ -1,8 +1,9 @@
 import React from "react";
-import { Icon, IconButton, ListItemButton, ListItemIcon, ListItemText, styled, Tooltip } from "@mui/material";
+import { Badge, Icon, IconButton, ListItemButton, ListItemIcon, ListItemText, styled, Tooltip } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";
 
 interface Props {
+	badgeCount?: number;
   url?: string;
   target?: string;
   label: string;
@@ -29,7 +30,10 @@ export const NavItem: React.FC<Props> = (props) => {
     if (a !== null) isReact = true;
   } catch { }
 
-  const getIcon = () => <Icon>{props.icon}</Icon>
+  const getIcon = () => {
+    if (props.badgeCount && props.badgeCount > 0) return <Badge badgeContent={props.badgeCount} color="error"><Icon>{props.icon}</Icon></Badge>
+    else return <Icon>{props.icon}</Icon>
+  }
 
   const getLinkContents = () => (<ListItemButton>
     <Tooltip title={props.label || ""} arrow placement="right">

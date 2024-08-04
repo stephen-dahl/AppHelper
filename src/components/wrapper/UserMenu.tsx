@@ -1,7 +1,7 @@
 import React from "react";
 import { ApiHelper } from "../../helpers/ApiHelper";
 import { UserHelper } from "../../helpers/UserHelper";
-import { Avatar, Menu, Typography, Icon, Button, Box } from "@mui/material";
+import { Avatar, Menu, Typography, Icon, Button, Box, Badge, Modal, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { NavItem, AppList } from ".";
 import { LoginUserChurchInterface, UserContextInterface } from "@churchapps/helpers";
 import { ChurchList } from "./ChurchList";
@@ -9,8 +9,13 @@ import { SupportModal } from "../SupportModal";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 import { TabPanel } from "../TabPanel";
 import { Locale } from "../../helpers";
+import { PrivateMessages } from "./PrivateMessages";
+import { Notifications } from "./Notifications";
+
 
 interface Props {
+	notificationCounts: { notificationCount: number, pmCount: number };
+	loadCounts: () => void;
   userName: string;
   profilePicture: string;
   userChurches: LoginUserChurchInterface[];
@@ -24,7 +29,11 @@ export const UserMenu: React.FC<Props> = (props) => {
   const userName = props.userName;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [showSupport, setShowSupport] = React.useState(false);
+  const [showPM, setShowPM] = React.useState(false);
+  const [showNotifications, setShowNotifications] = React.useState(false);
+  const [refreshKey, setRefreshKey] = React.useState(0);
   const open = Boolean(anchorEl);
+
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -40,6 +49,12 @@ export const UserMenu: React.FC<Props> = (props) => {
     const jwt = ApiHelper.getConfig("MembershipApi").jwt;
     const churchId = UserHelper.currentUserChurch.church.id;
     let result: JSX.Element[] = [];
+
+
+    result.push(<NavItem onClick={() => {setShowPM(true)}} label={Locale.label("wrapper.messages")} icon="mail" key="/messages" router={props.router} badgeCount={props.notificationCounts.pmCount} />);
+
+    result.push(<NavItem onClick={() => {setShowNotifications(true)}} label={Locale.label("wrapper.notifications")} icon="notifications" key="/notifications" router={props.router} badgeCount={props.notificationCounts.notificationCount} />);
+
     if (props.appName === "CHUMS") result.push(<NavItem url={"/profile"} key="/profile" label={Locale.label("wrapper.profile")} icon="person" router={props.router} />);
     else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label={Locale.label("wrapper.profile")} icon="person" external={true} router={props.router} />);
     result.push(<NavItem url="/logout" label={Locale.label("wrapper.logout")} icon="logout" key="/logout" router={props.router} />);
@@ -91,17 +106,43 @@ export const UserMenu: React.FC<Props> = (props) => {
     </Box>
   );
 
+  const getModals = () => {
+    if (showPM) return (
+      <Dialog open onClose={() => setShowPM(false)}>
+        <DialogTitle>{Locale.label("wrapper.messages")}</DialogTitle>
+        <DialogContent>
+          <PrivateMessages context={props.context} refreshKey={refreshKey} onUpdate={props.loadCounts} />
+        </DialogContent>
+      </Dialog>);
+    else if (showNotifications) return (<Dialog open onClose={() => setShowNotifications(false)}>
+      <DialogTitle>{Locale.label("wrapper.notifications")}</DialogTitle>
+      <DialogContent>
+      		<Notifications context={props.context} appName={props.appName} onUpdate={props.loadCounts} router={props.router} />
+      	</DialogContent>
+    </Dialog>);
+    else return <></>;
+  }
+
+  const totalNotifcations = props.notificationCounts.notificationCount + props.notificationCounts.pmCount;
+
+  React.useEffect(() => {
+    console.log("THE COUNTS CHANGED")
+    setRefreshKey(Math.random());
+  }, [props.notificationCounts]);
+
   return (
     <>
       {showSupport && <SupportModal onClose={() => setShowSupport(false)} appName={props.appName} />}
       <Button onClick={handleClick} color="inherit" aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} style={{ textTransform: "none" }} endIcon={<Icon>expand_more</Icon>}>
-        <Avatar src={getProfilePic()} sx={{ width: 32, height: 32, marginRight: 1 }}></Avatar>
-        <Typography color="inherit" noWrap>{userName}</Typography>
+        <Badge badgeContent={totalNotifcations} color="error" invisible={totalNotifcations===0}>
+          <Avatar src={getProfilePic()} sx={{ width: 32, height: 32, marginRight: 1 }}></Avatar>
+        </Badge>
       </Button>
 
       <Menu anchorEl={anchorEl} id="account-menu" open={open} onClose={handleClose} onClick={(e) => { handleItemClick(e) }} slotProps={{ paper: paperProps }} transformOrigin={{ horizontal: "right", vertical: "top" }} anchorOrigin={{ horizontal: "right", vertical: "bottom" }} sx={{ "& .MuiBox-root": { borderBottom: 0 } }}>
         {getTabs()}
       </Menu>
+      {getModals()}
     </>
   );
 };
