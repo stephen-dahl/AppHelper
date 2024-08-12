@@ -108,13 +108,13 @@ export const UserMenu: React.FC<Props> = (props) => {
 
   const getModals = () => {
     if (showPM) return (
-      <Dialog open onClose={() => setShowPM(false)}>
+      <Dialog open onClose={() => setShowPM(false)} maxWidth="md" fullWidth>
         <DialogTitle>{Locale.label("wrapper.messages")}</DialogTitle>
         <DialogContent>
           <PrivateMessages context={props.context} refreshKey={refreshKey} onUpdate={props.loadCounts} />
         </DialogContent>
       </Dialog>);
-    else if (showNotifications) return (<Dialog open onClose={() => setShowNotifications(false)}>
+    else if (showNotifications) return (<Dialog open onClose={() => setShowNotifications(false)} maxWidth="md" fullWidth>
       <DialogTitle>{Locale.label("wrapper.notifications")}</DialogTitle>
       <DialogContent>
       		<Notifications context={props.context} appName={props.appName} onUpdate={props.loadCounts} router={props.router} />
