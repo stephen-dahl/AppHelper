@@ -14,10 +14,13 @@ export class Locale {
   private static keys:any = {}
 
   static init = async (backends:string[]) => {
-    let l = navigator.language.split("-")[0];
-    l = Object.keys(this.extraCodes).find(code => this.extraCodes[code].includes(l)) || l
-    const notSupported = this.supportedLanguages.indexOf(l) === -1
-    const langs = (l==="en" || notSupported) ? ["en"] : ["en", l];
+    let langs = ["en"];
+    if (typeof navigator !== "undefined") {
+      let l = navigator.language.split("-")[0];
+      l = Object.keys(this.extraCodes).find(code => this.extraCodes[code].includes(l)) || l
+      const notSupported = this.supportedLanguages.indexOf(l) === -1
+      langs = (l==="en" || notSupported) ? ["en"] : ["en", l];
+    }
 
     let result = {};
     for (let lang of langs) {
