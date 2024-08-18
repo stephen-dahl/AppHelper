@@ -16,7 +16,7 @@ const positionEditorElement = (editor: HTMLElement, rect: DOMRect | null) => {
   } else {
     editor.style.opacity = "1";
     editor.style.top = `${rect.top + rect.height + 10}px`;
-    editor.style.left = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox') ? '20px' :`${
+    editor.style.left = `${
       rect.left + window.pageXOffset - editor.offsetWidth / 2 + rect.width / 2 < 0
         ? 0
         : rect.left

@@ -86,7 +86,7 @@ function BlockOptionsDropdownList({ editor, blockType, toolbarRef, setShowBlockO
     if (toolbar !== null && dropDown !== null) {
       const { top, left } = toolbar.getBoundingClientRect();
       dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox') ? '20px' : `${left}px`;
+      dropDown.style.left = `${left}px`;
     }
   }, [dropDownRef, toolbarRef]);
 
@@ -361,7 +361,7 @@ export function ToolbarPlugin(props: Props) {
     });
   }, [editor, isLink]); //eslint-disable-line
 
-  const editorEl = (typeof window !== 'undefined') && window.document.getElementById('elementDetailsBox');
+  const editorEl = (typeof window !== 'undefined') && window.document.getElementById('elementEditDialog');
   const portalKey = editorEl ? editorEl : document.body;
 
   return (
