@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { ErrorMessages, InputBox, QuestionEdit } from "./";
 import { ApiHelper, Locale, UniqueIdHelper, UserHelper } from "../helpers";
 import { AnswerInterface, QuestionInterface, FormSubmissionInterface } from "@churchapps/helpers";
@@ -18,8 +19,10 @@ interface Props {
 }
 
 export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackground = false, ...props}) => {
+  const [stripePromise, setStripe] = React.useState<Promise<Stripe>>(null);
   const [formSubmission, setFormSubmission] = React.useState(null);
   const [errors, setErrors] = React.useState([]);
+  const paymentRef = useRef<any>(null);
 
   const getDeleteFunction = () => (!UniqueIdHelper.isMissing(formSubmission?.id)) ? handleDelete : undefined
   const handleDelete = () => {
@@ -67,11 +70,7 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
     return result;
   }
 
-  const handleSave = () => {
-    const fs = formSubmission;
-    fs.submittedBy = props.personId || null;
-    fs.submissionDate = new Date();
-    fs.churchId = props.churchId || null;
+  const validate = (fs: any) => {
     let e: any = [];
     fs.answers.forEach((a: AnswerInterface) => {
 
@@ -81,13 +80,45 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
         setErrors(e);
       }
     });
-    if (!e.length) ApiHelper.post("/formsubmissions/", [fs], "MembershipApi").then((res) => {
-      if (res?.[0]?.error) {
-        setErrors([res?.[0].error]);
-      } else {
-        props.updatedFunction();
+    return e.length === 0;
+  }
+
+  const handleSave = async () => {
+    const fs = formSubmission;
+    if (validate(fs)) {
+      // First, handle the payment if there's a payment component
+      if (paymentRef.current) {
+        const paymentResult = await paymentRef.current.handlePayment();
+        if (!paymentResult.paymentSuccessful) {
+          setErrors(paymentResult.errors);
+          return;
+        } else {
+          // Mark payment as successful in answers
+          const paymentAnswer = fs.answers.find((a: AnswerInterface) => a.questionId === paymentRef.current.questionId);
+          if (paymentAnswer) {
+            paymentAnswer.value = "Payment Successful";
+          } else {
+            fs.answers.push({
+              questionId: paymentRef.current.questionId,
+              value: "Payment Successful"
+            });
+          }
+        }
       }
-    });
+  
+      // If payment is successful or there's no payment, proceed with form submission
+      fs.submittedBy = props.personId || null;
+      fs.submissionDate = new Date();
+      fs.churchId = props.churchId || null;
+  
+      ApiHelper.post("/formsubmissions/", [fs], "MembershipApi").then((res) => {
+        if (res?.[0]?.error) {
+          setErrors([res?.[0].error]);
+        } else {
+          props.updatedFunction();
+        }
+      });
+    }
   }
 
   const handleChange = (questionId: string, value: string) => {
@@ -102,12 +133,22 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
     setFormSubmission(fs);
   }
 
+  React.useEffect(() => {
+    if (props.churchId) {
+      ApiHelper.get("/gateways/churchId/" + props.churchId, "GivingApi").then(data => {
+        if (data.length && data[0]?.publicKey) {
+          setStripe(loadStripe(data[0].publicKey));
+        }
+      });
+    }
+  }, [props.churchId]);
+
   React.useEffect(loadData, []); //eslint-disable-line
 
   let questionList = [];
   if (formSubmission != null) {
     let questions = formSubmission.questions;
-    for (let i = 0; i < questions.length; i++) questionList.push(<QuestionEdit noBackground={noBackground} key={questions[i].id} question={questions[i]} answer={getAnswer(questions[i].id)} changeFunction={handleChange} />);
+    for (let i = 0; i < questions.length; i++) questionList.push(<QuestionEdit noBackground={noBackground} key={questions[i].id} question={questions[i]} answer={getAnswer(questions[i].id)} changeFunction={handleChange} churchId={props.churchId} ref={questions[i].fieldType === "Payment" ? paymentRef : null} stripePromise={stripePromise} />);
   }
 
   return (
