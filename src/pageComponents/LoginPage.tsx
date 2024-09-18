@@ -111,10 +111,10 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
     if (registeredChurch) {
       AnalyticsHelper.logEvent("Church", "Register", UserHelper.currentUserChurch.church.name);
       try {
-        if (CommonEnvironmentHelper.GoogleAnalyticsTag && typeof(window)!=="undefined") {
+        if (CommonEnvironmentHelper.GoogleAnalyticsTag && typeof (window) !== "undefined") {
           ga4.gtag("event", "conversion", { send_to: "AW-427967381/Ba2qCLrXgJoYEJWHicwB" });
         }
-      } catch {}
+      } catch { }
     }
     else AnalyticsHelper.logEvent("Church", "Select", UserHelper.currentUserChurch.church.name);
 
@@ -183,7 +183,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
       UserHelper.selectChurch(props.context, churchId, null).then(() => { continueLoginProcess() });
     } catch (err) {
       console.log("Error in selecting church: ", err)
-      setErrors([Locale.label("login.validate.selectChurch")])
+      setErrors([Locale.label("login.validate.selectingChurch")])
       loginFormRef?.current?.setSubmitting(false);
     }
 
