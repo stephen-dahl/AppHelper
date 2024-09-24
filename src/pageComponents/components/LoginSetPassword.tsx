@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputBox } from "../../components";
-import { TextField } from "@mui/material";
+import { Icon, IconButton, InputAdornment, TextField } from "@mui/material";
 import { LoginResponseInterface, UserInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "../../helpers";
 
@@ -18,6 +18,7 @@ export const LoginSetPassword: React.FC<Props> = props => {
   const [password, setPassword] = React.useState("");
   const [verifyPassword, setVerifyPassword] = React.useState("");
   const [user, setUser] = React.useState<UserInterface>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validate = () => {
     const result = [];
@@ -56,8 +57,12 @@ export const LoginSetPassword: React.FC<Props> = props => {
   return (
     <InputBox headerText={Locale.label("login.setPassword")} saveFunction={submitChangePassword} saveButtonType="submit" saveText={(props.isSubmitting || !user) ? Locale.label("common.pleaseWait") : Locale.label("login.signIn")} isSubmitting={props.isSubmitting}>
       {user && <p style={{ marginTop: 0, marginBottom: 0 }}>{Locale.label("login.welcomeBack")} {user.firstName}.</p>}
-      <TextField fullWidth name="password" type="password" label={Locale.label("login.setPassword")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }} />
-      <TextField fullWidth name="verifyPassword" type="password" label={Locale.label("login.verifyPassword")} value={verifyPassword} onChange={(e) => { e.preventDefault(); setVerifyPassword(e.target.value) }} />
+      <TextField fullWidth name="password" type={showPassword ? "text" : "password"} label={Locale.label("login.setPassword")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }}  InputProps={{
+        endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
+      }} />
+      <TextField fullWidth name="verifyPassword" type={showPassword ? "text" : "password"} label={Locale.label("login.verifyPassword")} value={verifyPassword} onChange={(e) => { e.preventDefault(); setVerifyPassword(e.target.value) }}  InputProps={{
+        endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
+      }} />
     </InputBox>
   );
 }

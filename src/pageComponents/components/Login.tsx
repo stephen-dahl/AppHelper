@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputBox } from "../../components";
-import { TextField, Box, PaperProps } from "@mui/material";
+import { TextField, Box, PaperProps, InputAdornment, IconButton, Icon } from "@mui/material";
 import { Locale } from "../../helpers/Locale";
 
 interface Props {
@@ -17,6 +17,7 @@ interface Props {
 export const Login: React.FC<Props> = ({ mainContainerCssProps = {}, ...props }) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email: string) => (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(email))
 
@@ -45,7 +46,9 @@ export const Login: React.FC<Props> = ({ mainContainerCssProps = {}, ...props })
   return (
     <InputBox headerText={Locale.label("login.signInTitle")} saveFunction={submitLogin} saveButtonType="submit" saveText={props.isSubmitting ? Locale.label("common.pleaseWait") : Locale.label("login.signIn")} isSubmitting={props.isSubmitting} mainContainerCssProps={mainContainerCssProps}>
       <TextField fullWidth autoFocus name="email" type="email" label={Locale.label("login.email")} value={email} onChange={(e) => { e.preventDefault(); setEmail(e.target.value) }} />
-      <TextField fullWidth name="email" type="password" label={Locale.label("login.password")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }} />
+      <TextField fullWidth name="email" type={showPassword ? "text" : "password"} label={Locale.label("login.password")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }}  InputProps={{
+        endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
+      }} />
       <Box sx={{ textAlign: "right", marginY: 1 }}>
         {getRegisterLink()}
         <a href="about:blank" className="text-decoration" onClick={(e) => { e.preventDefault(); props.setShowForgot(true); }}>{Locale.label("login.forgot")}</a>&nbsp;
