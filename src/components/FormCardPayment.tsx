@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle } from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { Box, Grid, TextField } from "@mui/material";
 import { QuestionInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale, UserInterface, PersonInterface, StripePaymentMethod, StripeDonationInterface, ChurchInterface, FundInterface, ArrayHelper } from "../helpers";
+import { ApiHelper, Locale, UserInterface, PersonInterface, StripePaymentMethod, StripeDonationInterface, ChurchInterface, FundInterface, ArrayHelper, UserHelper } from "../helpers";
 
 interface Props {
 	churchId: string,
@@ -13,9 +13,9 @@ export const FormCardPayment = forwardRef((props: Props, ref) => {
   const formStyling = { style: { base: { fontSize: "18px" } } };
   const elements = useElements();
   const stripe = useStripe();
-  const [email, setEmail] = React.useState<string>("");
-  const [firstName, setFirstName] = React.useState<string>("");
-  const [lastName, setLastName] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>((ApiHelper.isAuthenticated && UserHelper.user.email) ? UserHelper.user.email : "");
+  const [firstName, setFirstName] = React.useState<string>((ApiHelper.isAuthenticated && UserHelper.user.firstName) ? UserHelper.user.firstName : "");
+  const [lastName, setLastName] = React.useState<string>((ApiHelper.isAuthenticated && UserHelper.user.lastName) ? UserHelper.user.lastName : "");
   const [church, setChurch] = React.useState<ChurchInterface>();
   const [fund, setFund] = React.useState<FundInterface>()
   let amt = Number(props.question.choices.find(c => c.text === "Amount")?.value);
@@ -145,13 +145,13 @@ export const FormCardPayment = forwardRef((props: Props, ref) => {
 	return <div style={{ backgroundColor: "#bdbdbd", padding: 35, borderRadius: 20 }}>
 		<Grid container spacing={2}>
 			<Grid item xs={12}>
-				<TextField fullWidth required size="small" margin="none" style={{backgroundColor: "white", borderRadius: "4px"}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={Locale.label("person.email")} value={email} onChange={(e) => setEmail(e.target.value)} />
+				<TextField fullWidth required size="small" margin="none" style={{backgroundColor: "white", borderRadius: "4px"}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={Locale.label("person.email")} value={email} onChange={(e) => setEmail(e.target.value)} disabled={ApiHelper.isAuthenticated && UserHelper.user.email !== ""} />
 			</Grid>
 			<Grid item xs={12} sm={6}>
-				<TextField fullWidth required size="small" margin="none" style={{backgroundColor: "white", borderRadius: "4px"}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={Locale.label("person.firstName")} value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+				<TextField fullWidth required size="small" margin="none" style={{backgroundColor: "white", borderRadius: "4px"}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={Locale.label("person.firstName")} value={firstName} onChange={(e) => setFirstName(e.target.value)} disabled={ApiHelper.isAuthenticated && UserHelper.user.firstName !== ""} />
 			</Grid>
 			<Grid item xs={12} sm={6}>
-				<TextField fullWidth required size="small" margin="none" style={{backgroundColor: "white", borderRadius: "4px"}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={Locale.label("person.lastName")} value={lastName} onChange={(e) => setLastName(e.target.value)} />
+				<TextField fullWidth required size="small" margin="none" style={{backgroundColor: "white", borderRadius: "4px"}} InputLabelProps={{ sx: { fontWeight: "bold" } }} label={Locale.label("person.lastName")} value={lastName} onChange={(e) => setLastName(e.target.value)} disabled={ApiHelper.isAuthenticated && UserHelper.user.lastName !== ""} />
 			</Grid>
 			<Grid item xs={12}>
 				<Box sx={{ backgroundColor: "white", padding: 1.5, borderRadius: 1, color: "gray", fontWeight: "bold", fontSize: 18 }}>$ {amt}</Box>
