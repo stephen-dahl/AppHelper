@@ -40,7 +40,7 @@ export class UserHelper {
   }
 
   static checkAccess({ api, contentType, action }: IApiPermission): boolean {
-    const permissions = ApiHelper.getConfig(api).permisssions;
+    const permissions = ApiHelper.getConfig(api)?.permisssions || [];
 
     let result = false;
     if (permissions !== undefined) {
