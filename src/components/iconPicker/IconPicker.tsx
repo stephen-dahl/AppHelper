@@ -3,10 +3,10 @@ import { styled, Icon, InputBase, Typography, debounce, Grid, IconButton, Pagina
 import MuiPaper from "@mui/material/Paper";
 import IconNamesList from "./IconNamesList"
 import { Locale } from "../../helpers";
-//import FlexSearch from "flexsearch";
+import FlexSearch from "flexsearch";
 const UPDATE_SEARCH_INDEX_WAIT_MS = 220;
 
-const FlexSearch = require("flexsearch");
+//const FlexSearch = require("flexsearch");
 
 const StyledIconSpan = styled("span")(({ theme }) => ({
   display: "inline-flex",
