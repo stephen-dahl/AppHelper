@@ -1,3 +1,5 @@
+"use client";
+
 import { GroupInterface, ApiHelper, Locale } from "../helpers";
 import { Modal, Box, FormControl, InputLabel, MenuItem, Select, TextField, SelectChangeEvent, Button, DialogActions, Alert, Snackbar } from "@mui/material";
 import React from "react";

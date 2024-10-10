@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef } from "react";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { ErrorMessages, InputBox, QuestionEdit } from "./";
@@ -105,12 +107,12 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
           }
         }
       }
-  
+
       // If payment is successful or there's no payment, proceed with form submission
       fs.submittedBy = props.personId || null;
       fs.submissionDate = new Date();
       fs.churchId = props.churchId || null;
-  
+
       ApiHelper.post("/formsubmissions/", [fs], "MembershipApi").then((res) => {
         if (res?.[0]?.error) {
           setErrors([res?.[0].error]);

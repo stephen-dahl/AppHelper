@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react"
 import { ApiHelper, Locale, PersonHelper } from "../../helpers"
 import { MessageInterface, UserContextInterface } from "@churchapps/helpers"

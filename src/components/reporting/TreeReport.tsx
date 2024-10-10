@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ReportOutputInterface, ReportResultInterface } from "@churchapps/helpers"
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@mui/material"

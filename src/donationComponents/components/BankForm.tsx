@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { useStripe } from "@stripe/react-stripe-js";

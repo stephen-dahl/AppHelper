@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ReportInterface, ReportPermissionInterface } from "@churchapps/helpers";
 import { ApiHelper, UserHelper } from "../../helpers"

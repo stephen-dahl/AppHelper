@@ -1,3 +1,5 @@
+"use client";
+
 import { Fab, Icon } from "@mui/material";
 import React from "react";
 import { SupportModal } from "./SupportModal";

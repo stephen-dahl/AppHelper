@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import { Grid, TextField } from "@mui/material"
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ErrorMessages, FloatingSupport, Loading } from "../components";
 import { LoginResponseInterface, UserContextInterface, ChurchInterface, UserInterface, LoginUserChurchInterface } from "@churchapps/helpers";

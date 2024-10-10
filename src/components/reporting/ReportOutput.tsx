@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef } from "react";
 import { ArrayHelper, PersonInterface, ReportInterface, ReportResultInterface } from "@churchapps/helpers";
 import { DisplayBox, ExportLink, Loading } from "../"

@@ -1,3 +1,5 @@
+"use client";
+
 import React, {useCallback, useMemo} from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";

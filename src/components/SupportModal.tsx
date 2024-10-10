@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Icon, Stack } from "@mui/material";
 import React from "react";
 import { Locale } from "../helpers";

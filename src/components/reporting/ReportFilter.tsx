@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ReportInterface, ParameterInterface } from "@churchapps/helpers";
 import { ArrayHelper, Locale } from "../../helpers"

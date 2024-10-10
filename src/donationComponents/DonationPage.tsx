@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { DonationForm, RecurringDonations, PaymentMethods } from "./components";

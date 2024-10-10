@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ApiHelper, Locale } from "../../helpers"
 import { ChurchInterface, RegisterChurchRequestInterface } from "@churchapps/helpers";

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { styled, Icon, InputBase, Typography, debounce, Grid, IconButton, Pagination, Stack } from "@mui/material";
 import MuiPaper from "@mui/material/Paper";

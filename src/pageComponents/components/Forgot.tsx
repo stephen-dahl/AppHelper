@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FormEventHandler } from "react";
 import { ApiHelper, Locale } from "../../helpers";
 import { ErrorMessages } from "../../components";

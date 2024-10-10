@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ChurchInterface, LoginUserChurchInterface } from "@churchapps/helpers";
 import { SelectChurchSearch } from "./SelectChurchSearch";

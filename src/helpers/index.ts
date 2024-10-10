@@ -11,7 +11,6 @@ export { FileHelper } from "./FileHelper";
 export { Locale } from "./Locale";
 export { PersonHelper } from "./PersonHelper"
 export { SocketHelper } from "./SocketHelper";
-export { Themes } from "./Themes"
 export { UserHelper } from "./UserHelper";
 export { UniqueIdHelper } from "./UniqueIdHelper";
 export { createEmotionCache } from "./createEmotionCache";

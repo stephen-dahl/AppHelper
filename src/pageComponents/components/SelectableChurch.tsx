@@ -1,3 +1,5 @@
+"use client";
+
 import { Grid } from "@mui/material";
 import React from "react";
 import { ArrayHelper } from "../../helpers"

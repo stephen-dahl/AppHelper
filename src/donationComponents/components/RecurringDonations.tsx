@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { DisplayBox } from "../../components";
 import { ApiHelper, UserHelper, CurrencyHelper, DateHelper, Locale } from "../../helpers";

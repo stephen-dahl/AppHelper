@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Paper, Box, Typography, styled, Icon } from "@mui/material";
 import { HelpIcon } from "./HelpIcon";

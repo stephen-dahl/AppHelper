@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Suspense } from "react";
 import { lazy } from 'react';
 const Editor = lazy(() => import('./Editor'));

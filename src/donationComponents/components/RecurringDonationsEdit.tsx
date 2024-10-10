@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ApiHelper, Locale } from "../../helpers";
 import { InputBox } from "../../components";

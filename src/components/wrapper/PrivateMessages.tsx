@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { ApiHelper } from "../../helpers/ApiHelper";
 import { Box, Stack } from "@mui/material";

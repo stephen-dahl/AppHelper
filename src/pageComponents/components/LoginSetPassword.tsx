@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { InputBox } from "../../components";
 import { Icon, IconButton, InputAdornment, TextField } from "@mui/material";

@@ -1,3 +1,4 @@
+"use client";
 import { Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { ApiHelper, Locale } from "../../helpers";

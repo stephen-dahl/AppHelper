@@ -1,3 +1,5 @@
+"use client";
+
 import { FileHelper, ApiHelper, Locale } from "../../helpers";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 import { } from "../../helpers";

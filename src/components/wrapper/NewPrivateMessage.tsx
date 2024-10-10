@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, TextField, TableRow, TableCell, Table, TableBody } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, PersonHelper } from "../../helpers";

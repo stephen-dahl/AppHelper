@@ -1,3 +1,5 @@
+"use client";
+
 import React, { CSSProperties } from "react";
 import { IconButton, Toolbar, Icon, Typography, Box, Container, Link } from "@mui/material";
 import { UserHelper, AppearanceHelper, PersonHelper, AppearanceInterface, ApiHelper } from "../../helpers";

@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, Paper, Stack } from "@mui/material";
 import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, Locale, PersonHelper } from "../../helpers";

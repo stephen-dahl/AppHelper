@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable multiline-ternary */
 import React from "react";
 import { Stripe } from "@stripe/stripe-js";

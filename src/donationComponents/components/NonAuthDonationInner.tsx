@@ -1,3 +1,5 @@
+"use client";
+
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import React, { useState, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";

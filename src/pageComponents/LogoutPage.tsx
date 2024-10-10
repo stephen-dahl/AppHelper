@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useCookies } from "react-cookie"
 import { ApiHelper, UserContextInterface } from "../helpers";

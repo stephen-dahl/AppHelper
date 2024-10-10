@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Badge, Icon, IconButton, ListItemButton, ListItemIcon, ListItemText, styled, Tooltip } from "@mui/material";
 import { NavLink, useLocation } from "react-router-dom";

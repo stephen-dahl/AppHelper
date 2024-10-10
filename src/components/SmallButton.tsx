@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Button, Icon, Tooltip } from "@mui/material";
 import { Navigate } from "react-router-dom";

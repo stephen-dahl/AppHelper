@@ -1,3 +1,5 @@
+"use client";
+
 import { Alert, Snackbar } from "@mui/material";
 import React, { useEffect } from "react";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FormEventHandler } from "react";
 import { LoginResponseInterface, RegisterUserInterface, UserInterface } from "@churchapps/helpers";
 import { AnalyticsHelper, ApiHelper, Locale } from "../../helpers";

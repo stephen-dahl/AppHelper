@@ -1,3 +1,5 @@
+"use client";
+
 import { Icon, Paper, Stack, TextField } from "@mui/material";
 import React from "react";
 import { ApiHelper, Locale, PersonHelper } from "../../helpers";
