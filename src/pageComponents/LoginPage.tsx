@@ -72,6 +72,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
     else if (action === "register") setShowRegister(true);
     else {
       if (!props.auth && props.jwt) {
+        console.log("JWT IS", props.jwt)
         setWelcomeBackName(cookies.name);
         login({ jwt: props.jwt });
         setPendingAutoLogin(true);
@@ -206,7 +207,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
       handleLoginSuccess(resp);
     } catch (e: any) {
       setPendingAutoLogin(false);
-      handleLoginErrors([e.toString()]);
+      if (!data.jwt) handleLoginErrors([e.toString()]);
       setIsSubmitting(false);
     }
   };
