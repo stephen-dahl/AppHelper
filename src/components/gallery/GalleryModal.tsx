@@ -93,7 +93,7 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
   return (<>
     <Dialog open={true} onClose={props.onClose}>
       <DialogTitle>Select a Photo</DialogTitle>
-      <DialogContent style={{ minWidth: 600 }}>
+      <DialogContent style={{ overflowX: "hidden" }}>
 
         <Tabs variant="fullWidth" value={tabIndex} onChange={handleTabChange}>
           <Tab label="Gallery" />

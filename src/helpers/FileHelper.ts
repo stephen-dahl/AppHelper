@@ -4,7 +4,7 @@ export class FileHelper {
 
   static postPresignedFile = (presigned: any, uploadedFile: File, progressCallback: (percent: number) => void) => {
     const formData = new FormData();
-    formData.append("key", presigned.key);
+    //formData.append("key", presigned.key); //no longer needed with new aws sdk
     formData.append("acl", "public-read");
     formData.append("Content-Type", uploadedFile.type);
     for (const property in presigned.fields) formData.append(property, presigned.fields[property]);
