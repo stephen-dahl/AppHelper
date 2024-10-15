@@ -9,10 +9,14 @@ interface Props {
 export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: Props) {
 
   const getTargetAndClasses = (extra: string) => {
+    let result = "";
     const classRegex = /\.[^( |\})]+/g;
-    let classes = extra.match(classRegex).join(" ");
-    classes = classes.replaceAll(".", "");
-    let result = " class=\"" + classes + "\"";
+    const matches = extra.match(classRegex)
+    if (matches && matches.length > 0) {
+      let classes = matches.join(" ");
+      classes = classes.replaceAll(".", "");
+      result = " class=\"" + classes + "\"";
+    }
     const targetRegex = /:target="([^"]+)"/g;
     let targets = targetRegex.exec(extra);
     if (targets) result += " " + targets[0].replace(":", "");
