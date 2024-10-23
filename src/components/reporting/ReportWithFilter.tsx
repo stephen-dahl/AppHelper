@@ -62,7 +62,7 @@ export const ReportWithFilter = (props: Props) => {
   else {
     return (<Grid container spacing={3}>
       <Grid item md={8} xs={12}>
-        <ReportOutput report={reportToRun} />
+        <ReportOutput keyName={props.keyName} report={reportToRun} />
       </Grid>
       <Grid item md={4} xs={12}>
         <ReportFilter report={report} onChange={handleChange} onRun={handleRun} />

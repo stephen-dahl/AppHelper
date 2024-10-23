@@ -11,7 +11,7 @@ import { TreeReport } from "./TreeReport";
 import { Button, Icon, Menu, MenuItem } from "@mui/material";
 import { useMountedState } from "../../hooks/useMountedState";
 
-interface Props { report: ReportInterface }
+interface Props { keyName: string, report: ReportInterface }
 
 export const ReportOutput = (props: Props) => {
   const [reportResult, setReportResult] = React.useState<ReportResultInterface>(null);
@@ -103,8 +103,8 @@ export const ReportOutput = (props: Props) => {
     return (<>
       <Button size="small" title={Locale.label("reporting.downloadOptions")} onClick={handleClick} key={key}><Icon>download</Icon></Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.detailedSummary")} icon="volunteer_activism" /></MenuItem>}
-        {detailedPersonSummary?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailedSummary")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
+        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.detailedSummary")} icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"} /></MenuItem>}
+        {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailedSummary")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
       </Menu>
     </>)
   }
