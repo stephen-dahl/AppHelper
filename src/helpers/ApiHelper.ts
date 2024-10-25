@@ -51,7 +51,7 @@ export class ApiHelper {
     const config = this.getConfig(apiName);
     const requestOptions:any = { method: "GET" };
 		if (tags?.length>0) requestOptions.next = { tags: tags };
-		else requestOptions.next = { revalidate:3600 }
+		else requestOptions.cache = "no-store";
     return await this.fetchWithErrorHandling(config.url + path, requestOptions);
   }
 
