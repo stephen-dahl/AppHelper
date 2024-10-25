@@ -38,13 +38,20 @@ export class ApiHelper {
 
   static async get(path: string, apiName: ApiListType) {
     const config = this.getConfig(apiName);
-    const requestOptions = { method: "GET", headers: { Authorization: "Bearer " + config.jwt } };
+    const requestOptions = { 
+			method: "GET", 
+			headers: { Authorization: "Bearer " + config.jwt } ,
+			cache: "no-store"
+		};
+		
     return await this.fetchWithErrorHandling(config.url + path, requestOptions);
   }
 
-  static async getAnonymous(path: string, apiName: ApiListType) {
+  static async getAnonymous(path: string, apiName: ApiListType, tags?:string[]) {
     const config = this.getConfig(apiName);
-    const requestOptions = { method: "GET" };
+    const requestOptions:any = { method: "GET" };
+		if (tags?.length>0) requestOptions.next = { tags: tags };
+		else requestOptions.next = { revalidate:3600 }
     return await this.fetchWithErrorHandling(config.url + path, requestOptions);
   }
 
