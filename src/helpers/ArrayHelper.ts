@@ -1,6 +1,7 @@
 import { UniqueIdHelper } from "./UniqueIdHelper";
 
 export class ArrayHelper {
+	
   static getIds(array: any[], propertyName: string) {
     const result: string[] = [];
     for (const item of array) {
@@ -44,6 +45,12 @@ export class ArrayHelper {
   static getAllArray(array: any[], propertyName: string, values: any[]) {
     const result: any[] = []
     for (const item of array || []) if (values.indexOf(item[propertyName]) > -1) result.push(item);
+    return result;
+  }
+
+	static getAllContaining(array: any[], propertyName: string, value: any) {
+    const result: any[] = []
+    for (const item of array) if (item[propertyName].toString().toLowerCase().indexOf(value.toLowerCase()) > -1) result.push(item);
     return result;
   }
 
