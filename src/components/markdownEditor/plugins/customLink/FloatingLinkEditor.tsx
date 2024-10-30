@@ -144,7 +144,7 @@ const FloatingLinkEditor: FC<FloatingLinkEditorProps> = ({
   }, []); //eslint-disable-line
 
   const variants = ["Light", "Light Accent", "Accent", "Dark Accent", "Dark", "Transparent Light", "Transparent Light Accent", "Transparent Accent", "Transparent Dark Accent", "Transparent Dark", "Primary", "Secondary", "Success", "Danger", "Warning", "Info"];
-  const sizes = ["Small", "Medium", "Large"];
+  const sizes = ["Small", "Medium", "Large", "XL", "2X", "3X", "4X"];
   let appearance = "link";
   if (classNamesList[0].indexOf("btn")>-1) appearance="btn";
   if (classNamesList[0].indexOf("btn-block")>-1) appearance="btn btn-block";
