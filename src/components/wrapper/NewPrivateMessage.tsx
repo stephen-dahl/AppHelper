@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, TextField, TableRow, TableCell, Table, TableBody } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { ApiHelper, Locale, PersonHelper } from "../../helpers";
 import { ConversationInterface, PersonInterface, PrivateMessageInterface, UserContextInterface } from "@churchapps/helpers";
 import { AddNote } from "../notes/AddNote";
@@ -11,6 +11,7 @@ interface Props {
   context: UserContextInterface;
   onSelectMessage: (pm: PrivateMessageInterface) => void
   onBack: () => void
+  selectedPerson?: PersonInterface
 }
 
 export const NewPrivateMessage: React.FC<Props> = (props) => {
@@ -72,6 +73,12 @@ export const NewPrivateMessage: React.FC<Props> = (props) => {
     const privateMessages: PrivateMessageInterface[] = await ApiHelper.post("/privateMessages", [pm], "MessagingApi");
     return privateMessages[0].conversationId;
   }
+
+
+  useEffect(() => {
+    if (props.selectedPerson) handlePersonSelected(props.selectedPerson);
+  }, [props.selectedPerson, handlePersonSelected]);
+
 
   if (!selectedPerson) return (
     <div style={{ paddingLeft: 10, paddingRight: 10 }}>
