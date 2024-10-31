@@ -10,6 +10,7 @@ import { ChartReport } from "./ChartReport";
 import { TreeReport } from "./TreeReport";
 import { Button, Icon, Menu, MenuItem } from "@mui/material";
 import { useMountedState } from "../../hooks/useMountedState";
+import { Link } from "react-router-dom";
 
 interface Props { keyName: string, report: ReportInterface }
 
@@ -103,8 +104,9 @@ export const ReportOutput = (props: Props) => {
     return (<>
       <Button size="small" title={Locale.label("reporting.downloadOptions")} onClick={handleClick} key={key}><Icon>download</Icon></Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.detailedSummary")} icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"} /></MenuItem>}
-        {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailedSummary")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
+        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.summary")} icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"} /></MenuItem>}
+        {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailed")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
+        {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><a href="/public/downloads/DonationTemplate.docx" download target="_blank">{Locale.label("reporting.sampleTemplate")}</a></MenuItem>}
       </Menu>
     </>)
   }
