@@ -208,6 +208,7 @@ export const LoginPage: React.FC<Props> = ({ showLogo = true, loginContainerCssP
     } catch (e: any) {
       setPendingAutoLogin(false);
       if (!data.jwt) handleLoginErrors([e.toString()]);
+      else setWelcomeBackName("");
       setIsSubmitting(false);
     }
   };
