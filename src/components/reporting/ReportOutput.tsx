@@ -106,7 +106,7 @@ export const ReportOutput = (props: Props) => {
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.summary")} icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"} /></MenuItem>}
         {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailed")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
-        {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><a href="/public/downloads/DonationTemplate.docx" download target="_blank">{Locale.label("reporting.sampleTemplate")}</a></MenuItem>}
+        {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><Button onClick={() => { window.open("/downloads/DonationTemplate.docx") }}><Icon sx={{ marginRight: 1 }}>description</Icon>{Locale.label("reporting.sampleTemplate")}</Button></MenuItem>}
       </Menu>
     </>)
   }
