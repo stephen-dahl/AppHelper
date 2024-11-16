@@ -3,11 +3,11 @@
 import React from "react";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 import { DonationForm, RecurringDonations, PaymentMethods } from "./components";
-import { DisplayBox, Loading } from "../components";
+import { DisplayBox, ExportLink, Loading } from "../components";
 import { ApiHelper, DateHelper, UniqueIdHelper, CurrencyHelper, Locale } from "../helpers";
 import { DonationInterface, PersonInterface, StripePaymentMethod, ChurchInterface } from "@churchapps/helpers";
 import { Link } from "react-router-dom"
-import { Table, TableBody, TableRow, TableCell, TableHead, Alert } from "@mui/material"
+import { Table, TableBody, TableRow, TableCell, TableHead, Alert, Button, Icon, Menu, MenuItem } from "@mui/material"
 import { useMountedState } from "../hooks/useMountedState";
 
 interface Props { personId: string, appName?: string, church?: ChurchInterface, churchLogo?: string }
@@ -20,7 +20,13 @@ export const DonationPage: React.FC<Props> = (props) => {
   const [person, setPerson] = React.useState<PersonInterface>(null);
   const [message, setMessage] = React.useState<string>(null);
   const [appName, setAppName] = React.useState<string>("");
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const isMounted = useMountedState();
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
 
   const loadData = () => {
     if (props?.appName) setAppName(props.appName);
@@ -62,6 +68,49 @@ export const DonationPage: React.FC<Props> = (props) => {
     setMessage(message)
     setPaymentMethods(null);
     loadData();
+  }
+
+  const getEditContent = () => {
+    const result: JSX.Element[] = [];
+    const date = new Date();
+    const currentY = date.getFullYear();
+    const lastY = date.getFullYear() - 1;
+
+    const current_year = donations.filter(d => new Date(d.donationDate).getFullYear() === currentY);
+    const last_year = donations.filter(d => new Date(d.donationDate).getFullYear() === lastY);
+    const customHeaders = [
+      { label: "amount", key: "amount" },
+      { label: "donationDate", key: "donationDate" },
+      { label: "fundName", key: "fund.name" },
+      { label: "method", key: "method"},
+      { label: "methodDetails", key: "methodDetails"},
+    ]
+
+    result.push(<>
+      <Button
+        id="download-button"
+        aria-controls={open ? "download-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          setAnchorEl(e.currentTarget);
+        }}
+      >
+        <Icon>download</Icon>
+      </Button>
+      <Menu
+        id="download-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{ 'aria-labelledby': "download-button" }}
+      >
+        <MenuItem onClick={handleClose} dense><ExportLink data={current_year} filename="current_year_donations" customHeaders={customHeaders} text="Current Year" icon="payments" /></MenuItem>
+        <MenuItem onClick={handleClose} dense><ExportLink data={last_year} filename="last_year_donations" customHeaders={customHeaders} text="Last Year" icon="payments" /></MenuItem>
+      </Menu>
+    </>);
+
+    return result;
   }
 
   const getRows = () => {
@@ -120,7 +169,7 @@ export const DonationPage: React.FC<Props> = (props) => {
     else return (
       <>
         <DonationForm person={person} customerId={customerId} paymentMethods={paymentMethods} stripePromise={stripePromise} donationSuccess={handleDataUpdate} church={props?.church} churchLogo={props?.churchLogo} />
-        <DisplayBox headerIcon="payments" headerText="Donations">
+        <DisplayBox headerIcon="payments" headerText="Donations" editContent={getEditContent()}>
           {getTable()}
         </DisplayBox>
         <RecurringDonations customerId={customerId} paymentMethods={paymentMethods} appName={appName} dataUpdate={handleDataUpdate} />
