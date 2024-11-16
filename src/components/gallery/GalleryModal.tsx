@@ -95,28 +95,30 @@ export const GalleryModal: React.FC<Props> = (props: Props) => {
       <DialogTitle>Select a Photo</DialogTitle>
       <DialogContent style={{ overflowX: "hidden" }}>
 
+        {(props.aspectRatio === 0) && (
+          <FormControl fullWidth>
+            <InputLabel>{Locale.label("gallery.aspectRatio")}</InputLabel>
+            <Select size="small" label={Locale.label("gallery.aspectRatio")} name="aspectRatio" value={aspectRatio} onChange={(e) => setAspectRatio(parseFloat(e.target.value.toString()))}>
+              <MenuItem value="0">{Locale.label("gallery.freeForm")}</MenuItem>
+              <MenuItem value="1">1:1</MenuItem>
+              <MenuItem value="2">2:1</MenuItem>
+              <MenuItem value="3">3:1</MenuItem>
+              <MenuItem value="4">4:1</MenuItem>
+              <MenuItem value="1.33">4:3</MenuItem>
+              <MenuItem value="1.78">16:9</MenuItem>
+              <MenuItem value="0.5">1:2</MenuItem>
+              <MenuItem value="0.5625">9:16</MenuItem>
+            </Select>
+          </FormControl>
+        )}
+
         <Tabs variant="fullWidth" value={tabIndex} onChange={handleTabChange}>
           <Tab label="Gallery" />
           <Tab label="Upload" />
           <Tab label="Stock Photos" />
         </Tabs>
         <TabPanel value={tabIndex} index={0}>
-          {(props.aspectRatio === 0) && (
-            <FormControl fullWidth>
-              <InputLabel>{Locale.label("gallery.aspectRatio")}</InputLabel>
-              <Select size="small" label={Locale.label("gallery.aspectRatio")} name="aspectRatio" value={aspectRatio} onChange={(e) => setAspectRatio(parseFloat(e.target.value.toString()))}>
-                <MenuItem value="0">{Locale.label("gallery.freeForm")}</MenuItem>
-                <MenuItem value="1">1:1</MenuItem>
-                <MenuItem value="2">2:1</MenuItem>
-                <MenuItem value="3">3:1</MenuItem>
-                <MenuItem value="4">4:1</MenuItem>
-                <MenuItem value="1.33">4:3</MenuItem>
-                <MenuItem value="1.78">16:9</MenuItem>
-                <MenuItem value="0.5">1:2</MenuItem>
-                <MenuItem value="0.5625">9:16</MenuItem>
-              </Select>
-            </FormControl>
-          )}
+
           <Grid container spacing={3} alignItems="center">
             {getImages()}
           </Grid>
