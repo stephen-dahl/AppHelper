@@ -105,8 +105,10 @@ export const DonationPage: React.FC<Props> = (props) => {
         onClose={handleClose}
         MenuListProps={{ 'aria-labelledby': "download-button" }}
       >
-        <MenuItem onClick={handleClose} dense><ExportLink data={current_year} filename="current_year_donations" customHeaders={customHeaders} text="Current Year" icon="payments" /></MenuItem>
-        <MenuItem onClick={handleClose} dense><ExportLink data={last_year} filename="last_year_donations" customHeaders={customHeaders} text="Last Year" icon="payments" /></MenuItem>
+        <MenuItem onClick={handleClose} dense><ExportLink data={current_year} filename="current_year_donations" customHeaders={customHeaders} text="Current Year" icon="csv" /></MenuItem>
+        <MenuItem href="/member/donate/print"><Icon>print</Icon> Current Year</MenuItem>
+        <MenuItem onClick={handleClose} dense><ExportLink data={last_year} filename="last_year_donations" customHeaders={customHeaders} text="Last Year" icon="csv" /></MenuItem>
+        <MenuItem href="/member/donate/print?prev=1"><Icon>print</Icon> Last Year</MenuItem>
       </Menu>
     </>);
 
