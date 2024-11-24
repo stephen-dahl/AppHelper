@@ -1,9 +1,20 @@
 "use client";
 
 import React from "react";
-import { Paper, Box, Typography, styled, Icon } from "@mui/material";
+import { Paper, Box, Typography, Icon } from "@mui/material";
 import { HelpIcon } from "./HelpIcon";
 import { SmallButton } from "./SmallButton";
+import { styled, useTheme } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    InputBox: { headerText: string; };
+  }
+  interface PaletteOptions {
+    InputBox?: { headerText?: string; };
+  }
+}
+
 
 interface Props {
   id?: string,
@@ -39,6 +50,8 @@ const CustomContextBox = styled(Box)({
 });
 
 export const DisplayBox = React.forwardRef<HTMLDivElement, Props>((props, ref) => {
+  const theme = useTheme();
+  const headerText = theme.palette.InputBox.headerText ? theme.palette.InputBox.headerText : "primary";
 
   let editContent: React.ReactNode;
   if (props.editFunction !== undefined) {
@@ -51,8 +64,8 @@ export const DisplayBox = React.forwardRef<HTMLDivElement, Props>((props, ref) =
       {props.help && <HelpIcon article={props.help} />}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          {props.headerIcon && <Icon sx={{ color: "#1976d2" }}>{props.headerIcon}</Icon>}
-          <Typography component="h2" sx={{ display: "inline-block", marginLeft: props.headerIcon ? 1 : 0 }} variant="h6" color="primary">
+          {props.headerIcon && <Icon sx={{ color: headerText }}>{props.headerIcon}</Icon>}
+          <Typography component="h2" sx={{ display: "inline-block", marginLeft: props.headerIcon ? 1 : 0 }} variant="h6" color={headerText}>
             {props.headerText}
           </Typography>
 

@@ -1,9 +1,20 @@
 "use client";
 
 import React from "react";
-import { Paper, Box, Typography, Stack, styled, Button, Icon, PaperProps } from "@mui/material";
+import { Paper, Box, Typography, Stack, Button, Icon, PaperProps } from "@mui/material";
 import { HelpIcon } from "./HelpIcon";
 import { Locale } from "../helpers";
+import { styled, useTheme } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    InputBox: { headerText: string; };
+  }
+  interface PaletteOptions {
+    InputBox?: { headerText?: string; };
+  }
+}
+
 
 interface Props {
   id?: string;
@@ -28,6 +39,8 @@ interface Props {
 }
 
 const CustomContextBox = styled(Box)({
+  name: "InputBox",
+  slot: "root",
   marginTop: 10,
   overflowX: "hidden",
   "& p": { color: "#666" },
@@ -42,7 +55,11 @@ const CustomContextBox = styled(Box)({
   }
 })
 
+
 export function InputBox({ mainContainerCssProps = {}, ...props }: Props) {
+  const theme = useTheme();
+  const headerText = theme.palette.InputBox.headerText ? theme.palette.InputBox.headerText : "primary";
+
   let buttons = [];
   if (props.cancelFunction) buttons.push(<Button key="cancel" onClick={props.cancelFunction} color="warning" sx={{ "&:focus": { outline: "none" } }}>{props.cancelText || Locale.label("common.cancel")}</Button>);
   if (props.deleteFunction) buttons.push(<Button key="delete" id="delete" variant="outlined" aria-label={props.ariaLabelDelete} onClick={props.deleteFunction} color="error" sx={{ "&:focus": { outline: "none" } }}>{props.deleteText || Locale.label("common.delete")}</Button>);
@@ -57,10 +74,10 @@ export function InputBox({ mainContainerCssProps = {}, ...props }: Props) {
     <Paper id={props.id} sx={{ padding: 2, marginBottom: 4 }} data-cy={props["data-cy"]} {...mainContainerCssProps}>
       {props.help && <HelpIcon article={props.help} />}
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }} data-cy="header">
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {props.headerIcon && <Icon sx={{ color: "#1976d2" }}>{props.headerIcon}</Icon>}
+        <Box display="flex" alignItems="center">
+          {props.headerIcon && <Icon sx={{ color: headerText }}>{props.headerIcon}</Icon>}
           {props.headerText && (
-            <Typography component="h2" sx={{ display: "inline-block", marginLeft: props.headerIcon ? 1 : 0 }} variant="h6" color="primary">
+            <Typography component="h2" sx={{ display: "inline-block", marginLeft: props.headerIcon ? 1 : 0 }} variant="h6" color={headerText}>
               {props.headerText}
             </Typography>
           )}
