@@ -26,7 +26,7 @@ export const SiteWrapper: React.FC<Props> = props => {
   const toggleDrawer = () => { setOpen(!open); };
   const isMounted = useMountedState();
 
-  const CustomDrawer = (open) ? OpenDrawer : ClosedDrawer;
+  const CustomDrawer = (open) ? OpenDrawer({backgroundColor:props.appearance.wrapperBackground}) : ClosedDrawer({backgroundColor:props.appearance.wrapperBackground});
   const CustomAppBar = (open) ? OpenDrawerAppBar : ClosedDrawerAppBar;
 
   const loadCounts = () => {
@@ -73,7 +73,7 @@ export const SiteWrapper: React.FC<Props> = props => {
 
   return <>
     <CustomAppBar position="absolute">
-      <Toolbar sx={{ pr: "24px" }}>
+      <Toolbar sx={{ pr: "24px", backgroundColor: props.appearance?.wrapperBackground }}>
         <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={toggleDrawer} sx={{ marginRight: "36px", ...(open && { display: "none" }) }}>
           <Icon>menu</Icon>
         </IconButton>
@@ -84,7 +84,7 @@ export const SiteWrapper: React.FC<Props> = props => {
       </Toolbar>
     </CustomAppBar>
 
-    <CustomDrawer variant="permanent" open={open} onMouseOver={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+    <CustomDrawer style={{ backgroundColor: props.appearance?.wrapperBackground }} variant="permanent" open={open} onMouseOver={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
       <Toolbar sx={{ display: "flex", alignItems: "center", width: "100%", px: [1] }}>
         <img src={churchLogo || "/images/logo-wrapper.png"} alt="logo" style={{ maxWidth: 170 }} />
         <div style={{ justifyContent: "flex-end", flex: 1, display: "flex" }}>

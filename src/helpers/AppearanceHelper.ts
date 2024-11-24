@@ -1,5 +1,5 @@
 
-export interface AppearanceInterface { primaryColor?: string, primaryContrast?: string, secondaryColor?: string, secondaryContrast?: string, logoLight?: string, logoDark?: string, favicon_400x400?: string, favicon_16x16?: string, ogImage?: string }
+export interface AppearanceInterface { wrapperBackground?: string, logoLight?: string, logoDark?: string, favicon_400x400?: string, favicon_16x16?: string, ogImage?: string }
 
 export class AppearanceHelper {
 

@@ -2,11 +2,11 @@
 
 import { AppBar, Drawer, styled } from "@mui/material";
 
-export const OpenDrawer = styled(Drawer)(
+export const OpenDrawer = (styles:any) => styled(Drawer)(
   ({ theme }) => ({
     "& .MuiDrawer-paper": {
       position: "relative",
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: styles.backgroundColor || theme.palette.primary.main,
       color: "#FFFFFF",
       whiteSpace: "nowrap",
       width: "100vw",
@@ -22,7 +22,7 @@ export const OpenDrawer = styled(Drawer)(
   })
 );
 
-export const ClosedDrawer = styled(OpenDrawer)(
+export const ClosedDrawer = (styles:any) => styled(OpenDrawer(styles))(
   ({ theme }) => ({
     overflowX: "hidden",
     transition: theme.transitions.create("width", {
