@@ -38,7 +38,7 @@ export function Conversation(props: Props) {
   if (conversation === null) return null;
   else {
     const message = conversation.messages[0];
-    const photoUrl = PersonHelper.getPhotoUrl(message.person);
+    const photoUrl = PersonHelper.getPhotoUrl(message?.person);
     let datePosted = new Date(message.timeUpdated || message.timeSent);
     const displayDuration = DateHelper.getDisplayDuration(datePosted);
 
