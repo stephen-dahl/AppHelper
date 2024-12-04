@@ -147,7 +147,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     if (!email) result.push(Locale.label("donation.donationForm.validate.email"));
     if (fundsTotal === 0) result.push(Locale.label("donation.donationForm.validate.amount"));
     if (result.length === 0) {
-      if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) result.push(Locale.label("donation.donationForm.validate.validEmail"));  //eslint-disable-line
+      if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/)) result.push(Locale.label("donation.donationForm.validate.validEmail"));  //eslint-disable-line
     }
     //Todo - make sure the account doesn't exist. (loadOrCreate?)
     setErrors(result);
@@ -225,11 +225,11 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
         <CardElement options={formStyling} />
       </div>
       {donationType === "recurring"
-        && <Grid container spacing={3} style={{marginTop:0}}>
+        && <Grid container spacing={3} style={{ marginTop: 0 }}>
           <Grid item md={6} xs={12}>
             <FormControl fullWidth>
               <InputLabel>{Locale.label("donation.donationForm.frequency")}</InputLabel>
-              <Select label="Frequency" name="interval" aria-label="interval" value={interval} onChange={(e) => {setInterval(e.target.value) }}>
+              <Select label="Frequency" name="interval" aria-label="interval" value={interval} onChange={(e) => { setInterval(e.target.value) }}>
                 <MenuItem value="one_week">{Locale.label("donation.donationForm.weekly")}</MenuItem>
                 <MenuItem value="two_week">{Locale.label("donation.donationForm.biWeekly")}</MenuItem>
                 <MenuItem value="one_month">{Locale.label("donation.donationForm.monthly")}</MenuItem>
