@@ -76,8 +76,8 @@ export const DonationPage: React.FC<Props> = (props) => {
     const currentY = date.getFullYear();
     const lastY = date.getFullYear() - 1;
 
-    const current_year = donations.filter(d => new Date(d.donationDate).getFullYear() === currentY);
-    const last_year = donations.filter(d => new Date(d.donationDate).getFullYear() === lastY);
+    const current_year = (donations.length>0) ? donations.filter(d => new Date(d.donationDate || "2000-01-01").getFullYear() === currentY) : [];
+    const last_year = (donations.length>0) ? donations.filter(d => new Date(d.donationDate || "2000-01-01").getFullYear() === lastY) : [];
     const customHeaders = [
       { label: "amount", key: "amount" },
       { label: "donationDate", key: "donationDate" },
