@@ -78,8 +78,8 @@ function Editor({ value, onChange = () => { }, mode = "interactive", textAlign =
       EmojiNode,
       {
         replace: LinkNode,
-        with: (node: LexicalNode) => (
-          new CustomLinkNode(node.__url, node.__target, [])
+        with: (node: LinkNode) => (
+          new CustomLinkNode(node.getURL(), node.getTarget(), [])
         )
       }
     ]

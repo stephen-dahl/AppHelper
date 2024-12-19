@@ -43,5 +43,5 @@ export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: 
   const convertedText = getSpecialLinks(markdownString);
   const html = marked.parse(convertedText || "")
   const style = (textAlign) ? {textAlign} : {}
-  return <div style={style} dangerouslySetInnerHTML={{__html: html}}></div>
+  return <div style={style} dangerouslySetInnerHTML={{__html: html as string}}></div>
 }

@@ -22,7 +22,10 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "declarationMap": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "paths": {
       "*": [
         "node_modules/*"
@@ -30,6 +33,10 @@
     }
   },
   "include": [
-    "src/**/*",
+    "src/**/*"
+  ],
+  "exclude": [  // Added exclude
+    "node_modules",
+    "dist"
   ]
 }

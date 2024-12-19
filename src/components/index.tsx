@@ -23,3 +23,4 @@ export * from "./gallery";
 export * from "./markdownEditor";
 export * from "./notes";
 export * from "./reporting";
+export * from "./header";
