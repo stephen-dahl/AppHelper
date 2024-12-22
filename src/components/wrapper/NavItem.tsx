@@ -26,11 +26,6 @@ const StyledNavLink = styled(NavLink)({
 });
 
 export const NavItem: React.FC<Props> = (props) => {
-  let isReact = false;
-  try {
-    const a = typeof useLocation();
-    if (a !== null) isReact = true;
-  } catch { }
 
   const getIcon = () => {
     if (props.badgeCount && props.badgeCount > 0) return <Badge badgeContent={props.badgeCount} color="error"><Icon>{props.icon}</Icon></Badge>
@@ -53,6 +48,7 @@ export const NavItem: React.FC<Props> = (props) => {
       : ""}
   </ListItemButton>)
 
-  if (props.external || !isReact) return (<a href={props.url} target={props.target} rel="noreferrer" style={{ textDecoration: "none" }} className={(props.selected) ? "selected" : ""} onClick={(e) => { e.preventDefault(); props.onClick ? props.onClick() : window.location.href = props.url }}>{getLinkContents()}</a>)
-  else return (<StyledNavLink to={props.url || "about:blank"} target={props.target} className={(props.selected) ? "selected" : ""} onClick={(e) => { e.preventDefault(); (props.onClick) ? props.onClick() : props.onNavigate(props.url)}}>{getLinkContents()}</StyledNavLink>)
+  if (props.external) return (<a href={props.url} target={props.target} rel="noreferrer" style={{ textDecoration: "none" }} className={(props.selected) ? "selected" : ""} onClick={(e) => { e.preventDefault(); props.onClick ? props.onClick() : window.location.href = props.url }}>{getLinkContents()}</a>)
+  else return (<a href="about:blank" style={{ textDecoration: "none" }} className={(props.selected) ? "selected" : ""} onClick={(e) => { e.preventDefault(); props.onClick ? props.onClick() : props.onNavigate(props.url) }}>{getLinkContents()}</a>)
+  //else return (<StyledNavLink to={props.url || "about:blank"} target={props.target} className={(props.selected) ? "selected" : ""} onClick={(e) => { e.preventDefault(); (props.onClick) ? props.onClick() : props.onNavigate(props.url)}}>{getLinkContents()}</StyledNavLink>)
 };
