@@ -10,12 +10,11 @@ import { Navigate } from "react-router-dom";
 interface Props {
   appName: string;
   context: UserContextInterface;
-  router?: any;
+  onNavigate: (url: string) => void;
   onUpdate: () => void;
 }
 
 export const Notifications: React.FC<Props> = (props) => {
-  const [redirectUrl, setRedirectUrl] = React.useState("");
   const [notifications, setNotifications] = useState<NotificationInterface[]>([]);
 
   const loadData = async () => {
@@ -45,8 +44,7 @@ export const Notifications: React.FC<Props> = (props) => {
 
     const appUrl = getAppUrl(app);
     if (appUrl === "") {
-      if (props.router) props.router.push(path);
-      else setRedirectUrl(path);
+      props.onNavigate(path);
     }
     else {
       console.log("REDIRECTING TO", appUrl + path)
@@ -78,8 +76,7 @@ export const Notifications: React.FC<Props> = (props) => {
 
   React.useEffect(() => { console.log("RELOADED NOTIFICATIONS") }, []);
 
-  if (redirectUrl) return <Navigate to={redirectUrl} />
-  else return (
+  return (
     <>
       {getMainLinks()}
     </>

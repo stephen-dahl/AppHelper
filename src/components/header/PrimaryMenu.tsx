@@ -5,6 +5,7 @@ import { NavItem } from "../wrapper/NavItem";
 interface Props {
   label: string,
   menuItems: { url: string, icon:string, label: string }[]
+	onNavigate: (url: string) => void,
 }
 
 export const PrimaryMenu = (props:Props) => {
@@ -34,7 +35,7 @@ export const PrimaryMenu = (props:Props) => {
   const getNavItems = () => {
     let result: JSX.Element[] = [];
     props.menuItems.forEach(item => {
-      result.push(<NavItem url={item.url} label={item.label.toUpperCase()} icon={item.icon} key={item.url} />);
+      result.push(<NavItem url={item.url} label={item.label.toUpperCase()} icon={item.icon} key={item.url} onNavigate={props.onNavigate} />);
     });
     return result;
   }

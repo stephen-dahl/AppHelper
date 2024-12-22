@@ -24,7 +24,7 @@ interface Props {
   currentUserChurch: LoginUserChurchInterface;
   context: UserContextInterface;
   appName: string;
-  router?: any;
+  onNavigate: (url: string) => void;
 }
 
 export const UserMenu: React.FC<Props> = (props) => {
@@ -53,13 +53,13 @@ export const UserMenu: React.FC<Props> = (props) => {
     let result: JSX.Element[] = [];
 
 
-    result.push(<NavItem onClick={() => {setShowPM(true)}} label={Locale.label("wrapper.messages")} icon="mail" key="/messages" router={props.router} badgeCount={props.notificationCounts.pmCount} />);
+    result.push(<NavItem onClick={() => {setShowPM(true)}} label={Locale.label("wrapper.messages")} icon="mail" key="/messages" onNavigate={props.onNavigate} badgeCount={props.notificationCounts.pmCount} />);
 
-    result.push(<NavItem onClick={() => {setShowNotifications(true)}} label={Locale.label("wrapper.notifications")} icon="notifications" key="/notifications" router={props.router} badgeCount={props.notificationCounts.notificationCount} />);
+    result.push(<NavItem onClick={() => {setShowNotifications(true)}} label={Locale.label("wrapper.notifications")} icon="notifications" key="/notifications" onNavigate={props.onNavigate} badgeCount={props.notificationCounts.notificationCount} />);
 
-    if (props.appName === "CHUMS") result.push(<NavItem url={"/profile"} key="/profile" label={Locale.label("wrapper.profile")} icon="person" router={props.router} />);
-    else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label={Locale.label("wrapper.profile")} icon="person" external={true} router={props.router} />);
-    result.push(<NavItem url="/logout" label={Locale.label("wrapper.logout")} icon="logout" key="/logout" router={props.router} />);
+    if (props.appName === "CHUMS") result.push(<NavItem url={"/profile"} key="/profile" label={Locale.label("wrapper.profile")} icon="person" onNavigate={props.onNavigate} />);
+    else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label={Locale.label("wrapper.profile")} icon="person" external={true} onNavigate={props.onNavigate} />);
+    result.push(<NavItem url="/logout" label={Locale.label("wrapper.logout")} icon="logout" key="/logout" onNavigate={props.onNavigate} />);
     result.push(<NavItem label="Support" key={Locale.label("wrapper.support")} icon="help" onClick={() => { setShowSupport(true) }} />);
     result.push(<div style={{borderTop:"1px solid #CCC", paddingTop:2, paddingBottom:2}}></div>)
     result.push(<NavItem label="Switch App" key={Locale.label("wrapper.switchApp")} icon="apps" onClick={() => { setTabIndex(1); }} />);
@@ -96,7 +96,7 @@ export const UserMenu: React.FC<Props> = (props) => {
       </TabPanel>
       <TabPanel value={tabIndex} index={1}>
         <NavItem label="Back" key="AppBack" icon="arrow_back" onClick={() => { setTabIndex(0); }} />
-        <AppList currentUserChurch={props.currentUserChurch} appName={props.appName} />
+        <AppList currentUserChurch={props.currentUserChurch} appName={props.appName} onNavigate={props.onNavigate} />
       </TabPanel>
       {props.userChurches.length > 1 && <TabPanel value={tabIndex} index={2}>
         <div style={{ maxHeight: '70vh', overflowY: "auto" }}>
@@ -119,7 +119,7 @@ export const UserMenu: React.FC<Props> = (props) => {
     else if (showNotifications) return (<Dialog open onClose={() => setShowNotifications(false)} maxWidth="md" fullWidth>
       <DialogTitle>{Locale.label("wrapper.notifications")}</DialogTitle>
       <DialogContent>
-      		<Notifications context={props.context} appName={props.appName} onUpdate={props.loadCounts} router={props.router} />
+      		<Notifications context={props.context} appName={props.appName} onUpdate={props.loadCounts} onNavigate={props.onNavigate} />
       	</DialogContent>
     </Dialog>);
     else return <></>;

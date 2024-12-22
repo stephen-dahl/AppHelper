@@ -58,7 +58,7 @@ const CustomContextBox = styled(Box)({
 
 export function InputBox({ mainContainerCssProps = {}, ...props }: Props) {
   const theme = useTheme();
-  const headerText = theme.palette.InputBox.headerText ? theme.palette.InputBox.headerText : "primary";
+  const headerText = theme?.palette?.InputBox?.headerText ? theme?.palette?.InputBox?.headerText : "primary";
 
   let buttons = [];
   if (props.cancelFunction) buttons.push(<Button key="cancel" onClick={props.cancelFunction} color="warning" sx={{ "&:focus": { outline: "none" } }}>{props.cancelText || Locale.label("common.cancel")}</Button>);

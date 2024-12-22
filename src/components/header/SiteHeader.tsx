@@ -15,6 +15,7 @@ type Props = {
   secondaryMenuItems:{ url: string, label: string }[];
 	context: UserContextInterface;
 	appName: string;
+	onNavigate: (url: string) => void;
 }
 
 export const SiteHeader = (props:Props) => {
@@ -34,12 +35,12 @@ export const SiteHeader = (props:Props) => {
     <div style={{backgroundColor:"var(--c1)", color: "#FFF"}}>
       <CustomAppBar position="absolute">
         <Toolbar sx={{ pr: "24px", backgroundColor: "var(--c1)" }}>
-          <PrimaryMenu label={props.primaryMenuLabel} menuItems={props.primaryMenuItems}  />
-          <SecondaryMenu label={props.secondaryMenuLabel} menuItems={props.secondaryMenuItems} />
+          <PrimaryMenu label={props.primaryMenuLabel} menuItems={props.primaryMenuItems} onNavigate={props.onNavigate} />
+          <SecondaryMenu label={props.secondaryMenuLabel} menuItems={props.secondaryMenuItems} onNavigate={props.onNavigate} />
           <div style={{ flex: 1 }}>
-            <SecondaryMenuAlt label={props.secondaryMenuLabel} menuItems={props.secondaryMenuItems}  />
+            <SecondaryMenuAlt label={props.secondaryMenuLabel} menuItems={props.secondaryMenuItems} onNavigate={props.onNavigate} />
           </div>
-          {UserHelper.user && <UserMenu profilePicture={PersonHelper.getPhotoUrl(props.context?.person)} userName={`${UserHelper.user?.firstName} ${UserHelper.user?.lastName}`} userChurches={UserHelper.userChurches} currentUserChurch={UserHelper.currentUserChurch} context={props.context} appName={props.appName} loadCounts={() => {}} notificationCounts={{notificationCount:0, pmCount:0}} />}
+          {UserHelper.user && <UserMenu profilePicture={PersonHelper.getPhotoUrl(props.context?.person)} userName={`${UserHelper.user?.firstName} ${UserHelper.user?.lastName}`} userChurches={UserHelper.userChurches} currentUserChurch={UserHelper.currentUserChurch} context={props.context} appName={props.appName} loadCounts={() => {}} notificationCounts={{notificationCount:0, pmCount:0}} onNavigate={props.onNavigate} />}
           {!UserHelper.user && <Link href="/login" color="inherit" style={{ textDecoration: "none" }}>Login</Link>}
         </Toolbar>
       </CustomAppBar>

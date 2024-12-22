@@ -51,7 +51,7 @@ const CustomContextBox = styled(Box)({
 
 export const DisplayBox = React.forwardRef<HTMLDivElement, Props>((props, ref) => {
   const theme = useTheme();
-  const headerText = theme.palette.InputBox.headerText ? theme.palette.InputBox.headerText : "primary";
+  const headerText = theme?.palette?.InputBox?.headerText ? theme?.palette?.InputBox?.headerText : "primary";
 
   let editContent: React.ReactNode;
   if (props.editFunction !== undefined) {

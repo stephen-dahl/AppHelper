@@ -5,11 +5,11 @@ import { NavItem } from "../wrapper/NavItem";
 interface Props {
   label: string,
   menuItems: { url: string, label: string }[]
+	onNavigate: (url: string) => void;
 }
 
 export const SecondaryMenuAlt = (props:Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const handleClose = () => { setAnchorEl(null); };
   const open = Boolean(anchorEl);
 
@@ -21,7 +21,7 @@ export const SecondaryMenuAlt = (props:Props) => {
   const getItems = () => {
     const result:any[] = [];
     props.menuItems.forEach(item => {
-      result.push(<NavItem url={item.url} label={item.label} key={item.url} icon="people" />);
+      result.push(<NavItem url={item.url} label={item.label} key={item.url} onNavigate={props.onNavigate} icon="people" />);
     });
     return result;
   }
