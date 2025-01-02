@@ -40,7 +40,7 @@ export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: 
     return convertedText
   }
 
-  const convertedText = getSpecialLinks(markdownString);
+  const convertedText = getSpecialLinks(markdownString || "");
   const html = marked.parse(convertedText || "")
   const style = (textAlign) ? {textAlign} : {}
   return <div style={style} dangerouslySetInnerHTML={{__html: html as string}}></div>
