@@ -37,7 +37,7 @@
     "react-router-dom": "^6.15.0"
   },
   "dependencies": {
-    "@churchapps/helpers": "^1.0.26",
+    "@churchapps/helpers": "^1.0.27",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
