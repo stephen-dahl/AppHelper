@@ -1,6 +1,6 @@
 {
   "name": "@churchapps/apphelper",
-  "version": "0.2.98",
+  "version": "0.3.01",
   "description": "Library of helper functions for React and NextJS ChurchApps",
   "main": "dist/index.js",
 	"types": "dist/index.d.ts", 
@@ -60,7 +60,7 @@
     "flexsearch": "0.7.43",
     "jwt-decode": "^3.1.2",
     "lexical": "^0.12.0",
-    "marked": "^14.1.2",
+    "marked": "15.0.6",
     "material-symbols": "^0.11.0",
     "mui-tel-input": "^4.0.1",
     "react-activity": "^2.1.3",

@@ -1,5 +1,4 @@
 import {marked} from "marked";
-import React from "react";
 
 interface Props {
   value: string;
@@ -7,7 +6,6 @@ interface Props {
 }
 
 export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: Props) {
-  if (markdownString === null || markdownString === undefined) return <></>;
 
   const getTargetAndClasses = (extra: string) => {
     let result = "";
@@ -29,9 +27,10 @@ export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: 
   // \{([^\}]+)\} - target and classes
   // \[([^\]]+)\]\(([^)]+)\)\{([^\}]+)\} - full
   const getSpecialLinks = (markdownString: string) => {
+    if (!markdownString) return "";
     const regex = /\[([^\]]+)\]\(([^)]+)\)\{([^\}]+)\}/g;
     const convertedText = markdownString.replace(regex, (match, text, url, extra) => {
-      if (!match) return "";
+      if (!match) return text;
       let result = "<a href=\"" + url + "\"";
       result += getTargetAndClasses(extra);
       result += ">" + text + "</a>";
@@ -40,8 +39,11 @@ export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: 
     return convertedText
   }
 
-  const convertedText = getSpecialLinks(markdownString || "");
-  const html = marked.parse(convertedText || "")
-  const style = (textAlign) ? {textAlign} : {}
-  return <div style={style} dangerouslySetInnerHTML={{__html: html as string}}></div>
+  if (markdownString === null || markdownString === undefined || !markdownString) return <></>;
+  else {
+    const convertedText = getSpecialLinks(markdownString || "");
+    const html = marked.parse(convertedText || "")
+    const style = (textAlign) ? {textAlign} : {}
+    return <div style={style} dangerouslySetInnerHTML={{__html: html as string}}></div>
+  }
 }
