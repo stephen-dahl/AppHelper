@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: Props) {
-  if (markdownString === null || markdownString === undefined) return "";
+  if (markdownString === null || markdownString === undefined) return <></>;
 
   const getTargetAndClasses = (extra: string) => {
     let result = "";
