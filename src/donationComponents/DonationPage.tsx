@@ -167,7 +167,7 @@ export const DonationPage: React.FC<Props> = (props) => {
   }
 
   const getPaymentMethodComponents = () => {
-    if (!paymentMethods) return <Loading />;
+    if (!paymentMethods || !donations) return <Loading />;
     else return (
       <>
         <DonationForm person={person} customerId={customerId} paymentMethods={paymentMethods} stripePromise={stripePromise} donationSuccess={handleDataUpdate} church={props?.church} churchLogo={props?.churchLogo} />
