@@ -6,6 +6,7 @@ import { PersonHelper } from "../../helpers/PersonHelper";
 import { PrimaryMenu } from "./PrimaryMenu";
 import { SecondaryMenu } from "./SecondaryMenu";
 import { SecondaryMenuAlt } from "./SecondaryMenuAlt";
+import { SupportDrawer } from "./SupportDrawer";
 import { UserContextInterface } from "@churchapps/helpers";
 
 type Props = {
@@ -30,6 +31,31 @@ export const SiteHeader = (props:Props) => {
       "& .MuiIcon-root": { color: "#FFFFFF" }
     })
   );
+
+  const getRelatedArticles = () => {
+    let result: any [] = [];
+    if (props.appName === "CHUMS") {
+        if (props.primaryMenuLabel === "People") {
+          if (props.secondaryMenuLabel === "People") result = ["chums/adding-people", "chums/advanced-search", "chums/assigning-roles"];
+          else if (props.secondaryMenuLabel === "Groups") result = ["chums/group-roster", "chums/groups", "chums/group-calendar"];
+          else if (props.secondaryMenuLabel === "Attendance") result = ["chums/attendance", "chums/checkin"];
+        }
+        else if (props.primaryMenuLabel === "Donations") {
+          if (props.secondaryMenuLabel === "Summary") result = ["chums/donation-report"];
+          else if (props.secondaryMenuLabel === "Batches" || props.secondaryMenuLabel === "Funds") result = ["chums/giving", "chums/manual-input"];
+        }
+        else if (props.primaryMenuLabel === "Serving") {
+          if (props.secondaryMenuLabel === "Plans") result = ["chums/plans"];
+          else if (props.secondaryMenuLabel === "Tasks") result = ["chums/tasks", "chums/automations"];
+        }
+        else if (props.primaryMenuLabel === "Settings") {
+          if (props.secondaryMenuLabel === "Settings") result = ["chums/assigning-roles", "chums/exporting-data", "chums/import-csv", "chums/import-from-breeze"];
+          else if (props.secondaryMenuLabel === "Forms") result = ["chums/forms"];
+        }
+    }
+    return result;
+  }
+
   /*<Typography variant="h6" noWrap>{UserHelper.currentUserChurch?.church?.name || ""}</Typography>*/
   return (<>
     <div style={{backgroundColor:"var(--c1)", color: "#FFF"}}>
@@ -42,6 +68,7 @@ export const SiteHeader = (props:Props) => {
           </div>
           {UserHelper.user && <UserMenu profilePicture={PersonHelper.getPhotoUrl(props.context?.person)} userName={`${UserHelper.user?.firstName} ${UserHelper.user?.lastName}`} userChurches={UserHelper.userChurches} currentUserChurch={UserHelper.currentUserChurch} context={props.context} appName={props.appName} loadCounts={() => {}} notificationCounts={{notificationCount:0, pmCount:0}} onNavigate={props.onNavigate} />}
           {!UserHelper.user && <Link href="/login" color="inherit" style={{ textDecoration: "none" }}>Login</Link>}
+          <SupportDrawer appName={props.appName} relatedArticles={getRelatedArticles()} />
         </Toolbar>
       </CustomAppBar>
 
