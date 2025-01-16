@@ -14,9 +14,9 @@ type Props = {
   primaryMenuItems:{ url: string, icon:string, label: string }[];
   secondaryMenuLabel: string;
   secondaryMenuItems:{ url: string, label: string }[];
-	context: UserContextInterface;
-	appName: string;
-	onNavigate: (url: string) => void;
+  context: UserContextInterface;
+  appName: string;
+  onNavigate: (url: string) => void;
 }
 
 export const SiteHeader = (props:Props) => {
@@ -35,23 +35,28 @@ export const SiteHeader = (props:Props) => {
   const getRelatedArticles = () => {
     let result: any [] = [];
     if (props.appName === "CHUMS") {
-        if (props.primaryMenuLabel === "People") {
-          if (props.secondaryMenuLabel === "People") result = ["chums/adding-people", "chums/advanced-search", "chums/assigning-roles"];
-          else if (props.secondaryMenuLabel === "Groups") result = ["chums/group-roster", "chums/groups", "chums/group-calendar"];
-          else if (props.secondaryMenuLabel === "Attendance") result = ["chums/attendance", "chums/checkin"];
-        }
-        else if (props.primaryMenuLabel === "Donations") {
-          if (props.secondaryMenuLabel === "Summary") result = ["chums/donation-report"];
-          else if (props.secondaryMenuLabel === "Batches" || props.secondaryMenuLabel === "Funds") result = ["chums/giving", "chums/manual-input"];
-        }
-        else if (props.primaryMenuLabel === "Serving") {
-          if (props.secondaryMenuLabel === "Plans") result = ["chums/plans"];
-          else if (props.secondaryMenuLabel === "Tasks") result = ["chums/tasks", "chums/automations"];
-        }
-        else if (props.primaryMenuLabel === "Settings") {
-          if (props.secondaryMenuLabel === "Settings") result = ["chums/assigning-roles", "chums/exporting-data", "chums/import-csv", "chums/import-from-breeze"];
-          else if (props.secondaryMenuLabel === "Forms") result = ["chums/forms"];
-        }
+      if (props.primaryMenuLabel === "People") {
+        if (props.secondaryMenuLabel === "People") result = ["chums/adding-people", "chums/advanced-search", "chums/assigning-roles"];
+        else if (props.secondaryMenuLabel === "Groups") result = ["chums/group-roster", "chums/groups", "chums/group-calendar"];
+        else if (props.secondaryMenuLabel === "Attendance") result = ["chums/attendance", "chums/checkin"];
+      }
+      else if (props.primaryMenuLabel === "Donations") {
+        if (props.secondaryMenuLabel === "Summary") result = ["chums/donation-report"];
+        else if (props.secondaryMenuLabel === "Batches" || props.secondaryMenuLabel === "Funds") result = ["chums/giving", "chums/manual-input"];
+      }
+      else if (props.primaryMenuLabel === "Serving") {
+        if (props.secondaryMenuLabel === "Plans") result = ["chums/plans"];
+        else if (props.secondaryMenuLabel === "Tasks") result = ["chums/tasks", "chums/automations"];
+      }
+      else if (props.primaryMenuLabel === "Settings") {
+        if (props.secondaryMenuLabel === "Settings") result = ["chums/assigning-roles", "chums/exporting-data", "chums/import-csv", "chums/import-from-breeze"];
+        else if (props.secondaryMenuLabel === "Forms") result = ["chums/forms"];
+      }
+    } else if (props.appName === "B1") {
+      if (props.primaryMenuLabel === "Mobile App") result = ["b1/admin/portal", "b1/mobile/setup"];
+      else if (props.primaryMenuLabel === "Website") result = ["b1/admin/portal", "b1/admin/website-elements", "b1/admin/website-setup"];
+      else if (props.primaryMenuLabel === "Sermons") result = ["b1/admin/sermons", "b1/admin/stream-setup"];
+      else if (props.primaryMenuLabel === "Calendars") result = ["b1/portal/calendars"];
     }
     return result;
   }

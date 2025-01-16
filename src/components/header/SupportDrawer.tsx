@@ -15,7 +15,7 @@ export const SupportDrawer = (props: Props) => {
 
   let currentAppName = "";
   if (props.appName === "CHUMS") currentAppName = "chums";
-	if (props.appName === "B1") currentAppName = "b1";
+  if (props.appName === "B1") currentAppName = "b1";
 
   const validateEmail = (email: string) => {
     return email.match(
@@ -33,12 +33,12 @@ export const SupportDrawer = (props: Props) => {
 
   const loadData = () => {
     ApiHelper.get("/settings", "MembershipApi").then((data: GenericSettingInterface[]) => {
-			const contactRes = data.filter((d) => d.keyName === "supportContact");
-			if (contactRes?.length > 0 && contactRes[0].value !== "") setSupportContact(contactRes[0]);
+      const contactRes = data.filter((d) => d.keyName === "supportContact");
+      if (contactRes?.length > 0 && contactRes[0].value !== "") setSupportContact(contactRes[0]);
 
-			const logoRes = data.filter((d) => d.keyName === "favicon_16x16");
-			if (logoRes?.length > 0 && logoRes[0].value !== "") setChurchLogo(logoRes[0]);
-		});
+      const logoRes = data.filter((d) => d.keyName === "favicon_16x16");
+      if (logoRes?.length > 0 && logoRes[0].value !== "") setChurchLogo(logoRes[0]);
+    });
   };
 
   useEffect(loadData, []);
