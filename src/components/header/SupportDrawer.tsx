@@ -98,7 +98,7 @@ export const SupportDrawer = (props: Props) => {
               <Typography>ChurchApps</Typography>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 4, marginBottom: 1 }}>
-              <Button variant="contained" size="small" startIcon={<Icon fontSize="small">mail</Icon>} fullWidth sx={{ backgroundColor: "#568bda" }}>Support</Button>
+              <Button variant="contained" size="small" startIcon={<Icon fontSize="small">mail</Icon>} fullWidth sx={{ backgroundColor: "#568bda" }} href="mailto:support@livecs.org">Support</Button>
               <Button variant="contained" size="small" startIcon={<Icon fontSize="small">forum</Icon>} fullWidth sx={{ backgroundColor: "#568bda" }} href="https://github.com/orgs/ChurchApps/discussions" target="_blank" rel="noopener noreferrer">Forum</Button>
             </Box>
           </Box>
