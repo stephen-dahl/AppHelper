@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Box, Button, Drawer, Icon, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
-import { ApiHelper, GenericSettingInterface } from "../../helpers";
+import { ApiHelper, UserHelper } from "../../helpers";
 
 type Props = {
   appName: string;
@@ -9,8 +9,8 @@ type Props = {
 
 export const SupportDrawer = (props: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [supportContact, setSupportContact] = useState<GenericSettingInterface>(null);
-  const [churchLogo, setChurchLogo] = useState<GenericSettingInterface>(null);
+  const [supportContact, setSupportContact] = useState<string>(null);
+  const [churchLogo, setChurchLogo] = useState<string>(null);
   const supportHref = "https://support.churchapps.org/";
 
   let currentAppName = "";
@@ -24,20 +24,20 @@ export const SupportDrawer = (props: Props) => {
   };
 
   const handleChurchSupportClick = () => {
-    if (validateEmail(supportContact.value)) {
-      window.location.href = `mailto:${supportContact.value}`;
+    if (validateEmail(supportContact)) {
+      window.location.href = `mailto:${supportContact}`;
     } else {
-      window.open(`http://${supportContact.value}`, "_blank").focus();
+      window.open(`http://${supportContact}`, "_blank").focus();
     }
   };
 
   const loadData = () => {
-    ApiHelper.get("/settings", "MembershipApi").then((data: GenericSettingInterface[]) => {
-      const contactRes = data.filter((d) => d.keyName === "supportContact");
-      if (contactRes?.length > 0 && contactRes[0].value !== "") setSupportContact(contactRes[0]);
+    ApiHelper.get("/settings/public/" + UserHelper.currentUserChurch.church.id, "MembershipApi").then((data) => {
+      const contactRes = data?.supportContact;
+      if (contactRes && contactRes !== "") setSupportContact(contactRes);
 
-      const logoRes = data.filter((d) => d.keyName === "favicon_16x16");
-      if (logoRes?.length > 0 && logoRes[0].value !== "") setChurchLogo(logoRes[0]);
+      const logoRes = data?.favicon_16x16;
+      if (logoRes && logoRes !== "") setChurchLogo(logoRes);
     });
   };
 
@@ -55,7 +55,7 @@ export const SupportDrawer = (props: Props) => {
             {supportContact ? (
               <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center" }}>
                 <Box sx={{ cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", marginRight: 2, borderRadius: 2, padding: "7px", backgroundColor: "#e9e9e9" }} component="div" onClick={() => handleChurchSupportClick()}>
-                  <Avatar variant="rounded" src={churchLogo ? churchLogo.value : null} sx={{ marginRight: 1, bgcolor: "#568bda", width: 25, height: 25 }}>
+                  <Avatar variant="rounded" src={churchLogo ? churchLogo : null} sx={{ marginRight: 1, bgcolor: "#568bda", width: 25, height: 25 }}>
                     <Icon fontSize="small">church</Icon>
                   </Avatar>
                   <Typography sx={{ color: "#568bda", fontSize: "13px" }}>Support</Typography>
