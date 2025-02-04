@@ -32,13 +32,15 @@ export const SupportDrawer = (props: Props) => {
   };
 
   const loadData = () => {
-    ApiHelper.get("/settings/public/" + UserHelper.currentUserChurch.church.id, "MembershipApi").then((data) => {
-      const contactRes = data?.supportContact;
-      if (contactRes && contactRes !== "") setSupportContact(contactRes);
-
-      const logoRes = data?.favicon_16x16;
-      if (logoRes && logoRes !== "") setChurchLogo(logoRes);
-    });
+    if (UserHelper?.currentUserChurch?.church?.id) {
+      ApiHelper.get("/settings/public/" + UserHelper.currentUserChurch.church.id, "MembershipApi").then((data) => {
+        const contactRes = data?.supportContact;
+        if (contactRes && contactRes !== "") setSupportContact(contactRes);
+        
+        const logoRes = data?.favicon_16x16;
+        if (logoRes && logoRes !== "") setChurchLogo(logoRes);
+      });
+    }
   };
 
   useEffect(loadData, []);
