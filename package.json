@@ -1,6 +1,6 @@
 {
   "name": "@churchapps/apphelper",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "Library of helper functions for React and NextJS ChurchApps",
   "main": "dist/index.js",
 	"types": "dist/index.d.ts", 
@@ -54,7 +54,7 @@
     "@mui/material": "^5.14.7",
     "@stripe/react-stripe-js": "^2.1.2",
     "@stripe/stripe-js": "^2.1.1",
-    "axios": "^1.5.0",
+    "axios": "^1.7.0",
     "cropperjs": "^1.6.0",
     "date-fns": "^2.30.0",
     "flexsearch": "0.7.43",
