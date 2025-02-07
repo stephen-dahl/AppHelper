@@ -58,6 +58,9 @@ export function AddNote({ context, ...props }: Props) {
           m.content = "";
           setMessage(m);
         })
+        .catch((error) => {
+          if (error?.message === "Forbidden") setErrors(["You can't edit the message sent by others."])
+        })
         .finally(() => { setIsSubmitting(false); });
     }
   };

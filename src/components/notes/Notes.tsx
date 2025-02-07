@@ -38,7 +38,7 @@ export function Notes(props: Props) {
     if (messages.length === 0) return <></>
     else {
       let noteArray: React.ReactNode[] = [];
-      for (let i = 0; i < messages.length; i++) noteArray.push(<Note message={messages[i]} key={messages[i].id} showEditNote={setEditMessageId} />);
+      for (let i = 0; i < messages.length; i++) noteArray.push(<Note message={messages[i]} key={messages[i].id} showEditNote={setEditMessageId} context={props.context} />);
       return noteArray;
     }
   }

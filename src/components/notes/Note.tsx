@@ -1,11 +1,12 @@
 import { Icon, IconButton, Stack, Box } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { DateHelper, PersonHelper } from "../../helpers"
-import { MessageInterface } from "@churchapps/helpers"
+import { MessageInterface, UserContextInterface } from "@churchapps/helpers"
 
 interface Props {
   message: MessageInterface;
-  showEditNote: (noteId?: string) => void
+  showEditNote: (noteId?: string) => void;
+  context: UserContextInterface;
 }
 
 export const Note: React.FC<Props> = (props) => {
@@ -32,9 +33,11 @@ export const Note: React.FC<Props> = (props) => {
             {contents.map((c, i) => c ? <p key={i}>{c}</p> : <br />)}
           </div>
           <div>
-            <IconButton aria-label="editNote" onClick={() => props.showEditNote(message.id)}>
-              <Icon style={{ color: "#03a9f4" }}>edit</Icon>
-            </IconButton>
+            {(message?.id && message.personId === props.context?.person.id) && (
+              <IconButton aria-label="editNote" onClick={() => props.showEditNote(message.id)}>
+                <Icon style={{ color: "#03a9f4" }}>edit</Icon>
+              </IconButton>
+            )}
           </div>
         </Stack>
 

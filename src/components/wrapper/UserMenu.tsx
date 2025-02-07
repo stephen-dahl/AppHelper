@@ -7,7 +7,6 @@ import { Avatar, Menu, Typography, Icon, Button, Box, Badge, Modal, Dialog, Dial
 import { NavItem, AppList } from ".";
 import { LoginUserChurchInterface, UserContextInterface } from "@churchapps/helpers";
 import { ChurchList } from "./ChurchList";
-import { SupportModal } from "../SupportModal";
 import { CommonEnvironmentHelper } from "../../helpers/CommonEnvironmentHelper";
 import { TabPanel } from "../TabPanel";
 import { Locale } from "../../helpers";
@@ -30,7 +29,6 @@ interface Props {
 export const UserMenu: React.FC<Props> = (props) => {
   const userName = props.userName;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [showSupport, setShowSupport] = React.useState(false);
   const [showPM, setShowPM] = React.useState(false);
   const [showNotifications, setShowNotifications] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
@@ -60,7 +58,6 @@ export const UserMenu: React.FC<Props> = (props) => {
     if (props.appName === "CHUMS") result.push(<NavItem url={"/profile"} key="/profile" label={Locale.label("wrapper.profile")} icon="person" onNavigate={props.onNavigate} />);
     else result.push(<NavItem url={`${CommonEnvironmentHelper.ChumsRoot}/login?jwt=${jwt}&churchId=${churchId}&returnUrl=/profile`} key="/profile" label={Locale.label("wrapper.profile")} icon="person" external={true} onNavigate={props.onNavigate} />);
     result.push(<NavItem url="/logout" label={Locale.label("wrapper.logout")} icon="logout" key="/logout" onNavigate={props.onNavigate} />);
-    result.push(<NavItem label="Support" key={Locale.label("wrapper.support")} icon="help" onClick={() => { setShowSupport(true) }} />);
     result.push(<div style={{borderTop:"1px solid #CCC", paddingTop:2, paddingBottom:2}}></div>)
     result.push(<NavItem label="Switch App" key={Locale.label("wrapper.switchApp")} icon="apps" onClick={() => { setTabIndex(1); }} />);
     if (props.userChurches.length > 1) result.push(<NavItem label={Locale.label("wrapper.switchChurch")} key="Switch Church" icon="church" onClick={() => { setTabIndex(2); }} />);
@@ -134,7 +131,6 @@ export const UserMenu: React.FC<Props> = (props) => {
 
   return (
     <>
-      {showSupport && <SupportModal onClose={() => setShowSupport(false)} appName={props.appName} />}
       <Button onClick={handleClick} color="inherit" aria-controls={open ? "account-menu" : undefined} aria-haspopup="true" aria-expanded={open ? "true" : undefined} style={{ textTransform: "none" }} endIcon={<Icon>expand_more</Icon>}>
         <Badge badgeContent={totalNotifcations} color="error" invisible={totalNotifcations===0}>
           <Avatar src={getProfilePic()} sx={{ width: 32, height: 32, marginRight: 1 }}></Avatar>

@@ -47,7 +47,7 @@ export function Conversation(props: Props) {
 
     const getNotes = () => {
       let noteArray: React.ReactNode[] = [];
-      for (let i = 1; i < conversation.messages.length; i++) noteArray.push(<Note message={conversation.messages[i]} key={conversation.messages[i].id} showEditNote={setEditMessageId} />);
+      for (let i = 1; i < conversation.messages.length; i++) noteArray.push(<Note context={props.context} message={conversation.messages[i]} key={conversation.messages[i].id} showEditNote={setEditMessageId} />);
       return noteArray;
     }
 
