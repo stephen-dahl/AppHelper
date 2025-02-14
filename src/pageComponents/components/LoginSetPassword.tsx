@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { InputBox } from "../../components";
-import { Icon, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Icon, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { LoginResponseInterface, UserInterface } from "@churchapps/helpers";
 import { ApiHelper, Locale } from "../../helpers";
 
@@ -21,6 +21,7 @@ export const LoginSetPassword: React.FC<Props> = props => {
   const [verifyPassword, setVerifyPassword] = React.useState("");
   const [user, setUser] = React.useState<UserInterface>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [linkExpired, setLinkExpired] = React.useState(false);
 
   const validate = () => {
     const result = [];
@@ -32,7 +33,9 @@ export const LoginSetPassword: React.FC<Props> = props => {
   }
 
   const submitChangePassword = () => {
-    if (validate()) {
+    if (linkExpired) {
+      window.open("/login", "_blank");
+    } else if (validate()) {
       submit();
     }
   }
@@ -54,17 +57,42 @@ export const LoginSetPassword: React.FC<Props> = props => {
     else props.setShowForgot(true);
   }
 
-  React.useEffect(loadUser, []); //eslint-disable-line
+  React.useEffect(() => {
+    //Get the timestamp from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const timestampParam = urlParams.get("timestamp");
+    if (timestampParam) {
+      const linkTimestamp = parseInt(timestampParam, 10);
+      const currentTime = Date.now();
+
+      //Check if the link is expired (2 min)
+      if (currentTime - linkTimestamp > 120000) {
+        setLinkExpired(true);
+      } else {
+        loadUser();
+      }
+    } else {
+      setLinkExpired(true); //No timestamp means link is invalid
+    }
+  }, []);
 
   return (
-    <InputBox headerText={Locale.label("login.setPassword")} saveFunction={submitChangePassword} saveButtonType="submit" saveText={(props.isSubmitting || !user) ? Locale.label("common.pleaseWait") : Locale.label("login.signIn")} isSubmitting={props.isSubmitting}>
-      {user && <p style={{ marginTop: 0, marginBottom: 0 }}>{Locale.label("login.welcomeBack")} {user.firstName}.</p>}
-      <TextField fullWidth name="password" type={showPassword ? "text" : "password"} label={Locale.label("login.setPassword")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }}  InputProps={{
-        endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
-      }} />
-      <TextField fullWidth name="verifyPassword" type={showPassword ? "text" : "password"} label={Locale.label("login.verifyPassword")} value={verifyPassword} onChange={(e) => { e.preventDefault(); setVerifyPassword(e.target.value) }}  InputProps={{
-        endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
-      }} />
+    <InputBox headerText={Locale.label("login.setPassword")} saveFunction={submitChangePassword} saveButtonType="submit" saveText={!linkExpired ? (props.isSubmitting || !user) ? Locale.label("common.pleaseWait") : Locale.label("login.signIn") : Locale.label("login.requestLink")} isSubmitting={props.isSubmitting}>
+      {linkExpired ? (
+        <>
+          <Typography sx={{ color: "#c62828 !important", paddingBottom: 3 }}>{Locale.label("login.expiredLink")}</Typography>
+        </>
+        ) : (
+        <>
+          {user && <p style={{ marginTop: 0, marginBottom: 0 }}>{Locale.label("login.welcomeBack")} {user.firstName}.</p>}
+          <TextField fullWidth name="password" type={showPassword ? "text" : "password"} label={Locale.label("login.setPassword")} value={password} onChange={(e) => { e.preventDefault(); setPassword(e.target.value) }}  InputProps={{
+            endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
+          }} />
+          <TextField fullWidth name="verifyPassword" type={showPassword ? "text" : "password"} label={Locale.label("login.verifyPassword")} value={verifyPassword} onChange={(e) => { e.preventDefault(); setVerifyPassword(e.target.value) }}  InputProps={{
+            endAdornment: (<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(!showPassword) }}>{showPassword ? <Icon>visibility</Icon> : <Icon>visibility_off</Icon>}</IconButton></InputAdornment>)
+          }} />
+        </>
+      )}
     </InputBox>
   );
 }
