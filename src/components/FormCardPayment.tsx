@@ -48,13 +48,13 @@ export const FormCardPayment = forwardRef((props: Props, ref) => {
 
       const cardSavedRes = await saveCard(userData, person);
       if (!cardSavedRes.success) {
-        return { paymentSuccessful: false, errors: cardSavedRes.errors }
+        return { paymentSuccessful: false, name: "", errors: cardSavedRes.errors }
       }
 
-      return { paymentSuccessful: true, errors: [] }
+      return { paymentSuccessful: true, name: person?.name?.display || "", errors: [] as string[] }
     } catch (err) {
       const errorMessage = "An error occurred while processing your payment.";
-      return { paymentSuccessful: false, errors: [errorMessage] }
+      return { paymentSuccessful: false, name: "", errors: [errorMessage] as string[] }
     }
   }
 

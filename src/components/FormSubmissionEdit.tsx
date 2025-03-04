@@ -98,7 +98,7 @@ export const FormSubmissionEdit: React.FC<Props> = ({showHeader = true, noBackgr
           // Mark payment as successful in answers
           const paymentAnswer = fs.answers.find((a: AnswerInterface) => a.questionId === paymentRef.current.questionId);
           if (paymentAnswer) {
-            paymentAnswer.value = "Payment Successful";
+            paymentAnswer.value = `Payment Successful [${paymentResult?.name}]`;
           } else {
             fs.answers.push({
               questionId: paymentRef.current.questionId,
