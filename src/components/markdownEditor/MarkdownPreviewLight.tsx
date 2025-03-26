@@ -42,7 +42,11 @@ export function MarkdownPreviewLight({ value: markdownString = "", textAlign }: 
   if (markdownString === null || markdownString === undefined || !markdownString) return <></>;
   else {
     const convertedText = getSpecialLinks(markdownString || "");
-    const html = marked.parse(convertedText || "")
+    let processedMarkdown = convertedText;
+    processedMarkdown = convertedText.replace(/__(.*?)__/g, "<u>$1</u>"); //Replace `__underlined__` with `<u>underlined</u>`
+    processedMarkdown = processedMarkdown.replace(/```([\s\S]+?)```/g, "<pre class='code-block'><code>$1</code></pre>"); //Convert block code ```code``` to <pre><code>code</code></pre>
+    processedMarkdown = processedMarkdown.replace(/`([^`]+)`/g, "<code>$1</code>"); //Convert inline code `code` to <code>code</code>
+    const html = marked.parse(processedMarkdown || "")
     const style = (textAlign) ? {textAlign} : {}
     return <div style={style} dangerouslySetInnerHTML={{__html: html as string}}></div>
   }

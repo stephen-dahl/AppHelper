@@ -19,6 +19,7 @@ import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { theme } from "./theme";
 import { ToolbarPlugin, CustomAutoLinkPlugin, ListMaxIndentLevelPlugin, PLAYGROUND_TRANSFORMERS, ReadOnlyPlugin, ControlledEditorPlugin } from "./plugins";
+import FloatingTextFormatToolbarPlugin from "./plugins/FloatingTextMenu/FloatingTextFormatToolbarPlugin";
 import { MarkdownModal } from "./MarkdownModal";
 import CustomLinkNodePlugin from "./plugins/customLink/CustomLinkNodePlugin";
 import { CustomLinkNode } from "./plugins/customLink/CustomLinkNode";
@@ -33,9 +34,11 @@ interface Props {
   style?: any;
   textAlign?: "left" | "center" | "right";
   placeholder?: string;
+  element?: any;
+  showFloatingEditor?: boolean;
 }
 
-function Editor({ value, onChange = () => { }, mode = "interactive", textAlign = "left", style, placeholder = "Enter some text..." }: Props) {
+function Editor({ value, onChange = () => {}, mode = "interactive", textAlign = "left", style, placeholder = "Enter some text...", showFloatingEditor = false, ...props }: Props) {
   const [fullScreen, setFullScreen] = React.useState(false);
 
   const handleChange = (editorState: any) => {
@@ -49,7 +52,7 @@ function Editor({ value, onChange = () => { }, mode = "interactive", textAlign =
     console.error(error);
   };
 
-  const handleModalOnChange = (value : string) => {
+  const handleModalOnChange = (value: string) => {
     onChange(value);
   };
 
@@ -81,38 +84,52 @@ function Editor({ value, onChange = () => { }, mode = "interactive", textAlign =
         with: (node: LinkNode) => (
           new CustomLinkNode(node.getURL(), node.getTarget(), [])
         )
-      }
-    ]
+      },
+    ],
+    markdown: { transformers: PLAYGROUND_TRANSFORMERS }
   };
 
-  let textAlignClass = ""
+  let textAlignClass = "";
   switch (textAlign) {
     case "center":
-      textAlignClass = "text-center"
+      textAlignClass = "text-center";
       break;
     case "right":
-      textAlignClass = "text-right"
+      textAlignClass = "text-right";
       break;
     case "left":
     default:
-      textAlignClass = "text-left"
+      textAlignClass = "text-left";
       break;
   }
 
   return (
     <>
       <LexicalComposer initialConfig={initialConfig}>
-        <div className={(mode === "preview") ? `editor-container preview ${textAlignClass}` : `editor-container ${textAlignClass}`} style={Object.assign({ border: mode === "preview" ? "none" : "1px solid lightgray" }, style)}>
-          {mode !== "preview" && <ToolbarPlugin goFullScreen={() => { setFullScreen(true) }} />}
+        <div
+          className={mode === "preview" ? `editor-container preview ${textAlignClass}` : `editor-container ${textAlignClass}`}
+          style={Object.assign({ border: mode === "preview" ? "none" : "1px solid lightgray" }, style)}
+        >
+          {mode !== "preview" && (<ToolbarPlugin goFullScreen={() => { setFullScreen(true); }} />)}
           <div className="editor-inner">
-            {!fullScreen && <RichTextPlugin
-              contentEditable={<ContentEditable className="editor-input" style={{ minHeight: mode === "preview" ? "auto" : "150px" }} />}
-              placeholder={mode !== "preview" ? <div className="editor-placeholder">{placeholder}</div> : null}
-              ErrorBoundary={LexicalErrorBoundary}
-            /> }
+            {!fullScreen && (
+              <RichTextPlugin
+                contentEditable={
+                  <ContentEditable
+                    className="editor-input"
+                    style={{ minHeight: mode === "preview" ? "auto" : "150px" }}
+                    //@ts-ignore
+                    ref={(node) => { if (node) { const editor = node.closest("[data-lexical-editor]") as HTMLElement; if (editor) { editor.dataset.element = JSON.stringify(props.element) } } }} //Store element in dataset
+                  />
+                }
+                placeholder={mode !== "preview" ? (<div className="editor-placeholder">{placeholder}</div>) : null}
+                ErrorBoundary={LexicalErrorBoundary}
+              />
+            )}
             <CustomLinkNodePlugin />
             {mode !== "preview" && <EmojiPickerPlugin />}
             <EmojisPlugin />
+            {showFloatingEditor && <FloatingTextFormatToolbarPlugin />}
             <OnChangePlugin onChange={handleChange} />
             {mode !== "preview" && <AutoFocusPlugin />}
             <HistoryPlugin />
@@ -126,7 +143,7 @@ function Editor({ value, onChange = () => { }, mode = "interactive", textAlign =
           </div>
         </div>
       </LexicalComposer>
-      {fullScreen && <MarkdownModal onChange={handleModalOnChange} value={value} hideModal={handleCloseFullScreen} />}
+      {fullScreen && (<MarkdownModal onChange={handleModalOnChange} value={value} hideModal={handleCloseFullScreen} />)}
     </>
   );
 }
