@@ -23,6 +23,11 @@ function useEmojis(editor: LexicalEditor): void {
       throw new Error('EmojisPlugin: EmojiNode not registered on editor');
     }
 
+    if (!materialIcons || !Array.isArray(materialIcons)) {
+      return;
+      // throw new Error('EmojisPlugin: materialIcons not properly loaded');
+    }
+
     return editor.registerNodeTransform(TextNode, (textNode) => {
       if (EMOJI_NODE_MARKDOWN_REGEX.test(textNode.getTextContent()) || materialIcons.map((materialIcon : string) => ':' + materialIcon + ':').some((materialIcon : string) => textNode.getTextContent().includes(materialIcon))) {
 

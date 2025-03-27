@@ -15,15 +15,27 @@ const positionEditorElement = (editor: HTMLElement, rect: DOMRect | null) => {
     editor.style.left = "-1000px";
   } else {
     editor.style.opacity = "1";
-    editor.style.top = `${rect.top + rect.height + 10}px`;
-    editor.style.left = `${
-      rect.left + window.pageXOffset - editor.offsetWidth / 2 + rect.width / 2 < 0
-        ? 0
-        : rect.left
-          + window.pageXOffset
-          - editor.offsetWidth / 2
-          + rect.width / 2
-    }px`;
+    // Add viewport height check
+    const editorHeight = editor.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    let topPosition = rect.top + rect.height + 10;
+    
+    // If editor would go off bottom of screen, position it above the selection instead
+    if (topPosition + editorHeight > viewportHeight) {
+      topPosition = rect.top - editorHeight - 10;
+    }
+    
+    editor.style.top = `${topPosition}px`;
+    
+    // Ensure editor stays within horizontal bounds
+    const leftPosition = Math.max(
+      0,
+      Math.min(
+        rect.left + window.pageXOffset - editor.offsetWidth / 2 + rect.width / 2,
+        window.innerWidth - editor.offsetWidth
+      )
+    );
+    editor.style.left = `${leftPosition}px`;
   }
 };
 
