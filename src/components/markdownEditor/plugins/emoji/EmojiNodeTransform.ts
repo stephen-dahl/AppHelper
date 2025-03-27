@@ -25,7 +25,7 @@ export const EMOJI_NODE_MARKDOWN_TRANSFORM: TextMatchTransformer = {
       return null;
     }
 
-    if (!materialIcons.includes(node.getTextContent().replaceAll(':', ''))) {
+    if (!materialIcons || !materialIcons.includes(node.getTextContent().replaceAll(':', ''))) {
       return null;
     }
 

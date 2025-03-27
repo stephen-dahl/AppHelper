@@ -118,8 +118,7 @@ function Editor({ value, onChange = () => {}, mode = "interactive", textAlign = 
                   <ContentEditable
                     className="editor-input"
                     style={{ minHeight: mode === "preview" ? "auto" : "150px" }}
-                    //@ts-ignore
-                    ref={(node) => { if (node) { const editor = node.closest("[data-lexical-editor]") as HTMLElement; if (editor) { editor.dataset.element = JSON.stringify(props.element) } } }} //Store element in dataset
+                    data-element={JSON.stringify(props.element)}
                   />
                 }
                 placeholder={mode !== "preview" ? (<div className="editor-placeholder">{placeholder}</div>) : null}
