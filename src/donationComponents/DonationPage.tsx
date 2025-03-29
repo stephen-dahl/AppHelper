@@ -105,10 +105,10 @@ export const DonationPage: React.FC<Props> = (props) => {
         onClose={handleClose}
         MenuListProps={{ 'aria-labelledby': "download-button" }}
       >
-        <MenuItem onClick={handleClose} dense><ExportLink data={current_year} filename="current_year_donations" customHeaders={customHeaders} text="Current Year" icon="csv" /></MenuItem>
-        <MenuItem href="/member/donate/print"><Icon>print</Icon> Current Year</MenuItem>
-        <MenuItem onClick={handleClose} dense><ExportLink data={last_year} filename="last_year_donations" customHeaders={customHeaders} text="Last Year" icon="csv" /></MenuItem>
-        <MenuItem href="/member/donate/print?prev=1"><Icon>print</Icon> Last Year</MenuItem>
+        <MenuItem onClick={handleClose} dense><ExportLink data={current_year} filename="current_year_donations" customHeaders={customHeaders} text="Current Year (CSV)" icon="table_chart" /></MenuItem>
+        <MenuItem onClick={handleClose} dense><Link to={"/donations/print/" + person?.id}><Button><Icon>print</Icon> &nbsp; Current Year (PRINT)</Button></Link></MenuItem>
+        <MenuItem onClick={handleClose} dense><ExportLink data={last_year} filename="last_year_donations" customHeaders={customHeaders} text="Last Year (CSV)" icon="table_chart" /></MenuItem>
+        <MenuItem onClick={handleClose} dense><Link to={"/donations/print/" + person?.id + "?prev=1"}><Button><Icon>print</Icon> &nbsp; Last Year (PRINT)</Button></Link></MenuItem>
       </Menu>
     </>);
 
