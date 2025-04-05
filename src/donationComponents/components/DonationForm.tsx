@@ -136,7 +136,7 @@ export const DonationForm: React.FC<Props> = (props) => {
     }
   }
 
-  const handleFundDonationsChange = (fd: FundDonationInterface[]) => {
+  const handleFundDonationsChange = async (fd: FundDonationInterface[]) => {
     setErrorMessage(null);
     setFundDonations(fd);
     let totalAmount = 0;
@@ -149,21 +149,39 @@ export const DonationForm: React.FC<Props> = (props) => {
     let d = { ...donation };
     d.amount = totalAmount;
     d.funds = selectedFunds;
-    setDonation(d);
     setFundsTotal(totalAmount);
-    setTotal(totalAmount);
-    setTransactionFee(getTransactionFee(totalAmount));
+    
+    const fee = await getTransactionFee(totalAmount);
+    setTransactionFee(fee);
+    
+    if (gateway && gateway.payFees === true) {
+      d.amount = totalAmount + fee;
+      setPayFee(fee);
+    }
+    setTotal(d.amount);
+    setDonation(d)
   }
 
-  const getTransactionFee = (amount: number) => {
-    const fixedFee = 0.30;
-    const fixedPercent = 0.029;
-    return Math.round(((amount + fixedFee) / (1 - fixedPercent) - amount) * 100) / 100;
+  const getTransactionFee = async (amount: number) => {
+    if (amount > 0) {
+      let dt: string = "";
+      if (donation.type === "card") dt = "creditCard";
+      if (donation.type === "bank") dt = "ach";
+      try {
+        const response = await ApiHelper.post("/donate/fee?churchId=" + props?.church?.id, { type: dt, amount }, "GivingApi");
+        return response.calculatedFee;
+      } catch (error) {
+        console.log("Error calculating transaction fee: ", error);
+        return 0;
+      }
+    } else {
+      return 0;
+    }
   }
 
   React.useEffect(loadData, [props.person?.id]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(() => { gateway && gateway.payFees === true && handleAutoPayFee() }, [fundDonations]);
+  // React.useEffect(() => { gateway && gateway.payFees === true && handleAutoPayFee() }, [fundDonations]);
 
   if (!funds.length || !props?.paymentMethods[0]?.id) return null;
   else return (

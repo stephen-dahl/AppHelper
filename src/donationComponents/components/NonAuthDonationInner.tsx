@@ -58,10 +58,10 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     setTotal(totalPayAmount);
   }
 
-  const handleAutoPayFee = () => {
-    let totalPayAmount = fundsTotal + transactionFee;
-    setTotal(totalPayAmount);
-  }
+  // const handleAutoPayFee = () => {
+  //   let totalPayAmount = fundsTotal + transactionFee;
+  //   setTotal(totalPayAmount);
+  // }
 
   const handleSave = async () => {
     if (validate()) {
@@ -165,7 +165,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     }
   }
 
-  const handleFundDonationsChange = (fd: FundDonationInterface[]) => {
+  const handleFundDonationsChange = async (fd: FundDonationInterface[]) => {
     setFundDonations(fd);
     let totalAmount = 0;
     let selectedFunds: any = [];
@@ -176,13 +176,27 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     }
     setFundsTotal(totalAmount);
     setTotal(totalAmount);
-    setTransactionFee(getTransactionFee(totalAmount));
+
+    const fee = await getTransactionFee(totalAmount);
+    setTransactionFee(fee);
+
+    if (gateway && gateway.payFees === true) {
+      setTotal(totalAmount + fee);
+    }
   }
 
-  const getTransactionFee = (amount: number) => {
-    const fixedFee = 0.30;
-    const fixedPercent = 0.029;
-    return Math.round(((amount + fixedFee) / (1 - fixedPercent) - amount) * 100) / 100;
+  const getTransactionFee = async (amount: number) => {
+    if (amount > 0) {
+      try {
+        const response = await ApiHelper.post("/donate/fee?churchId=" + props.churchId, { type: "creditCard", amount }, "GivingApi");
+        return response.calculatedFee;
+      } catch (error) {
+        console.log("Error calculating transaction fee: ", error);
+        return 0;
+      }
+    } else {
+      return 0;
+    }
   }
 
   const getFundList = () => {
@@ -195,7 +209,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
 
   React.useEffect(init, []); //eslint-disable-line
 
-  React.useEffect(() => { gateway && gateway.payFees === true && handleAutoPayFee() }, [fundDonations]);
+  // React.useEffect(() => { gateway && gateway.payFees === true && handleAutoPayFee() }, [fundDonations]);
 
   if (donationComplete) return <Alert severity="success">{Locale.label("donation.donationForm.thankYou")}</Alert>
   else return (
