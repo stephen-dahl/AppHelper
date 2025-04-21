@@ -19,6 +19,7 @@ export const ReportOutput = (props: Props) => {
   const [detailedPersonSummary, setDetailedPersonSummary] = React.useState<any[]>(null);
   const [customHeaders, setCustomHeaders] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [downloadData, setDownloadData] = React.useState<ReportResultInterface>(null);
   const open = Boolean(anchorEl);
   const contentRef = useRef<HTMLDivElement>(null);
   const isMounted = useMountedState();
@@ -90,6 +91,14 @@ export const ReportOutput = (props: Props) => {
 
       const donationUrl = "/donations/summary?type=person&" + queryParams.join("&");
       ApiHelper.get(donationUrl, "GivingApi").then((data) => { populatePeople(data); });
+
+      if (props.keyName === "groupAttendance") {
+        let url = "/reports/groupAttendanceDownload/run";
+        if (queryParams) url += "?" + queryParams.join("&");
+        ApiHelper.get(url, "ReportingApi").then((data: ReportResultInterface) => {
+          setDownloadData(data);
+        })
+      }
     }
   }
 
@@ -104,7 +113,7 @@ export const ReportOutput = (props: Props) => {
     return (<>
       <Button size="small" title={Locale.label("reporting.downloadOptions")} onClick={handleClick} key={key}><Icon>download</Icon></Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.summary")} icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"} /></MenuItem>}
+        {reportResult?.table?.length > 0 && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={props.keyName === "groupAttendance" ? downloadData?.table : reportResult.table} filename={props.report.displayName.replace(" ", "_") + ".csv"} text={Locale.label("reporting.summary")} icon={props.keyName === "attendanceTrend" ? "calendar_month" : "volunteer_activism"} /></MenuItem>}
         {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><ExportLink data={detailedPersonSummary} filename="Detailed_Donation_Summary.csv" text={Locale.label("reporting.detailed")} icon="person" customHeaders={customHeaders} spaceAfter={true} /></MenuItem>}
         {(props.keyName ==="donationSummary" && detailedPersonSummary?.length > 0) && <MenuItem sx={{ padding: "5px" }} onClick={handleClose}><Button onClick={() => { window.open("/downloads/DonationTemplate.docx") }}><Icon sx={{ marginRight: 1 }}>description</Icon>{Locale.label("reporting.sampleTemplate")}</Button></MenuItem>}
       </Menu>
