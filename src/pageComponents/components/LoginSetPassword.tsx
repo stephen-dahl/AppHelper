@@ -66,7 +66,7 @@ export const LoginSetPassword: React.FC<Props> = props => {
       const currentTime = Date.now();
 
       //Check if the link is expired (2 min)
-      if (currentTime - linkTimestamp > 120000) {
+      if (currentTime - linkTimestamp > 600000) {
         setLinkExpired(true);
       } else {
         loadUser();
