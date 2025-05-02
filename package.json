@@ -1,9 +1,9 @@
 {
   "name": "@churchapps/apphelper",
-  "version": "0.3.23",
+  "version": "0.3.25",
   "description": "Library of helper functions for React and NextJS ChurchApps",
   "main": "dist/index.js",
-	"types": "dist/index.d.ts", 
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist",
@@ -14,7 +14,7 @@
     "copy-assets": "npm-run-all copy-css copy-icons copy-emojis copy-languages",
     "link": "link",
     "tsc": "tsc",
-		"prepare": "npm run build",
+    "prepare": "npm run build",
     "build": "npm-run-all clean tsc copy-assets",
     "updateLink": "npm-run-all clean tsc && npm rm @churchapps/apphelper -g && npm link"
   },
@@ -58,6 +58,10 @@
     "cropperjs": "^1.6.0",
     "date-fns": "^2.30.0",
     "flexsearch": "0.7.43",
+    "i18next": "^25.0.2",
+    "i18next-browser-languagedetector": "^8.1.0",
+    "i18next-chained-backend": "^4.6.2",
+    "i18next-http-backend": "^3.0.2",
     "jwt-decode": "^3.1.2",
     "lexical": "^0.12.0",
     "marked": "15.0.6",
@@ -70,6 +74,7 @@
     "react-ga4": "^2.1.0",
     "react-google-charts": "^3.0.15",
     "react-google-recaptcha": "^3.1.0",
+    "react-i18next": "^15.5.1",
     "react-to-print": "^2.14.13",
     "rrule": "^2.8.1",
     "slug": "^8.2.3"
