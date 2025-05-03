@@ -29,7 +29,11 @@ export class ErrorHelper {
 			console.log("ERROR LOG", log);
 
 			if (log.errorType === "401" && log.message.indexOf("/users/login") > -1) return;
-			ApiHelper.postAnonymous("/clientErrors", [log], "MembershipApi");
+			try {
+				ApiHelper.postAnonymous("/clientErrors", [log], "MembershipApi");
+			} catch (error) {
+				console.log(error)
+			}
 			if (ErrorHelper.customErrorHandler) ErrorHelper.customErrorHandler(log);
 		}
 	}
