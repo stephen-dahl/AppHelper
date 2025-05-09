@@ -39,7 +39,7 @@ export const Notifications: React.FC<Props> = (props) => {
     let path = "";
     switch (notification.contentType) {
       case "task": app = "chums"; path = "/tasks/" + notification.contentId; break;
-      case "assignment": app = "b1"; path = "/member/plans/" + notification.contentId; break;
+      case "assignment": app = "b1"; path = "/my/plans/" + notification.contentId; break;
     }
 
     const appUrl = getAppUrl(app);
@@ -48,7 +48,7 @@ export const Notifications: React.FC<Props> = (props) => {
     }
     else {
       console.log("REDIRECTING TO", appUrl + path)
-      window.location.assign(appUrl + path);
+      window.open(appUrl + path, "_blank");
     }
   }
 
@@ -64,7 +64,11 @@ export const Notifications: React.FC<Props> = (props) => {
             <Stack direction="row" justifyContent="space-between">
               <div style={{width:"100%"}} onClick={(e) => { e.preventDefault(); handleClick(notification); }}>
                 <span className="text-grey" style={{float:"right"}}>{displayDuration}</span>
-                <p><Icon>notifications</Icon> {notification.message}</p>
+                <p>
+                  <Icon>notifications</Icon> 
+                  {notification.message} 
+                  <span>{notification?.link ? <a href={notification.link} onClick={(e) => { e.stopPropagation() }} target="_blank">View Details</a> : null}</span>
+                </p>
               </div>
             </Stack>
           </Box>
