@@ -29,6 +29,7 @@ export class ErrorHelper {
 			console.log("ERROR LOG", log);
 
 			if (log.errorType === "401" && log.message.indexOf("/users/login") > -1) return;
+			if (log.message.indexOf("clientErrors") > -1) return;
 			try {
 				ApiHelper.postAnonymous("/clientErrors", [log], "MembershipApi");
 			} catch (error) {
