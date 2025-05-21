@@ -33,12 +33,30 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
   const [captchaResponse, setCaptchaResponse] = useState("");
   const [church, setChurch] = useState<ChurchInterface>();
   const [gateway, setGateway] = React.useState(null);
+  const [searchParams, setSearchParams] = React.useState<any>();
   const captchaRef = useRef(null);
+  
+  const getUrlParam = (param: string) => {
+      if (typeof window === "undefined") return null;
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+    
+    const init = () => {
+    const fundId = getUrlParam("fundId");
+    const amounts = getUrlParam("amounts");
+    setSearchParams({ fundId, amounts: JSON.parse(amounts) });
 
-  const init = () => {
     ApiHelper.get("/funds/churchId/" + props.churchId, "GivingApi").then(data => {
       setFunds(data);
-      if (data.length) setFundDonations([{ fundId: data[0].id }]);
+      if (fundId && fundId !== "") {
+        const selectedFund = data.find((f: FundInterface) => f.id === fundId);
+        if (selectedFund) {
+          setFundDonations([{ fundId: selectedFund.id }]);
+        }
+      } else if (data.length) {
+        setFundDonations([{ fundId: data[0].id }]);
+    }
     });
     ApiHelper.get("/churches/" + props.churchId, "MembershipApi").then(data => {
       setChurch(data);
@@ -203,7 +221,7 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     if (funds) return (<>
       <hr />
       <h4>{Locale.label("donation.donationForm.funds")}</h4>
-      <FundDonations fundDonations={fundDonations} funds={funds} updatedFunction={handleFundDonationsChange} />
+      <FundDonations fundDonations={fundDonations} funds={funds} params={searchParams} updatedFunction={handleFundDonationsChange} />
     </>);
   }
 

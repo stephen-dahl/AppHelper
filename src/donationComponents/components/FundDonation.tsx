@@ -2,21 +2,25 @@
 
 import React from "react";
 import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
-import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
+import { Chip, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { Locale } from "../../helpers";
 
 interface Props {
   fundDonation: FundDonationInterface,
   funds: FundInterface[],
   index: number,
-  updatedFunction: (fundDonation: FundDonationInterface, index: number) => void
+  updatedFunction: (fundDonation: FundDonationInterface, index: number) => void,
+  params?: any,
 }
 
 export const FundDonation: React.FC<Props> = (props) => {
 
   const getOptions = () => {
     let result = [];
-    for (let i = 0; i < props.funds.length; i++) result.push(<MenuItem key={i} value={props.funds[i].id}>{props.funds[i].name}</MenuItem>);
+    for (let i = 0; i < props.funds.length; i++) {
+      const getDisabled = (props?.params?.fundId && props.params.fundId !== "") ? props.params.fundId !== props.funds[i].id : false;
+      result.push(<MenuItem key={i} value={props.funds[i].id} disabled={getDisabled}>{props.funds[i].name}</MenuItem>);
+    }
     return result;
   }
 
@@ -33,20 +37,35 @@ export const FundDonation: React.FC<Props> = (props) => {
     props.updatedFunction(fd, props.index);
   }
 
+  const handleAmountChange = (amount: number) => {
+    let fd = { ...props.fundDonation };
+    fd.amount = amount;
+    props.updatedFunction(fd, props.index);
+  }
+
   return (
-    <Grid container spacing={3}>
-      <Grid item md={6} xs={12}>
-        <TextField fullWidth name="amount" label={Locale.label("donation.fundDonations.amount")} type="number" aria-label="amount" lang="en-150" value={props.fundDonation.amount || ""} onChange={handleChange} />
+    <>
+      {(props?.params?.amounts) && (
+        <div>
+          {props.params?.amounts?.map((a: any) => (
+            <Chip variant="filled" color="primary" label={`$ ${a}`} onClick={() => { handleAmountChange(a) }} sx={{ minWidth: 75, marginRight: 1, marginTop: 1 }} />
+          ))}
+        </div>
+      )}
+      <Grid container spacing={3}>
+        <Grid item md={6} xs={12}>
+          <TextField fullWidth name="amount" label={Locale.label("donation.fundDonations.amount")} type="number" aria-label="amount" lang="en-150" value={props.fundDonation.amount || ""} onChange={handleChange} />
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <FormControl fullWidth>
+            <InputLabel>{Locale.label("donation.fundDonations.fund")}</InputLabel>
+            <Select fullWidth label={Locale.label("donation.fundDonations.fund")} name="fund" aria-label="fund" value={props.fundDonation.fundId} onChange={handleChange}>
+              {getOptions()}
+            </Select>
+          </FormControl>
+        </Grid>
       </Grid>
-      <Grid item md={6} xs={12}>
-        <FormControl fullWidth>
-          <InputLabel>{Locale.label("donation.fundDonations.fund")}</InputLabel>
-          <Select fullWidth label={Locale.label("donation.fundDonations.fund")} name="fund" aria-label="fund" value={props.fundDonation.fundId} onChange={handleChange}>
-            {getOptions()}
-          </Select>
-        </FormControl>
-      </Grid>
-    </Grid>
+    </>
   );
 }
 

@@ -5,7 +5,7 @@ import { FundDonation } from ".";
 import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
 import { Locale } from "../../helpers";
 
-interface Props { fundDonations: FundDonationInterface[], funds: FundInterface[], updatedFunction: (fundDonations: FundDonationInterface[]) => void }
+interface Props { fundDonations: FundDonationInterface[], funds: FundInterface[], params?: any, updatedFunction: (fundDonations: FundDonationInterface[]) => void }
 
 export const FundDonations: React.FC<Props> = (props) => {
   const handleUpdated = (fundDonation: FundDonationInterface, index: number) => {
@@ -26,7 +26,7 @@ export const FundDonations: React.FC<Props> = (props) => {
     let result = [];
     for (let i = 0; i < props.fundDonations.length; i++) {
       let fd = props.fundDonations[i];
-      result.push(<FundDonation fundDonation={fd} funds={props.funds} updatedFunction={handleUpdated} key={i} index={i} />)
+      result.push(<FundDonation fundDonation={fd} funds={props.funds} updatedFunction={handleUpdated} params={props?.params} key={i} index={i} />)
     }
 
     return result;
@@ -35,7 +35,9 @@ export const FundDonations: React.FC<Props> = (props) => {
   return (
     <>
       {getRows()}
-      <a href="about:blank" aria-label="add-fund-donation" className="text-decoration" style={{ display: "block", marginBottom: "15px" }} onClick={addRow}>{Locale.label("donation.fundDonations.addMore")}</a>
+      {(!props?.params?.fundId || props?.params?.fundId === "") &&
+        <a href="about:blank" aria-label="add-fund-donation" className="text-decoration" style={{ display: "block", marginBottom: "15px" }} onClick={addRow}>{Locale.label("donation.fundDonations.addMore")}</a>
+      }
     </>
   );
 }
