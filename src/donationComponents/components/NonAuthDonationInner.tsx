@@ -44,15 +44,15 @@ export const NonAuthDonationInner: React.FC<Props> = ({ mainContainerCssProps, s
     
     const init = () => {
     const fundId = getUrlParam("fundId");
-    const amounts = getUrlParam("amounts");
-    setSearchParams({ fundId, amounts: JSON.parse(amounts) });
+    const amount = getUrlParam("amount");
+    setSearchParams({ fundId, amount });
 
     ApiHelper.get("/funds/churchId/" + props.churchId, "GivingApi").then(data => {
       setFunds(data);
       if (fundId && fundId !== "") {
         const selectedFund = data.find((f: FundInterface) => f.id === fundId);
         if (selectedFund) {
-          setFundDonations([{ fundId: selectedFund.id }]);
+          setFundDonations([{ fundId: selectedFund.id, amount: (amount && amount !== "") ? parseFloat(amount) : 0}]);
         }
       } else if (data.length) {
         setFundDonations([{ fundId: data[0].id }]);

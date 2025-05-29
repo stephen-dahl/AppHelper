@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FundDonationInterface, FundInterface } from "@churchapps/helpers";
-import { Chip, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
+import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material"
 import { Locale } from "../../helpers";
 
 interface Props {
@@ -37,24 +37,11 @@ export const FundDonation: React.FC<Props> = (props) => {
     props.updatedFunction(fd, props.index);
   }
 
-  const handleAmountChange = (amount: number) => {
-    let fd = { ...props.fundDonation };
-    fd.amount = amount;
-    props.updatedFunction(fd, props.index);
-  }
-
   return (
     <>
-      {(props?.params?.amounts) && (
-        <div>
-          {props.params?.amounts?.map((a: any) => (
-            <Chip variant="filled" color="primary" label={`$ ${a}`} onClick={() => { handleAmountChange(a) }} sx={{ minWidth: 75, marginRight: 1, marginTop: 1 }} />
-          ))}
-        </div>
-      )}
       <Grid container spacing={3}>
         <Grid item md={6} xs={12}>
-          <TextField fullWidth name="amount" label={Locale.label("donation.fundDonations.amount")} type="number" aria-label="amount" lang="en-150" value={props.fundDonation.amount || ""} onChange={handleChange} />
+          <TextField fullWidth name="amount" label={Locale.label("donation.fundDonations.amount")} type="number" disabled={props.params?.amount && props.params.amount !== ""} aria-label="amount" lang="en-150" value={props.fundDonation.amount || ""} onChange={handleChange} />
         </Grid>
         <Grid item md={6} xs={12}>
           <FormControl fullWidth>
